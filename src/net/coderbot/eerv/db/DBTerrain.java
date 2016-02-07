@@ -40,9 +40,9 @@ public class DBTerrain
 		 */
 		int index;
 		/**
-		 * TODO: An unknown ID.
+		 * Index in terrainGrayTextures
 		 */
-		int uid0;
+		int grayindex;
 		/**
 		 * Language entry.
 		 */
@@ -52,9 +52,9 @@ public class DBTerrain
 		 */
 		boolean valid;
 		/**
-		 * TODO: An unknown ID.
+		 * gameID in terrainType
 		 */
-		int uid1;
+		int type;
 		/**
 		 * Amount of tiles on the X axis
 		 */
@@ -74,11 +74,7 @@ public class DBTerrain
 		/**
 		 * TODO: An unknown value.
 		 */
-		int u0;
-		/**
-		 * TODO: An unknown value.
-		 */
-		int u1, u2, u3, u4, u5, u6, u7;
+		int u0, u1, u2, u3, u4, u5, u6, u7;
 		/**
 		 * Used for animated terrain.
 		 */
@@ -119,10 +115,10 @@ public class DBTerrain
 			
 			gameid = data.getInt();
 			index = data.getInt();
-			uid0 = data.getInt();
+			grayindex = data.getInt();//Index, not gameID
 			language = data.getInt();
 			valid = data.getInt()==1;
-			uid1 = data.getInt();
+			type = data.getInt();
 			
 			xstitch = data.getInt();
 			ystitch = data.getInt();
@@ -163,19 +159,6 @@ public class DBTerrain
 			ambMarsh0 = data.getFloat();
 			ambMarsh1 = data.getFloat();
 			ambient = (data.getInt()&16777216)==16777216;
-			
-
-			String sname = new String(name, Charsets.ASCII);
-			int idx0 = sname.indexOf(0);
-			if(idx0>-1)
-			{
-				sname = sname.substring(0, idx0);
-			}
-			
-			if(!sname.isEmpty())
-			{
-				Log.log("TERRAIN",uid0+"  \t"+uid1+"  \t"+((ambient)?"A":" ")+" \t"+u6+" \t"+sname);
-			}
 		}
 		
 		public String toString()

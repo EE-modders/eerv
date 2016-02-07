@@ -28,9 +28,9 @@ public class DBMusic
 		
 		int mida;
 		int midb;
-		int a;
-		int b;
-		int c;
+		float u0;//chance?
+		float u1;
+		float time;
 		
 		MusicEntry(ByteBuffer data)
 		{
@@ -42,9 +42,9 @@ public class DBMusic
 			mida = data.getInt();
 			midb = data.getInt();
 			data.position(data.position()+11);
-			a = data.getInt();
-			b = data.getInt();
-			c = data.getInt();
+			u0 = data.getFloat();
+			u1 = data.getFloat();
+			time = data.getFloat();
 			data.position(data.position()+20);
 		}
 		
@@ -57,7 +57,7 @@ public class DBMusic
 				sname = sname.substring(0, idx0);
 			}
 			
-			return "MusicEntry {gameid: "+gameid+", index: "+index+", name: "+sname+", mida: "+mida+", midb: "+midb+", a: "+a+", b: "+(b&0xFFFFFFFFL)+", c: "+c+"}";
+			return midb+" \t"+u0+" \t"+u1+" \t"+time+" \t"+sname+" \t"+mida;
 		}
 	}
 }

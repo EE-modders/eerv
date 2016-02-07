@@ -46,6 +46,8 @@ import net.coderbot.eerv.db.DBStartingResources;
 import net.coderbot.eerv.db.DBStartingResources.StartingResourceEntry;
 import net.coderbot.eerv.db.DBTerrain;
 import net.coderbot.eerv.db.DBTerrain.TerrainEntry;
+import net.coderbot.eerv.db.DBTerrainGrayTextures;
+import net.coderbot.eerv.db.DBTerrainGrayTextures.TerrainGrayTextureEntry;
 import net.coderbot.eerv.db.DBTerrainType;
 import net.coderbot.eerv.db.DBTerrainType.TerrainTypeEntry;
 import net.coderbot.eerv.db.DBUIControlEvents;
@@ -55,6 +57,8 @@ import net.coderbot.eerv.db.DBUIControls;
 import net.coderbot.eerv.db.DBUIControls.ControlEntry;
 import net.coderbot.eerv.db.DBUIFonts;
 import net.coderbot.eerv.db.DBUIFonts.FontEntry;
+import net.coderbot.eerv.db.DBUnitBehavior;
+import net.coderbot.eerv.db.DBUnitBehavior.UnitBehaviorEntry;
 import net.coderbot.eerv.db.DBUnitSet;
 import net.coderbot.eerv.db.DBUnitSet.UnitSetEntry;
 import net.coderbot.eerv.db.DBUpgrade;
@@ -238,13 +242,13 @@ public class Main
 		}
 		}*/
 		
-		String name = "unitset";
+		String name = "terraintype";
 		
-		FileChannel dbf = FileChannel.open(Paths.get("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/data/db/", "db"+name+".dat"));
+		FileChannel dbf = FileChannel.open(Paths.get("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/data/db/prog/", "db"+name+".dat"));
 		ByteBuffer db = dbf.map(MapMode.READ_ONLY, 0, dbf.size());
 		db.order(ByteOrder.LITTLE_ENDIAN);
 		
-		UnitSetEntry[] entries = DBUnitSet.load(db);
+		TerrainTypeEntry[] entries = DBTerrainType.load(db);
 		for(int i = 0;i<entries.length;i++)
 		{
 			System.out.println("["+i+"]:    \t"+entries[i]);
