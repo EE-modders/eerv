@@ -1,0 +1,15 @@
+//
+// Military Healer Prophet unit AI file
+//
+// Behaviors:
+//
+//		At players request, cast calamities.  Attacks like a regular unit.  Heals too.  
+//		Also available for parties.
+//
+//	Notes:
+//
+//	Known Problems:
+//
+
+#include("Healer.tai")
+#include("Military Prophet.tai")

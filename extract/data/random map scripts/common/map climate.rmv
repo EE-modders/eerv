@@ -1,0 +1,40 @@
+////////////////////////////////////////////////////////////////////
+//
+// Map Climate.rmv
+//
+// This rmv file determines the map type used for the random map.
+//
+// Copyright (c) 2001, Stainless Steel Studios, Inc. All rights reserved.
+// PROPRIETARY and CONFIDENTIAL.
+//
+// $Author: Scott Marison $
+// $Date: 6/27/01 12:34p $
+// $Revision: 3 $
+//
+////////////////////////////////////////////////////////////////////
+
+#if			NOTDEFINED(MAP_CLIMATE_RMV)
+#define		(MAP_CLIMATE_RMV,1)
+
+
+#if PERCENT(55)
+
+// grass map 
+#define		(kGrassMap,		1)
+
+#elif PERCENT(45)
+
+// winter map
+#define		(kWinterMap,	1)
+
+#else
+
+// desert map
+#define		(kDesertMap,	1)
+
+
+#endif
+
+
+#endif		// NOTDEFINED(MAP_CLIMATE_RMV)
+

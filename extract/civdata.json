@@ -1,0 +1,930 @@
+{
+	"thanks": {
+		"swege": "providing this file",
+		"link": "https://github.com/swege/ee-civ-editor",
+		"license": [
+			"The MIT License",
+			"Copyright 2015 Soeren Wegener",
+			"Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software \twithout restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:",
+			"The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.",
+			"THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
+		]
+
+	},
+	"ee": [
+		"Aircraft - Bombers",
+		"Aircraft - Fighters",
+		"Aircraft - Helicopters",
+		"Archers - Foot",
+		"Cavalry - Ranged",
+		"Cavalry - Spear (Melee)",
+		"Cavalry - Sword",
+		"Citizens and Fishing Boats",
+		"Civ - Buildings, Walls and Towers",
+		"Civ - Economy",
+		"Civ - General",
+		"Cybers - Combat",
+		"Cybers - Ultra",
+		"Field Cannon and Anti-Tank Guns",
+		"Infantry - Ranged",
+		"Infantry - Spear (Melee)",
+		"Infantry - Sword",
+		"Religion - Priests",
+		"Religion - Prophets",
+		"Ships - Battleships and Carriers",
+		"Ships - Frigates and Cruisers",
+		"Ships - Galleys, Transports and Subs",
+		"Siege Weapons and Mobile AA",
+		"Tanks"
+	],
+	"categories": {
+		"Civ - Buildings, Walls and Towers": {
+			"bonuses": [{
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0xC100",
+					"name": "20% Attack"
+				}, {
+					"epochs": "?",
+					"costs": 4,
+					"hexcode": "0xCF00",
+					"name": "30% Build Time Decrease"
+				}, {
+					"epochs": "?",
+					"costs": 11,
+					"hexcode": "0xD700",
+					"name": "15% Cost Reduction"
+				}, {
+					"epochs": "?",
+					"costs": 11,
+					"hexcode": "0xC200",
+					"name": "50% Hit Points"
+				}, {
+					"epochs": "?",
+					"costs": 4,
+					"hexcode": "0xC500",
+					"name": "20% Range"
+				}
+
+			],
+			"category_cost": 3
+		},
+		"Ships - Battleships and Carriers": {
+			"bonuses": [{
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0x8103",
+					"name": "20% Attack"
+				}, {
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0x8F03",
+					"name": "30% Build Time Decrease"
+				}, {
+					"epochs": "?",
+					"costs": 7,
+					"hexcode": "0x9703",
+					"name": "20% Cost Reduction"
+				}, {
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0x8203",
+					"name": "25% Hit Points"
+				}, {
+					"epochs": "?",
+					"costs": 4,
+					"hexcode": "0x8503",
+					"name": "20% Range"
+				}, {
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0x8603",
+					"name": "20% Speed"
+				}
+
+			],
+			"category_cost": 3
+		},
+		"Aircraft - Bombers": {
+			"bonuses": [{
+					"epochs": "?",
+					"costs": 5,
+					"hexcode": "0xC801",
+					"name": "20% Area Damage"
+				}, {
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0xC101",
+					"name": "20% Attack"
+				}, {
+					"epochs": "?",
+					"costs": 1,
+					"hexcode": "0xCF01",
+					"name": "30% Build Time Decrease"
+				}, {
+					"epochs": "?",
+					"costs": 6,
+					"hexcode": "0xD701",
+					"name": "20% Cost Reduction"
+				}, {
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0xC701",
+					"name": "20% Flight Time"
+				}, {
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0xC201",
+					"name": "25% Hit Points"
+				}, {
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0xC601",
+					"name": "20% Speed"
+				}
+
+			],
+			"category_cost": 2
+		},
+		"Civ - Economy": {
+			"bonuses": [{
+					"epochs": "?",
+					"costs": 9,
+					"hexcode": "0x0C06",
+					"name": "20% Farming"
+				}, {
+					"epochs": "?",
+					"costs": 9,
+					"hexcode": "0x1106",
+					"name": "20% Fishing"
+				}, {
+					"epochs": "?",
+					"costs": 11,
+					"hexcode": "0x0B06",
+					"name": "15% Gold Mining"
+				}, {
+					"epochs": "?",
+					"costs": 11,
+					"hexcode": "0x0906",
+					"name": "20% Hunting and Foraging"
+				}, {
+					"epochs": "?",
+					"costs": 11,
+					"hexcode": "0x0E06",
+					"name": "15% Iron Mining"
+				}, {
+					"epochs": "?",
+					"costs": 9,
+					"hexcode": "0x0D06",
+					"name": "15% Stone Mining"
+				}, {
+					"epochs": "?",
+					"costs": 13,
+					"hexcode": "0x0A06",
+					"name": "15% Wood Cutting"
+				}
+
+			],
+			"category_cost": 6
+		},
+		"Ships - Frigates and Cruisers": {
+			"bonuses": [{
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0x0104",
+					"name": "20% Attack"
+				}, {
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0x0F04",
+					"name": "30% Build Time Decrease"
+				}, {
+					"epochs": "?",
+					"costs": 7,
+					"hexcode": "0x1704",
+					"name": "20% Cost Reduction"
+				}, {
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0x0204",
+					"name": "25% Hit Points"
+				}, {
+					"epochs": "?",
+					"costs": 4,
+					"hexcode": "0x0504",
+					"name": "20% Range"
+				}, {
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0x0604",
+					"name": "20% Speed"
+				}
+
+			],
+			"category_cost": 3
+		},
+		"Cavalry - Ranged": {
+			"bonuses": [{
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0xC404",
+					"name": "20% Armor"
+				}, {
+					"epochs": "?",
+					"costs": 4,
+					"hexcode": "0xC104",
+					"name": "20% Attack"
+				}, {
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0xCF04",
+					"name": "30% Build Time Decrease"
+				}, {
+					"epochs": "?",
+					"costs": 8,
+					"hexcode": "0xD704",
+					"name": "20% Cost Reduction"
+				}, {
+					"epochs": "?",
+					"costs": 4,
+					"hexcode": "0xC204",
+					"name": "25% Hit Points"
+				}, {
+					"epochs": "?",
+					"costs": 5,
+					"hexcode": "0xC504",
+					"name": "20% Range"
+				}, {
+					"epochs": "?",
+					"costs": 4,
+					"hexcode": "0xC604",
+					"name": "20% Speed"
+				}
+
+			],
+			"category_cost": 4
+		},
+		"Infantry - Ranged": {
+			"bonuses": [{
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0x8402",
+					"name": "20% Armor"
+				}, {
+					"epochs": "?",
+					"costs": 5,
+					"hexcode": "0x8102",
+					"name": "20% Attack"
+				}, {
+					"epochs": "?",
+					"costs": 4,
+					"hexcode": "0x8F02",
+					"name": "30% Build Time Decrease"
+				}, {
+					"epochs": "?",
+					"costs": 9,
+					"hexcode": "0x9702",
+					"name": "20% Cost Reduction"
+				}, {
+					"epochs": "?",
+					"costs": 5,
+					"hexcode": "0x8202",
+					"name": "25% Hit Points"
+				}, {
+					"epochs": "?",
+					"costs": 6,
+					"hexcode": "0x8502",
+					"name": "20% Range"
+				}, {
+					"epochs": "?",
+					"costs": 5,
+					"hexcode": "0x8602",
+					"name": "20% Speed"
+				}
+
+			],
+			"category_cost": 5
+		},
+		"Archers - Foot": {
+			"bonuses": [{
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0x4400",
+					"name": "20% Armor"
+				}, {
+					"epochs": "?",
+					"costs": 4,
+					"hexcode": "0x4100",
+					"name": "20% Attack"
+				}, {
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0x4F00",
+					"name": "30% Build Time Decrease"
+				}, {
+					"epochs": "?",
+					"costs": 8,
+					"hexcode": "0x5700",
+					"name": "20% Cost Reduction"
+				}, {
+					"epochs": "?",
+					"costs": 4,
+					"hexcode": "0x4200",
+					"name": "25% Hit Points"
+				}, {
+					"epochs": "?",
+					"costs": 5,
+					"hexcode": "0x4500",
+					"name": "20% Range"
+				}, {
+					"epochs": "?",
+					"costs": 4,
+					"hexcode": "0x4600",
+					"name": "20% Speed"
+				}
+
+			],
+			"category_cost": 4
+		},
+		"Cavalry - Spear (Melee)": {
+			"bonuses": [{
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0x8405",
+					"name": "20% Armor"
+				}, {
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0x8105",
+					"name": "20% Attack"
+				}, {
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0x8F05",
+					"name": "30% Build Time Decrease"
+				}, {
+					"epochs": "?",
+					"costs": 7,
+					"hexcode": "0x9705",
+					"name": "20% Cost Reduction"
+				}, {
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0x8205",
+					"name": "25% Hit Points"
+				}, {
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0x8605",
+					"name": "20% Speed"
+				}
+
+			],
+			"category_cost": 3
+		},
+		"Tanks": {
+			"bonuses": [{
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0x4404",
+					"name": "10% Armor"
+				}, {
+					"epochs": "?",
+					"costs": 4,
+					"hexcode": "0x4104",
+					"name": "20% Attack"
+				}, {
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0x4F04",
+					"name": "30% Build Time Decrease"
+				}, {
+					"epochs": "?",
+					"costs": 8,
+					"hexcode": "0x5704",
+					"name": "20% Cost Reduction"
+				}, {
+					"epochs": "?",
+					"costs": 4,
+					"hexcode": "0x4204",
+					"name": "25% Hit Points"
+				}, {
+					"epochs": "?",
+					"costs": 5,
+					"hexcode": "0x4504",
+					"name": "20% Range"
+				}, {
+					"epochs": "?",
+					"costs": 4,
+					"hexcode": "0x4604",
+					"name": "20% Speed"
+				}
+
+			],
+			"category_cost": 4
+		},
+		"Field Cannon and Anti-Tank Guns": {
+			"bonuses": [{
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0xC405",
+					"name": "20% Armor"
+				}, {
+					"epochs": "?",
+					"costs": 4,
+					"hexcode": "0xC105",
+					"name": "20% Attack"
+				}, {
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0xCF05",
+					"name": "30% Build Time Decrease"
+				}, {
+					"epochs": "?",
+					"costs": 8,
+					"hexcode": "0xD705",
+					"name": "20% Cost Reduction"
+				}, {
+					"epochs": "?",
+					"costs": 4,
+					"hexcode": "0xC205",
+					"name": "25% Hit Points"
+				}, {
+					"epochs": "?",
+					"costs": 5,
+					"hexcode": "0xC505",
+					"name": "20% Range"
+				}, {
+					"epochs": "?",
+					"costs": 4,
+					"hexcode": "0xC605",
+					"name": "20% Speed"
+				}
+
+			],
+			"category_cost": 4
+		},
+		"Aircraft - Helicopters": {
+			"bonuses": [{
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0x0102",
+					"name": "20% Attack"
+				}, {
+					"epochs": "?",
+					"costs": 1,
+					"hexcode": "0x0F02",
+					"name": "30% Build Time Decrease"
+				}, {
+					"epochs": "?",
+					"costs": 6,
+					"hexcode": "0x1702",
+					"name": "20% Cost Reduction"
+				}, {
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0x0202",
+					"name": "25% Hit Points"
+				}, {
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0x0502",
+					"name": "20% Range"
+				}, {
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0x0602",
+					"name": "20% Speed"
+				}
+
+			],
+			"category_cost": 2
+		},
+		"Cavalry - Sword": {
+			"bonuses": [{
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0x4401",
+					"name": "20% Armor"
+				}, {
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0x4101",
+					"name": "20% Attack"
+				}, {
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0x4F01",
+					"name": "30% Build Time Decrease"
+				}, {
+					"epochs": "?",
+					"costs": 7,
+					"hexcode": "0x5701",
+					"name": "20% Cost Reduction"
+				}, {
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0x4201",
+					"name": "25% Hit Points"
+				}, {
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0x4601",
+					"name": "20% Speed"
+				}
+
+			],
+			"category_cost": 3
+		},
+		"Ships - Galleys, Transports and Subs": {
+			"bonuses": [{
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0x0105",
+					"name": "20% Attack"
+				}, {
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0x0F05",
+					"name": "30% Build Time Decrease"
+				}, {
+					"epochs": "?",
+					"costs": 7,
+					"hexcode": "0x1705",
+					"name": "20% Cost Reduction"
+				}, {
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0x0205",
+					"name": "25% Hit Points"
+				}, {
+					"epochs": "?",
+					"costs": 4,
+					"hexcode": "0x0505",
+					"name": "20% Range"
+				}, {
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0x0605",
+					"name": "20% Speed"
+				}
+
+			],
+			"category_cost": 3
+		},
+		"Cybers - Combat": {
+			"bonuses": [{
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0xC402",
+					"name": "20% Armor"
+				}, {
+					"epochs": "?",
+					"costs": 4,
+					"hexcode": "0xC102",
+					"name": "20% Attack"
+				}, {
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0xCF02",
+					"name": "30% Build Time Decrease"
+				}, {
+					"epochs": "?",
+					"costs": 9,
+					"hexcode": "0xD702",
+					"name": "20% Cost Reduction"
+				}, {
+					"epochs": "?",
+					"costs": 4,
+					"hexcode": "0xC202",
+					"name": "25% Hit Points"
+				}, {
+					"epochs": "?",
+					"costs": 4,
+					"hexcode": "0xC502",
+					"name": "20% Range"
+				}, {
+					"epochs": "?",
+					"costs": 4,
+					"hexcode": "0xC602",
+					"name": "20% Speed"
+				}
+
+			],
+			"category_cost": 4
+		},
+		"Cybers - Ultra": {
+			"bonuses": [{
+					"epochs": "?",
+					"costs": 1,
+					"hexcode": "0x8404",
+					"name": "20% Armor"
+				}, {
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0x8F04",
+					"name": "30% Build Time Decrease"
+				}, {
+					"epochs": "?",
+					"costs": 5,
+					"hexcode": "0x9704",
+					"name": "20% Cost Reduction"
+				}, {
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0x8204",
+					"name": "25% Hit Points"
+				}, {
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0x8604",
+					"name": "20% Speed"
+				}
+
+			],
+			"category_cost": 2
+		},
+		"Infantry - Spear (Melee)": {
+			"bonuses": [{
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0x4405",
+					"name": "20% Armor"
+				}, {
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0x4105",
+					"name": "25% Attack"
+				}, {
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0x4F05",
+					"name": "30% Build Time Decrease"
+				}, {
+					"epochs": "?",
+					"costs": 7,
+					"hexcode": "0x5705",
+					"name": "20% Cost Reduction"
+				}, {
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0x4205",
+					"name": "20% Hit Points"
+				}, {
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0x4605",
+					"name": "20% Speed"
+				}
+
+			],
+			"category_cost": 3
+		},
+		"Civ - General": {
+			"bonuses": [{
+					"epochs": "?",
+					"costs": 10,
+					"hexcode": "0x1000",
+					"name": "50% Conversion Resistance"
+				}, {
+					"epochs": "?",
+					"costs": 4,
+					"hexcode": "0x1400",
+					"name": "20% Mountain Combat Bonus"
+				}, {
+					"epochs": "?",
+					"costs": 9,
+					"hexcode": "0x1500",
+					"name": "15% Population Cap"
+				}
+
+			],
+			"category_cost": 0
+		},
+		"Religion - Prophets": {
+			"bonuses": [{
+					"epochs": "?",
+					"costs": 1,
+					"hexcode": "0x4F03",
+					"name": "30% Build Time Decrease"
+				}, {
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0x5703",
+					"name": "20% Cost Reduction"
+				}, {
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0x4203",
+					"name": "20% Hit Points"
+				}, {
+					"epochs": "?",
+					"costs": 4,
+					"hexcode": "0x4503",
+					"name": "20% Range"
+				}, {
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0x4603",
+					"name": "20% Speed"
+				}
+
+			],
+			"category_cost": 2
+		},
+		"Religion - Priests": {
+			"bonuses": [{
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0x0F03",
+					"name": "30% Build Time Decrease"
+				}, {
+					"epochs": "?",
+					"costs": 4,
+					"hexcode": "0x1703",
+					"name": "20% Cost Reduction"
+				}, {
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0x0203",
+					"name": "20% Hit Points"
+				}, {
+					"epochs": "?",
+					"costs": 4,
+					"hexcode": "0x0503",
+					"name": "20% Range"
+				}, {
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0x0603",
+					"name": "20% Speed"
+				}
+
+			],
+			"category_cost": 2
+		},
+		"Infantry - Sword": {
+			"bonuses": [{
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0x4402",
+					"name": "20% Armor"
+				}, {
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0x4102",
+					"name": "25% Attack"
+				}, {
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0x4F02",
+					"name": "30% Build Time Decrease"
+				}, {
+					"epochs": "?",
+					"costs": 7,
+					"hexcode": "0x5702",
+					"name": "20% Cost Reduction"
+				}, {
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0x4202",
+					"name": "20% Hit Points"
+				}, {
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0x4602",
+					"name": "20% Speed"
+				}
+
+			],
+			"category_cost": 3
+		},
+		"Aircraft - Fighters": {
+			"bonuses": [{
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0x8100",
+					"name": "20% Attack"
+				}, {
+					"epochs": "?",
+					"costs": 1,
+					"hexcode": "0x8F00",
+					"name": "30% Build Time Decrease"
+				}, {
+					"epochs": "?",
+					"costs": 6,
+					"hexcode": "0x9700",
+					"name": "20% Cost Reduction"
+				}, {
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0x8700",
+					"name": "20% Flight Time"
+				}, {
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0x8200",
+					"name": "25% Hit Points"
+				}, {
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0x8500",
+					"name": "20% Range"
+				}, {
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0x8600",
+					"name": "20% Speed"
+				}
+
+			],
+			"category_cost": 2
+		},
+		"Citizens and Fishing Boats": {
+			"bonuses": [{
+					"epochs": "?",
+					"costs": 1,
+					"hexcode": "0x0101",
+					"name": "30% Attack"
+				}, {
+					"epochs": "?",
+					"costs": 20,
+					"hexcode": "0x0F01",
+					"name": "10% Build Time Decrease"
+				}, {
+					"epochs": "?",
+					"costs": 25,
+					"hexcode": "0x1701",
+					"name": "20% Cost Reduction"
+				}, {
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0x0201",
+					"name": "30% Hit Points"
+				}, {
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0x0501",
+					"name": "35% Range"
+				}, {
+					"epochs": "?",
+					"costs": 4,
+					"hexcode": "0x0601",
+					"name": "20% Speed"
+				}
+
+			],
+			"category_cost": 2
+		},
+		"Siege Weapons and Mobile AA": {
+			"bonuses": [{
+					"epochs": "?",
+					"costs": 5,
+					"hexcode": "0xC803",
+					"name": "20% Area Damage"
+				}, {
+					"epochs": "?",
+					"costs": 1,
+					"hexcode": "0xC403",
+					"name": "20% Armor"
+				}, {
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0xC103",
+					"name": "25% Attack"
+				}, {
+					"epochs": "?",
+					"costs": 1,
+					"hexcode": "0xCF03",
+					"name": "30% Build Time Decrease"
+				}, {
+					"epochs": "?",
+					"costs": 3,
+					"hexcode": "0xD703",
+					"name": "20% Cost Reduction"
+				}, {
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0xC203",
+					"name": "30% Hit Points"
+				}, {
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0xC503",
+					"name": "20% Range"
+				}, {
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0xC303",
+					"name": "25% Rate of Fire"
+				}, {
+					"epochs": "?",
+					"costs": 2,
+					"hexcode": "0xC603",
+					"name": "20% Speed"
+				}
+			],
+			"category_cost": 2
+		}
+	}
+}

@@ -1,0 +1,93 @@
+//
+// Prophet unit AI file
+//
+// Behaviors:
+//
+//		At players request, cast calamities.
+//
+//	Notes:
+//
+//	Known Problems:
+//
+
+Idle
+{
+	AmIUnderAttack	true(UnderAttack)
+}
+
+UnderAttack
+{
+	CanFlee		true(RunFromAttacker)
+	AlwaysTrue	true(ReacquireGoal)
+}
+
+RunFromAttacker
+{
+	AlwaysTrue true(PrepareToMove)
+}
+
+FaceEnemyUnit
+{
+	EnemyUnitDestroyed true(Idle)
+	allof(GoalIsCalamity,FacingEnemyUnit) true(CalamityPreCast)
+}
+
+CalamityPreCast
+{
+	CalamityTargetStillValid true(CastCalamity) false(Idle)
+}
+
+// just for old saved games
+PrepareToCastCalamity
+{
+	AlwaysTrue true(CastCalamity)
+}
+
+ReacquireGoal
+{
+	EnemyUnitDestroyed true(Idle)
+	allof(GoalIsCalamity,UnitInWeaponRange) true(CalamityPreCast)
+	GoalIsCalamity true(PrepareToMove) 
+}
+
+CastCalamity
+{
+	allof(OwnerIsHuman,OneAndAHalfSecondsElapsed) true(Idle)
+	allof(OwnerIsComputer,OneAndAHalfSecondsElapsed) true(PostCalamityFlee)
+}
+
+PrepareToMove
+{
+	allof(GoalIsCalamity,UnitInWeaponRange) true(FaceEnemyUnit)
+}
+
+GetNextMoveWaypoint
+{
+	EnemyUnitDestroyed true(Idle)
+	allof(GoalIsCalamity,NextWaypointRetrieved,UnitInWeaponRange) true(FaceEnemyUnit)
+}
+
+PostCalamityFlee
+{
+	AlwaysTrue true(Idle)
+}
+
+#include("Generic Movement.tai")
+
+GetNextMoveWaypoint
+{
+	NextWaypointRetrieved true(Advance) false(TurnToUnitFacing)
+}
+
+Advance
+{
+	allof(OneWaypointRemaining,GoalIsUnit) true(TurnToUnitFacing)
+}
+
+#include("Generic Death.tai")
+
+// if we can't reacquire a goal, go idle as a failsafe.
+ReacquireGoal
+{
+	AlwaysTrue	true(Idle)
+}

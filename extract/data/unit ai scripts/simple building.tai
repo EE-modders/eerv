@@ -1,0 +1,13 @@
+//
+// Simple Building unit AI file
+//
+// Behaviors:
+//
+//		Train units and research technology.
+//
+//	Notes:
+//
+//	Known Problems:
+//
+
+#include("Generic Death.tai")

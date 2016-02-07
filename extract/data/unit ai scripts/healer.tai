@@ -1,0 +1,56 @@
+//
+// Auto-healing behavior.
+//
+// After a HealUnit goal is completed, the unit should enter the LookForUnitToHeal state.
+// 
+// Player right clicks to Order the Priest to heal that unit
+// If the target unit is not currently within the healing radius of the Priest - the Priest will move to get him within it's radius
+// If a unit should die before the Priest reaches it for healing, the Priest should stop movement
+//
+// Smart Healing
+// If a eligible damaged unit should be within a Priest healing radius it will automatically be healed
+// When a Priest completes healing a unit it will search it's LOS and it will then begin healing the closest damaged unit.  The Priest may move to get this unit into it's Healing Range
+// If there is no eligible damaged unit within LOS, the Priest should go idle.
+// If a damaged unit is 1. within LOS but 2. outside of healing radius and 3. the Priest is currently idle it will not move to heal that unit.  
+
+Idle
+{
+	HealSearchTimeElapsed true(LookForHealee)
+}
+
+LookForEnemies
+{
+	AttackMoveEnabled true(LookForHealee)
+}
+
+LookForHealee
+{
+	GoalIsHeal true(TurnToFaceHealee)
+	GoalIsLocation true(Advance) false(ShouldIReturnToInitialContactLocation)
+}
+
+TurnToFaceHealee
+{
+	anyof(HealeeDestroyed,UnitNotOnMap,HealeeNoLongerVisible) true(ShouldIReturnToInitialContactLocation)
+	HealeeInHealingRange false(PrepareToMove)
+	FacingHealee true(HealUnit)
+}
+
+HealUnit		 
+{
+	TargetNeedsHealing false(ShouldIReturnToInitialContactLocation)
+	anyof(HealeeDestroyed,UnitNotOnMap,HealeeNoLongerVisible) true(ShouldIReturnToInitialContactLocation)
+	HealeeInHealingRange false(PrepareToMove)
+}
+
+GetNextMoveWaypoint
+{
+	HealeeInHealingRange true(TurnToFaceHealee)
+//	allof(NextWaypointRetrieved,AttackMoveEnabled) true(LookForHealee) 
+}
+
+// Shouldn't interfere with the priest reacquire when converting
+ReacquireGoal
+{
+	GoalIsHeal true(TurnToFaceHealee)
+}

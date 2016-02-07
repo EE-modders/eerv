@@ -1,0 +1,26 @@
+//
+// Projectile unit AI file
+//
+// Behaviors:
+//
+//		Fly through the air with the greatest of ease.
+//
+//	Notes:
+//
+//	Known Problems:
+//
+
+// advance
+Advance
+{
+	anyof(ProjectileHitUnit,ProjectileHitGround,ProjectileHitWater,UnitNotOnMap) true(Dying)
+	UnitTargetNoLongerValid true(SelectNewTarget)
+}
+
+// select ground target
+SelectNewTarget
+{
+	NewTargetSelected true(Advance)
+}
+
+#include("Generic Death.tai")

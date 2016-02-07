@@ -1,0 +1,100 @@
+//
+// Aircraft Carrier AI File
+//
+// Behaviors:
+//
+//		Train units, research technology, open airport and launch planes at regular intervals
+//		Keep an eye out for enemy units, DO NOT pursue.
+//
+//
+//	Notes:
+//
+//
+//	Known Problems:
+//
+//
+
+
+Idle
+{
+	anyof(EnemyUnitSpotted,AirplaneAvailableToLaunch) true(AirportOpen)
+}
+
+AirportOpen
+{
+	anyof(EnemyUnitDestroyed,UnitNotOnMap) true(SearchForSecondaryTarget)
+	AirplaneAvailableToLaunch true(WaitForTakeoffClearance)
+	NoMoreWaypoints false(Advance)
+	anyof(UnitFacingNotRequired,CompletedUnitFacing) true(TurnToUnitFacing)
+}
+
+WaitForTakeoffClearance
+{
+	TakeoffClearanceGranted true(LaunchNextAirplane)
+	NoLaunchRequests true(AirportOpen)
+	NoMoreWaypoints false(Advance)
+}
+
+LaunchNextAirplane
+{
+	LaunchedAirplane true(AirportOpen)
+}
+
+SearchForSecondaryTarget
+{
+	SecondaryTargetFound true(AirportOpen) 
+	NoMoreWaypoints	true(Idle) false(Advance)
+}
+
+// is pathfinding complete?
+PrepareToMove
+{
+	NoMoreWaypoints true(ReacquireGoal)
+	MovePreparationComplete true(Advance)
+}
+
+// gets the next location
+GetNextAutoWaypoint
+{
+	UnitHasGoal true(PrepareToMove) false(Idle)
+}
+
+// are we at a waypoint?
+Advance
+{
+	ArrivedAtMoveWaypoint true(GetNextMoveWaypoint)
+	AirplaneAvailableToLaunch  true(AirportOpen)
+	ObstacleDetected true(RepathAroundObstacle)	
+}
+
+RepathAroundObstacle
+{
+	MovePreparationComplete true(Advance) false(Idle)
+}
+
+// look for new waypoints and detect the end of the path
+GetNextMoveWaypoint
+{
+	ShouldMoveToNextAutoWaypoint true(GetNextAutoWaypoint)
+	NextWaypointRetrieved true(Advance) false(TurnToUnitFacing)
+}
+
+// turn to unit facing as specified in the location goal, if required
+TurnToUnitFacing
+{
+	anyof(UnitFacingNotRequired,CompletedUnitFacing) true(ReacquireGoal)
+	AirplaneAvailableToLaunch  true(AirportOpen)
+}
+
+FindUnexploredArea
+{
+	SearchingForAreaToExplore true(FindUnexploredArea)
+	NoUnexploredAreasLeft true(Idle) false(PrepareToMove)
+}
+
+ReacquireGoal
+{
+	GoalIsExplore true(FindUnexploredArea) false(Idle)
+}
+
+#include("Generic Death.tai")

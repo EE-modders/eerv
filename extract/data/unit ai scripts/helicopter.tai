@@ -1,0 +1,21 @@
+//
+// helicopter unit AI file
+//
+// Behaviors:
+//
+//		Keep an eye out for enemy units, pursue and attack if spotted.
+//
+//	Notes:
+//
+//	Known Problems:
+//
+
+#include("Generic Attack.tai")
+#include("Generic Movement.tai")
+#include("Patrol.tai")
+// remove obstacle repathing from helicopters -ckd
+Advance
+{
+	ObstacleDetected remove()
+}
+#include("Generic Death.tai")

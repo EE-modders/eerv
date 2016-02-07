@@ -1,0 +1,21 @@
+//
+// Land unit AI file
+//
+// Behaviors:
+//
+//		Keep an eye out for enemy units, pursue and attack if spotted.
+//
+//	Notes:
+//
+//	Known Problems:
+//
+
+ReacquireGoal
+{
+	GoalIsPatrol true(GetNextPatrolPoint)
+}
+
+GetNextPatrolPoint
+{
+	NextPatrolPointRetrieved true(PrepareToMove) false(ShouldIReturnToInitialContactLocation)
+}

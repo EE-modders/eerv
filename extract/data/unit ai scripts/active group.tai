@@ -1,0 +1,17 @@
+//
+// Active group AI file
+//
+// Behaviors:
+//
+//
+// Action for player-initiated Attack order:		AttackEnemyUnit (target as unit goal)
+// Action for player-initiated Move order:			PrepareToMove (location as unit goal)
+//
+//	Notes:
+//
+//
+//	Known Problems:
+//
+//
+
+// this file is unused at this time

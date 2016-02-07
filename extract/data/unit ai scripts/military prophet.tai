@@ -1,0 +1,64 @@
+//
+// Military Prophet unit AI file
+//
+// Behaviors:
+//
+//		At players request, cast calamities.  Attacks like a regular unit
+//
+//	Notes:
+//
+//	Known Problems:
+//
+
+FaceEnemyUnit
+{
+	EnemyUnitDestroyed true(ShouldIReturnToInitialContactLocation)
+	allof(GoalIsCalamity,FacingEnemyUnit) true(CalamityPreCast)
+}
+
+ReacquireGoal
+{
+	allof(GoalIsCalamity,EnemyUnitDestroyed) true(ShouldIReturnToInitialContactLocation)
+	allof(GoalIsCalamity,UnitInWeaponRange) true(CalamityPreCast)
+	GoalIsCalamity true(PrepareToMove)
+}
+
+CalamityPreCast
+{
+	CalamityTargetStillValid true(CastCalamity) false(ShouldIReturnToInitialContactLocation)
+}
+
+// just for old saved games
+PrepareToCastCalamity
+{
+	AlwaysTrue true(CastCalamity)
+}
+
+CastCalamity
+{
+	allof(OwnerIsHuman,OneAndAHalfSecondsElapsed) true(Idle)
+	allof(OwnerIsComputer,OneAndAHalfSecondsElapsed) true(PostCalamityFlee)
+}
+
+PrepareToMove
+{
+	allof(GoalIsCalamity,UnitInWeaponRange) true(FaceEnemyUnit)
+}
+
+GetNextMoveWaypoint
+{
+	EnemyUnitDestroyed true(ShouldIReturnToInitialContactLocation)
+	allof(GoalIsCalamity,NextWaypointRetrieved,UnitInWeaponRange) true(FaceEnemyUnit)
+}
+
+#include("Generic Attack.tai")
+
+#include("Generic Movement.tai")
+
+GetNextMoveWaypoint
+{
+	GoalIsCalamity true(ReacquireGoal)
+}
+
+#include("Generic Death.tai")
+#include("Patrol.tai")
