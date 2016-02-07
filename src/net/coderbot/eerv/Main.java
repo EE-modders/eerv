@@ -36,6 +36,8 @@ import net.coderbot.eerv.db.DBEvents;
 import net.coderbot.eerv.db.DBEvents.EventEntry;
 import net.coderbot.eerv.db.DBFamily;
 import net.coderbot.eerv.db.DBFamily.FamilyEntry;
+import net.coderbot.eerv.db.DBGfxEffects;
+import net.coderbot.eerv.db.DBGfxEffects.GfxEntry;
 import net.coderbot.eerv.db.DBMusic;
 import net.coderbot.eerv.db.DBMusic.MusicEntry;
 import net.coderbot.eerv.db.DBPremadeCivs;
@@ -242,16 +244,16 @@ public class Main
 		}
 		}*/
 		
-		String name = "terraintype";
+		String name = "gfxeffects";
 		
-		FileChannel dbf = FileChannel.open(Paths.get("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/data/db/prog/", "db"+name+".dat"));
+		FileChannel dbf = FileChannel.open(Paths.get("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/data/db/", "db"+name+".dat"));
 		ByteBuffer db = dbf.map(MapMode.READ_ONLY, 0, dbf.size());
 		db.order(ByteOrder.LITTLE_ENDIAN);
 		
-		TerrainTypeEntry[] entries = DBTerrainType.load(db);
+		GfxEntry[] entries = DBGfxEffects.load(db);
 		for(int i = 0;i<entries.length;i++)
 		{
-			System.out.println("["+i+"]:    \t"+entries[i]);
+			//System.out.println("["+i+"]:    \t"+entries[i]);
 		}
 		
 		/*FileChannel dbf = FileChannel.open(Paths.get("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/data/db/dbterraintype.dat"));

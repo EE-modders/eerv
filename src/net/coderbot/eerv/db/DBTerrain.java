@@ -3,7 +3,6 @@ package net.coderbot.eerv.db;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-import net.coderbot.log.Log;
 import net.coderbot.util.Charsets;
 
 public class DBTerrain
