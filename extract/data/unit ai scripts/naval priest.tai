@@ -1,0 +1,19 @@
+//
+// Naval Priest unit AI file
+//
+// Behaviors:
+//
+//		At players request, convert enemy units.
+//
+//	Notes:
+//
+//		Add transition from Idle when enemies spotted to flee.
+//
+//	Known Problems:
+//
+
+#include("Priest.tai")
+
+#include("Generic Movement.tai")
+
+#include("Generic Death.tai")

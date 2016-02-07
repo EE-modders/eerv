@@ -1,0 +1,143 @@
+//
+// Generic Air Attack unit AI file
+//
+// Behaviors:
+//
+//		Handles attack ai for aircraft.
+//
+//	Notes:
+//
+//	Known Problems:
+//
+
+Fly
+{
+	EnemyUnitMoved true(CheckRange)
+	allof(AmIUnderAttack,GoalIsNotPlayerInitiated,CanFlee) true(RunFromAttacker)
+	allof(GoalIsLocation,AttackMoveEnabled,EnemyUnitSpotted) true(CheckRange)
+	allof(CanITargetEnemies,GoalIsNotPlayerInitiated,EnemyUnitSpotted) true(CheckRange)
+	anyof(EnemyUnitDestroyed,CeaseFire) true(SearchForSecondaryTarget)
+	allof(GoalIsUnit,UnitInWeaponRange) true(FaceEnemyUnit)
+	allof(GoalIsAttackLocation,LocationInWeaponRange) true(FaceLocation)
+}
+
+ContinueToFly
+{
+	EnemyUnitMoved true(CheckRange)
+	allof(AmIUnderAttack,GoalIsNotPlayerInitiated,CanFlee) true(RunFromAttacker)
+	allof(GoalIsLocation,AttackMoveEnabled,EnemyUnitSpotted) true(CheckRange)
+	allof(CanITargetEnemies,GoalIsNotPlayerInitiated,EnemyUnitSpotted) true(CheckRange)
+	allof(GoalIsAttackLocation,LocationInWeaponRange) true(FaceLocation)
+	allof(GoalIsUnit,UnitInWeaponRange) true(FaceEnemyUnit)
+}
+
+Circle
+{
+	allof(GoalIsAttackLocation,LocationInWeaponRange) true(FaceLocation)
+	allof(CanITargetEnemies,EnemyUnitSpotted) true(CheckRange)
+	AmIUnderAttack true(UnderAttack)
+}
+
+CheckRange
+{
+	anyof(EnemyUnitDestroyed,CeaseFire,UnitNotOnMap) true(ShouldIReturnToInitialContactLocation)
+	allof(GoalIsUnit,UnitInWeaponRange) true(FaceEnemyUnit) 
+	allof(GoalIsAttackLocation,LocationInWeaponRange) true(FaceEnemyUnit) false(ShouldIFollowEnemyUnit)
+}
+
+ShouldIFollowEnemyUnit
+{
+	GoalIsPlayerInitiated true(FaceEnemyUnit)
+	anyof(CanIPursuePastInitialContactLOS,EnemyInsideInitialContactLOS) true(FaceEnemyUnit) false(ShouldIReturnToInitialContactLocation)
+}
+
+ShouldIReturnToInitialContactLocation
+{
+	allof(HasValidInitialContactLocation,ReturnsToInitialContactLocation,GoalIsNotPlayerInitiated) true(ReturnToInitialContactLocation) false(Circle)
+}
+
+ReturnToInitialContactLocation
+{
+	AlwaysTrue true(PrepareToMove)
+}
+
+PrepareToMove
+{
+	anyof(EnemyUnitDestroyed,CeaseFire) true(SearchForSecondaryTarget)
+	allof(GoalIsUnit,UnitInWeaponRange) true(FaceEnemyUnit)
+	allof(GoalIsAttackLocation,LocationInWeaponRange) true(FaceLocation)
+}
+
+FaceEnemyUnit
+{
+	FlightTimeAlarm true(RequestLanding)
+	allof(LocationOffMap,LocationWayOffMap) true(MoveToValidMapLocation)
+	allof(AmIUnderAttack,GoalIsNotPlayerInitiated,CanFlee) true(RunFromAttacker)
+	anyof(EnemyUnitDestroyed,UnitNotOnMap) true(SearchForSecondaryTarget)
+	UnitInWeaponRange false(PrepareToMove)
+	allof(Reloaded,EnemyUnitInsideFiringArch) true(AttackEnemyUnit)
+}
+
+FaceLocation
+{
+	FlightTimeAlarm true(RequestLanding)
+	allof(AmIUnderAttack,GoalIsNotPlayerInitiated,CanFlee) true(RunFromAttacker)
+	LocationInWeaponRange false(PrepareToMove)
+	allof(Reloaded,LocationInsideFiringArch) true(AttackLocation)
+}
+
+AttackEnemyUnit
+{
+	FlightTimeAlarm true(RequestLanding)
+	allof(AmIUnderAttack,GoalIsNotPlayerInitiated,CanFlee) true(RunFromAttacker)
+	anyof(EnemyUnitDestroyed,CeaseFire,UnitNotOnMap) true(SearchForSecondaryTarget)
+	allof(GoalIsUnit,UnitInWeaponRange) false(PrepareToMove)
+	EnemyUnitInsideFiringArch false(FaceEnemyUnit)
+	ArrivedAtMoveWaypoint true(PrepareToMove)
+	AlwaysTrue true(WaitForReload)
+}
+
+AttackLocation
+{
+	FlightTimeAlarm true(RequestLanding)
+	allof(AmIUnderAttack,GoalIsNotPlayerInitiated,CanFlee) true(RunFromAttacker)
+	CeaseFire true(Circle)
+	LocationInsideFiringArch false(FaceLocation)
+	AlwaysTrue true(WaitForReload)
+}
+
+WaitForReload
+{
+	FlightTimeAlarm true(RequestLanding)
+	allof(AmIUnderAttack,GoalIsNotPlayerInitiated,CanFlee) true(RunFromAttacker)
+	allof(GoalIsUnit,Reloaded) true(FaceEnemyUnit)
+	allof(GoalIsAttackLocation,Reloaded) true(FaceLocation)
+}
+
+InitialAttackState
+{
+	//Reloaded false(WaitForReload)
+	GoalIsUnit true(FaceEnemyUnit)
+	GoalIsAttackLocation true(FaceLocation)
+}
+
+SearchForSecondaryTarget
+{
+	allof(CanITargetEnemies,SecondaryTargetFound) true(FaceEnemyUnit) false(ShouldIReturnToInitialContactLocation)
+}
+
+RetaliateAgainstAttacker
+{
+	AlwaysTrue true(CheckRange)
+}
+
+RunFromAttacker
+{
+	AlwaysTrue true(PrepareToMove)
+}
+
+UnderAttack
+{
+	CanFlee true(RunFromAttacker) 
+	allof(CanITargetEnemies,IsAttackerInRetaliationRange,CanDamageAttacker) true(RetaliateAgainstAttacker) false(RunFromAttacker)
+}

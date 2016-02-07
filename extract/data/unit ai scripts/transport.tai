@@ -1,0 +1,91 @@
+//
+//	Transport AI file
+//
+//	Behaviors:
+//
+//		Path to passengers.  Let them load.  Path to unload point.  Unload passengers
+//
+//	Notes:
+//		This overloads a few of the generic movement actions
+//
+//	Known Problems:
+//
+//	Usage:
+//
+//		To tell a unit to move to a location, give it a load/unload transport goal (EEUGLoad/UnloadTransport)
+//			and set its action to keeuaPrepareToMove.
+//
+
+#include("Generic Death.tai")
+
+#include("Load Container.tai")
+
+// Override these two transitions to inhibit pursuit
+FaceEnemyUnit
+{
+	UnitInWeaponRange false(Idle)
+}
+AttackEnemyUnit
+{
+	UnitInWeaponRange false(Idle)
+}
+
+// is pathfinding complete?
+PrepareToMove
+{
+	allof(GoalIsUnloadTransport,ContainerInRange) true(UnloadTransport)
+	NoMoreWaypoints true(TurnToUnitFacing)
+	MovePreparationComplete true(Advance)
+}
+
+RepathAroundObstacle
+{
+	MovePreparationComplete true(Advance) false(Idle)
+}
+
+// are we at a waypoint?
+Advance
+{
+	NoMoreLoadableUnitsToPickUp true(TurnToUnitFacing)
+	ArrivedAtMoveWaypoint true(GetNextMoveWaypoint)
+	ObstacleDetected true(RepathAroundObstacle)	
+}
+
+// gets the next location
+GetNextAutoWaypoint
+{
+	UnitHasGoal true(PrepareToMove) false(Idle)
+}
+
+// we've reached the end of the path
+ReacquireGoal
+{
+	GoalIsLocation true(Idle)
+	GoalIsExplore  true(FindUnexploredArea)
+	allof(GoalIsUnloadTransport,ContainerInRange) true(UnloadTransport) 
+	allof(GoalIsUnloadTransport,CanIMove) true(PrepareToMove) false(Idle)
+}
+
+// look for new waypoints and detect the end of the path - order matters
+GetNextMoveWaypoint
+{
+	allof(GoalIsUnloadTransport,ContainerInRange) true(UnloadTransport)
+	allof(GoalIsLoadContainer,NextWaypointRetrieved) true(PickedUpLoadableUnits) 
+	ShouldMoveToNextAutoWaypoint true(GetNextAutoWaypoint)
+	NextWaypointRetrieved true(Advance)	
+	NoMoreWaypoints true(TurnToUnitFacing) false(TurnToUnitFacing)
+}
+
+FindUnexploredArea
+{
+	SearchingForAreaToExplore true(FindUnexploredArea)
+	NoUnexploredAreasLeft true(Idle) false(PrepareToMove)
+}
+
+UnloadTransport
+{
+	GoalIsUnloadTransport true(Idle)	
+}
+
+
+

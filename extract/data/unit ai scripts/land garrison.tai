@@ -1,0 +1,47 @@
+//
+//	Land Garrison AI file
+//
+//	Behaviors:
+//
+//		Path to passengers.  Let them load.  Path to unload point.  Unload passengers
+//
+//	Notes:
+//		This overloads a few of the generic movement actions
+//
+//	Known Problems:
+//
+//	Usage:
+//
+//		To tell a unit to move to a location, give it a load/unload transport goal (EEUGLoad/UnloadTransport)
+//			and set its action to keeuaPrepareToMove.
+//
+
+#include("Simple Building.tai")
+
+
+GarrisonUpgrade
+{
+	GoalIsLoadContainer true(Idle)
+}
+
+PrepareToMove
+{
+	GoalIsLoadGarrison true(PickedUpLoadableUnits)
+}
+
+ReacquireGoal
+{
+	allof(GoalIsLoadGarrison,GarrisonCostMet) true(GarrisonUpgrade) false(WaitForGarrisonCost)
+}
+
+WaitForGarrisonCost
+{
+	GarrisonCostMet true(GarrisonUpgrade)
+}
+
+#include("Load Container.tai")
+
+PickedUpLoadableUnits
+{
+	NoMoreLoadableUnitsToPickUp remove() 
+}

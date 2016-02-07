@@ -1,0 +1,16 @@
+//
+// Air unit AI file
+//
+// Behaviors:
+//
+//		When enemy air is spotted around airfield, takes off pursues and attacks until enemy
+//			(or self) is destroyed or fuel runs out, then returns to airfield.
+//
+//	Notes:
+//
+//	Known Problems:
+//
+
+#include("Generic Air Attack.tai")
+#include("Generic Air Movement.tai")
+#include("Generic Death.tai")

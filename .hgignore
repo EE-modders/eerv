@@ -1,0 +1,8 @@
+syntax: glob
+.settings/org.eclipse.jdt.core.prefs
+.classpath
+.project
+syntax: regexp
+bin\/.+
+hs_err.+
+syntax: glob

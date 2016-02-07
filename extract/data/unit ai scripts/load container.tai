@@ -1,0 +1,59 @@
+//
+//	Load Container AI file
+//
+//	Behaviors:
+//
+//		Path to passengers.  Let them load.  Path to unload point.  Unload passengers
+//
+//	Notes:
+//		This overloads a few of the generic movement actions
+//
+//	Known Problems:
+//
+//	Usage:
+//
+//		To tell a unit to move to a location, give it a load/unload transport goal (EEUGLoad/UnloadTransport)
+//			and set its action to keeuaPrepareToMove.
+//
+
+BumpExtraLoadableUnits
+{
+	ExtraLoadableUnitsBumped true(TurnToUnitFacing)
+}
+
+// assumption: action only valid for GoalIsTransport - order
+PickedUpLoadableUnits
+{
+	ContainerIsFull true(BumpExtraLoadableUnits)
+	allof(CanIMove,NoMoreWaypoints) true(TurnToUnitFacing)
+	allof(CanIMove,NoMoreLoadableUnitsToPickUp) true(TurnToUnitFacing) 
+	CanIMove true(Advance)
+	NoMoreLoadableUnitsToPickUp true(Idle)
+}
+
+// is pathfinding complete?
+PrepareToMove
+{
+	allof(GoalIsLoadContainer,NoMoreLoadableUnitsToPickUp) true(TurnToUnitFacing)
+}
+
+// turn to unit facing as specified in the location goal, if required
+TurnToUnitFacing
+{
+	anyof(UnitFacingNotRequired,CompletedUnitFacing) true(ReacquireGoal)
+	GoalIsLocation false(ReacquireGoal)
+}
+
+// we've reached the end of the path
+ReacquireGoal
+{
+	allof(GoalIsLoadContainer,HaveNotReachedRendezvousPoint,MoreLoadableUnitsToPickUp) true(PrepareToMove)
+	allof(GoalIsLoadContainer,HaveReachedRendezvousPoint,MoreLoadableUnitsToPickUp) true(WaitForPassengers)
+	GoalIsLoadContainer	true(Idle)
+}
+
+// computer player transports wait for their passengers
+WaitForPassengers
+{
+	NoMoreLoadableUnitsToPickUp true(Idle)
+}

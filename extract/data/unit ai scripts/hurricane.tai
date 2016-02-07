@@ -1,0 +1,19 @@
+//
+// Hurricane AI file
+//
+// Behaviors:
+//
+//		Attack and pursue units when told but don't seek out targets
+//
+//	Notes:
+//
+//	Known Problems:
+//
+#include("Sea Patrolling.tai")
+
+// any good targets around?  Ignore 'em.
+Idle
+{
+	EnemyUnitSpotted true(Idle)
+}
+

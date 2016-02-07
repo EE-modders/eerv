@@ -1,0 +1,19 @@
+//
+// Sea unit AI file
+//
+// Behaviors:
+//
+//		Leep an eye out for enemy units, pursue and attack if spotted.
+//
+//	Notes:
+//
+//	Known Problems:
+//
+
+#include("Generic Attack.tai")
+
+#include("Generic Movement.tai")
+
+#include("Patrol.tai")
+
+#include("Generic Death.tai")

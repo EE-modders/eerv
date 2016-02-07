@@ -1,0 +1,193 @@
+package net.coderbot.eerv.db;
+
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+
+import net.coderbot.log.Log;
+import net.coderbot.util.Charsets;
+
+public class DBTerrain
+{
+	public static TerrainEntry[] load(ByteBuffer data)
+	{
+		data.order(ByteOrder.LITTLE_ENDIAN);
+		TerrainEntry[] sr = new TerrainEntry[data.getInt()];
+		
+		for(int i = 0;i<sr.length;i++)
+		{
+			sr[i] = new TerrainEntry(data);
+		}
+		
+		return sr;
+	}
+	
+	public static class TerrainEntry
+	{
+		/**
+		 * Texture path
+		 */
+		String texture;
+		/**
+		 * Debug name for this object
+		 */
+		byte[] name;
+		/**
+		 * Game ID, referenced from other files
+		 */
+		int gameid;
+		/**
+		 * Index of the entry in this file
+		 */
+		int index;
+		/**
+		 * TODO: An unknown ID.
+		 */
+		int uid0;
+		/**
+		 * Language entry.
+		 */
+		int language;
+		/**
+		 * Is this a valid entry? (in-game)
+		 */
+		boolean valid;
+		/**
+		 * TODO: An unknown ID.
+		 */
+		int uid1;
+		/**
+		 * Amount of tiles on the X axis
+		 */
+		int xstitch;
+		/**
+		 * Amount of tiles on the Y axis
+		 */
+		int ystitch;
+		/**
+		 * Is this available in the scenario editor?
+		 */
+		boolean availableInEditor;
+		/**
+		 * Does this terrain have multiple frames of animation?
+		 */
+		boolean animated;
+		/**
+		 * TODO: An unknown value.
+		 */
+		int u0;
+		/**
+		 * TODO: An unknown value.
+		 */
+		int u1, u2, u3, u4, u5, u6, u7;
+		/**
+		 * Used for animated terrain.
+		 */
+		int anim0;
+		/**
+		 * Used for animated terrain.
+		 */
+		int anim1;
+		/**
+		 * RGB terrain color, blended with texture
+		 */
+		int r,g,b;
+		/**
+		 * Always 0
+		 */
+		int zero;
+		/**
+		 * 22.2 for RM Ambients - Marsh
+		 */
+		float ambMarsh0;
+		/**
+		 * 33.3 for RM Ambients - Marsh
+		 */
+		float ambMarsh1;
+		/**
+		 * Is this an ambient terrain
+		 */
+		boolean ambient;
+		
+		TerrainEntry(ByteBuffer data)
+		{
+			byte[] asciiZ = new byte[data.getInt()];
+			data.get(asciiZ);
+			
+			texture = new String(asciiZ, Charsets.ASCII).replace('\\', '/').toLowerCase();
+			name = new byte[100];
+			data.get(name);
+			
+			gameid = data.getInt();
+			index = data.getInt();
+			uid0 = data.getInt();
+			language = data.getInt();
+			valid = data.getInt()==1;
+			uid1 = data.getInt();
+			
+			xstitch = data.getInt();
+			ystitch = data.getInt();
+			
+			int bf0 = data.getInt();
+			availableInEditor = (bf0&65536)==65536;
+			animated = (bf0&1)==1;
+			
+			u0 = data.getInt();
+			u1 = data.getInt();
+			u2 = data.getInt();
+			u3 = data.getInt();
+			u4 = data.getInt();
+			u5 = data.getInt();
+			u6 = data.getInt();
+			u7 = data.getInt();
+							//100  Forest - *
+							//     Infantry
+			
+							//5    Editor Amb - *
+			
+							//8    CliffRock \ /
+			
+							//1    RM Ambients - Beach,Desert,Forest,Marsh 
+							//     Sand - Fine && Grass - Patches 
+							//     Desert w/ ambients
+			
+							//2    RM Ambients - Aquatic
+			
+			anim0 = data.getInt();
+			anim1 = data.getInt();
+			
+			r = data.getInt();
+			g = data.getInt();
+			b = data.getInt();
+			
+			zero = data.getInt();
+			ambMarsh0 = data.getFloat();
+			ambMarsh1 = data.getFloat();
+			ambient = (data.getInt()&16777216)==16777216;
+			
+
+			String sname = new String(name, Charsets.ASCII);
+			int idx0 = sname.indexOf(0);
+			if(idx0>-1)
+			{
+				sname = sname.substring(0, idx0);
+			}
+			
+			if(!sname.isEmpty())
+			{
+				Log.log("TERRAIN",uid0+"  \t"+uid1+"  \t"+((ambient)?"A":" ")+" \t"+u6+" \t"+sname);
+			}
+		}
+		
+		public String toString()
+		{
+			String sname = new String(name, Charsets.ASCII);
+			int idx0 = sname.indexOf(0);
+			if(idx0>-1)
+			{
+				sname = sname.substring(0, idx0);
+			}
+			
+			return "TerrainEntry {texture: "+texture+", \tname: "+sname+"}";
+		}
+	}
+}
