@@ -32,6 +32,8 @@ import net.coderbot.eerv.db.DBCliffTerrain;
 import net.coderbot.eerv.db.DBCliffTerrain.CliffEntry;
 import net.coderbot.eerv.db.DBColorTable;
 import net.coderbot.eerv.db.DBColorTable.ColorEntry;
+import net.coderbot.eerv.db.DBEffects;
+import net.coderbot.eerv.db.DBEffects.EffectEntry;
 import net.coderbot.eerv.db.DBEvents;
 import net.coderbot.eerv.db.DBEvents.EventEntry;
 import net.coderbot.eerv.db.DBFamily;
@@ -244,16 +246,16 @@ public class Main
 		}
 		}*/
 		
-		String name = "gfxeffects";
+		String name = "events";
 		
 		FileChannel dbf = FileChannel.open(Paths.get("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/data/db/", "db"+name+".dat"));
 		ByteBuffer db = dbf.map(MapMode.READ_ONLY, 0, dbf.size());
 		db.order(ByteOrder.LITTLE_ENDIAN);
 		
-		GfxEntry[] entries = DBGfxEffects.load(db);
+		EventEntry[] entries = DBEvents.load(db);
 		for(int i = 0;i<entries.length;i++)
 		{
-			//System.out.println("["+i+"]:    \t"+entries[i]);
+			System.out.println("["+i+"]:    \t"+entries[i]);
 		}
 		
 		/*FileChannel dbf = FileChannel.open(Paths.get("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/data/db/dbterraintype.dat"));

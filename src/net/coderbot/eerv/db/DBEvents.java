@@ -10,10 +10,9 @@ public class DBEvents
 	public static EventEntry[] load(ByteBuffer data)
 	{
 		data.order(ByteOrder.LITTLE_ENDIAN);
-		data.position(data.position()+108);
-		EventEntry[] sr = new EventEntry[1000];
+		EventEntry[] sr = new EventEntry[1500];
 		
-		for(int i = 0;i<sr.length;i++)
+		for(int i = 0;i<1500;i++)
 		{
 			sr[i] = new EventEntry(data);
 		}
@@ -24,12 +23,19 @@ public class DBEvents
 	public static class EventEntry
 	{
 		byte[] name;
+		int gameid;
+		int[] effects;
 		
 		EventEntry(ByteBuffer data)
 		{
 			name = new byte[100];
 			data.get(name);
-			data.position(data.position()+24);
+			gameid = data.getInt();
+			effects = new int[data.getInt()];
+			for(int i = 0;i<effects.length;i++)
+			{
+				effects[i] = data.getInt();
+			}
 		}
 		
 		public String toString()
@@ -41,7 +47,7 @@ public class DBEvents
 				sname = sname.substring(0, idx0);
 			}
 			
-			return sname;
+			return "{effects: "+effects.length+", name: "+sname+"}";
 		}
 	}
 }
