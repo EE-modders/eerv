@@ -44,6 +44,8 @@ import net.coderbot.eerv.db.DBMusic;
 import net.coderbot.eerv.db.DBMusic.MusicEntry;
 import net.coderbot.eerv.db.DBPremadeCivs;
 import net.coderbot.eerv.db.DBPremadeCivs.PremadeCivEntry;
+import net.coderbot.eerv.db.DBRandomMap;
+import net.coderbot.eerv.db.DBRandomMap.RandomMapEntry;
 import net.coderbot.eerv.db.DBSounds;
 import net.coderbot.eerv.db.DBSounds.SoundEntry;
 import net.coderbot.eerv.db.DBStartingResources;
@@ -246,16 +248,16 @@ public class Main
 		}
 		}*/
 		
-		String name = "events";
+		String name = "randommap";
 		
 		FileChannel dbf = FileChannel.open(Paths.get("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/data/db/", "db"+name+".dat"));
 		ByteBuffer db = dbf.map(MapMode.READ_ONLY, 0, dbf.size());
 		db.order(ByteOrder.LITTLE_ENDIAN);
 		
-		EventEntry[] entries = DBEvents.load(db);
+		RandomMapEntry[] entries = DBRandomMap.load(db);
 		for(int i = 0;i<entries.length;i++)
 		{
-			System.out.println("["+i+"]:    \t"+entries[i]);
+			//System.out.println("["+i+"]:    \t"+entries[i]);
 		}
 		
 		/*FileChannel dbf = FileChannel.open(Paths.get("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/data/db/dbterraintype.dat"));
