@@ -169,7 +169,7 @@ public class DBTerrain
 				sname = sname.substring(0, idx0);
 			}
 			
-			return "TerrainEntry {texture: "+texture+", \tname: "+sname+"}";
+			return gameid+" \t"+index+" \t"+sname;
 		}
 	}
 }
