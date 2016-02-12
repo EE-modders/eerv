@@ -20,28 +20,81 @@ public class DBWorld
 	
 	public static class WorldEntry
 	{
-		float u0;
-		float u1;
+		float f;
+		float fmax;
 		int gameid;
-		int index;
-		int i0;
-		int i1;
+		Option option;
+		int i;
+		int imax;
 		int zero;
+		Type type;
 		
 		WorldEntry(ByteBuffer data)
 		{
-			u0 = data.getFloat();
-			u1 = data.getFloat();
+			f = data.getFloat();
+			fmax = data.getFloat();
 			gameid = data.getInt();
-			index = data.getInt();
-			i0 = data.getInt();
-			i1 = data.getInt();
+			option = Option.values()[data.getInt()+1];
+			i = data.getInt();
+			imax = data.getInt();
 			zero = data.getInt();
+			
+			type = Type.NONE;
+			if(f!=0&&fmax==0)
+			{
+				type = Type.FLOAT;
+			}
+			else if(f!=0&&fmax!=0)
+			{
+				type = Type.FLOAT_RANGE;
+			}
+			else if(i!=0&&imax==0)
+			{
+				type = Type.INT;
+			}
+			else if(i!=0&i!=0)
+			{
+				type = Type.INT_RANGE;
+			}
 		}
 		
 		public String toString()
 		{
-			return "{"+gameid+" \t"+u0+" \t"+u1+" \t"+i0+" \t"+i1+"}";
+			if(type==Type.FLOAT)
+			{
+				return option+".F \t"+f;
+			}
+			if(type==Type.FLOAT_RANGE)
+			{
+				return option+".F \t"+f+" ~ "+fmax;
+			}
+			if(type==Type.INT)
+			{
+				return option+".I \t"+i;
+			}
+			if(type==Type.INT_RANGE)
+			{
+				return option+".I \t"+i+" ~ "+imax;
+			}
+			
+			return option+".N";
 		}
+	}
+	
+	public static enum Type
+	{
+		FLOAT, FLOAT_RANGE, INT, INT_RANGE, NONE;
+	}
+	
+	public static enum Option
+	{
+		UNDEFINED, NULL, U1, U2, U3, U4, U5, U6, U7, N8, U9, 
+		U10, U11, U12, U13, U14, U15, U16, U17, U18, U19, U20, U21, 
+		MAX_GATHERERS, U23, N24, U25, POPULATION, U27, N28, N29, N30, N31, 
+		U32, U33, WONDER_COUNTDOWN, U35, U36, U37, N38, N39, N40, N41, U42, U43, 
+		U44, U45, U46, MAX_UPGRADES, U48, U49, U50, U51, U52, U53, U54, U55, 
+		U56, U57, U58, U59, U60, U61, U62, U63, U64, U65, U66, U67, 
+		U68, U69, U70, U71, U72, U73, U74, U75, CIV_POINTS, U77, U78, U79, 
+		U80, U81, U82, U83;
 	}
 }

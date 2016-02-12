@@ -76,6 +76,11 @@ public class DBEffects
 				attribute = Attribute.values()[attributeCode+1];
 			}
 			
+			if(mode!=Mode.NONE)
+			{
+				System.out.println(index+" \t"+gameid+" \t"+mode+" \t"+attribute);
+			}
+			
 			sound = data.getInt();
 			button = data.getInt();
 			areaEffect = data.getInt();
