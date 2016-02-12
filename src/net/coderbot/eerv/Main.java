@@ -26,6 +26,8 @@ import net.coderbot.eerv.db.DBAreaEffect;
 import net.coderbot.eerv.db.DBAreaEffect.AreaEffectEntry;
 import net.coderbot.eerv.db.DBButtons;
 import net.coderbot.eerv.db.DBButtons.ButtonEntry;
+import net.coderbot.eerv.db.DBCalamity;
+import net.coderbot.eerv.db.DBCalamity.CalamityEntry;
 import net.coderbot.eerv.db.DBCivilization;
 import net.coderbot.eerv.db.DBCivilization.CivilizationEntry;
 import net.coderbot.eerv.db.DBCliffTerrain;
@@ -38,6 +40,8 @@ import net.coderbot.eerv.db.DBEvents;
 import net.coderbot.eerv.db.DBEvents.EventEntry;
 import net.coderbot.eerv.db.DBFamily;
 import net.coderbot.eerv.db.DBFamily.FamilyEntry;
+import net.coderbot.eerv.db.DBGameVariant;
+import net.coderbot.eerv.db.DBGameVariant.GameVariantEntry;
 import net.coderbot.eerv.db.DBGfxEffects;
 import net.coderbot.eerv.db.DBGfxEffects.GfxEntry;
 import net.coderbot.eerv.db.DBMusic;
@@ -248,13 +252,13 @@ public class Main
 		}
 		}*/
 		
-		String name = "randommap";
+		String name = "gamevariant";
 		
-		FileChannel dbf = FileChannel.open(Paths.get("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/data/db/", "db"+name+".dat"));
+		FileChannel dbf = FileChannel.open(Paths.get("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/data/db/prog", "db"+name+".dat"));
 		ByteBuffer db = dbf.map(MapMode.READ_ONLY, 0, dbf.size());
 		db.order(ByteOrder.LITTLE_ENDIAN);
 		
-		RandomMapEntry[] entries = DBRandomMap.load(db);
+		GameVariantEntry[] entries = DBGameVariant.load(db);
 		for(int i = 0;i<entries.length;i++)
 		{
 			//System.out.println("["+i+"]:    \t"+entries[i]);

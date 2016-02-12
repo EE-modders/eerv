@@ -2,15 +2,12 @@ package net.coderbot.eerv.db;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.IntBuffer;
-import java.util.ArrayList;
+import java.nio.FloatBuffer;
 
 import net.coderbot.util.Charsets;
 
 public class DBCivilization 
 {
-	static ArrayList<Integer> uniq = new ArrayList<Integer>();
-	
 	public static CivilizationEntry[] load(ByteBuffer data)
 	{
 		data.order(ByteOrder.LITTLE_ENDIAN);
@@ -20,16 +17,6 @@ public class DBCivilization
 		{
 			sr[i] = new CivilizationEntry(data);
 		}
-		
-		StringBuilder sb = new StringBuilder();
-		
-		for(int i: uniq)
-		{
-			sb.append((int)(i/(((float)Integer.MAX_VALUE+1)*2)*100));
-			sb.append(' ');
-		}
-		
-		System.out.println(sb);
 		
 		return sr;
 	}
@@ -43,7 +30,7 @@ public class DBCivilization
 		int costIncrease;
 		int index;
 		
-		int[] percents;
+		float[] percents;
 		
 		CivilizationEntry(ByteBuffer data)
 		{
@@ -55,17 +42,9 @@ public class DBCivilization
 			costIncrease = data.getInt();
 			index = data.getInt();
 			
-			percents = new int[74];
-			IntBuffer idata = data.asIntBuffer();
-			idata.get(percents);
-			
-			for(int i = 0;i<percents.length;i++)
-			{
-				if(!uniq.contains(percents[i]))
-				{
-					uniq.add(percents[i]);
-				}
-			}
+			percents = new float[74];
+			FloatBuffer fdata = data.asFloatBuffer();
+			fdata.get(percents);
 			
 			data.position(data.position()+296);
 		}
@@ -79,7 +58,7 @@ public class DBCivilization
 				sname = sname.substring(0, idx0);
 			}
 			
-			return "CivilizationEntry {name: "+sname+", id: "+gameid+"}";
+			return "CivilizationEntry {name: "+sname+", id: "+gameid+", percents[0]: "+percents[0]+"}";
 		}
 	}
 }
