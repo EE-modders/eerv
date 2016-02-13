@@ -78,6 +78,8 @@ import net.coderbot.eerv.db.DBWeaponToHit.WeaponEntry;
 import net.coderbot.eerv.db.DBWorld;
 import net.coderbot.eerv.db.DBWorld.WorldEntry;
 import net.coderbot.log.Log;
+import net.coderbot.math.Mat44;
+import net.coderbot.math.Vector2;
 import net.coderbot.math.Vector3;
 import net.coderbot.util.Charsets;
 import net.coderbot.util.DecoderException;
@@ -165,104 +167,36 @@ public class Main
 			Log.log("TAI",t.elems[i].toString());
 		}*/
 		
-		/*FileChannel fc = FileChannel.open(Paths.get("extract/data/models/fx_frontsplash.cem"));
-		ByteBuffer cem = fc.map(MapMode.READ_ONLY, 0, fc.size());
-		cem.order(ByteOrder.LITTLE_ENDIAN);
-				
-		//HeaderChunk{
-		int magic = cem.getInt();
-		if(magic!=1179472723)
+		DirectoryStream<Path> ds = Files.newDirectoryStream(Paths.get("extract/data/models"));
+		for(Path path: ds)
 		{
-			//bad
-		}
-		
-		boolean current = cem.getInt()==2;
-		if(!current)
-		{
-			Log.log("EERV","Cannot load LEGACY model");
-			//continue;
-		}
-		//}
-			
-		//this+0x120 == TagPoints List
-				
-		//148 14C 150 144 140 13C 154
-		
-		//CountsChunk{
-		int c0 = 		 cem.getInt();//this+0x148
-		int c1 = 		 cem.getInt();//this+0x14C
-		int nTagPoints = cem.getInt();//this+0x150
-		int nMaterials = cem.getInt();//this+0x144
-		int nFrames =    cem.getInt();//this+0x140
-		int nTextures =  cem.getInt();//this+0x13C
-		int nPolygons =  cem.getInt();//this+0x154
-				
-		/*int nPolygons =  cem.getInt();//this+0x154
-		int nTextures =  cem.getInt();//this+0x13C
-		int nFrames =    cem.getInt();//this+0x140
-		int nMaterials = cem.getInt();//this+0x144
-		int nTagPoints = cem.getInt();//this+0x150
-		int c1 = 		 cem.getInt();//this+0x14C
-		int c0 = 		 cem.getInt();//this+0x148*/
-				
-		/*Log.log("EERV","c0: "+c0+", c1: "+c1+", tagPoints: "+nTagPoints+", materials: "+nMaterials+", frames: "+nFrames+", textures: "+nTextures+", polygons: "+nPolygons);
-		//}
-				
-		//MiscChunk
-		{
-			byte[] asciiZ = new byte[cem.getInt()];
-			cem.get(asciiZ);
-			String misc = (asciiZ.length>0)?new String(asciiZ, 0, asciiZ.length-1, Charsets.ASCII):"";
-		
-			Vector3 point = new Vector3();
-			point.x = cem.getFloat();
-			point.y = cem.getFloat();
-			point.z = cem.getFloat();
-			Log.log("EERV",point+" "+misc);
-		}
-		
-		Log.log("EERV",cem.limit()+" bytes (offs:"+cem.position()+")");
-		
-		//TODO Polygons INDICE TABLE (9)
-				
-		//TODO Materials
-				
-		
-		//TagPoints
-		{
-			String[] tagPoints = new String[nTagPoints];
-			for(int i = 0;i<tagPoints.length;i++)
+			try
 			{
-				byte[] asciiZ = new byte[cem.getInt()];
-		
-				cem.get(asciiZ);
-				tagPoints[i] = (asciiZ.length>0)?new String(asciiZ, 0, asciiZ.length-1, Charsets.ASCII):"";
-				Log.log("EERV",tagPoints[i]);
+				CEMDecoder cem = new CEMDecoder(path);
+				cem.decode();
+				cem.close();
+			}
+			catch(Throwable e)
+			{
+				System.out.println("FAIL "+path+" "+e.getMessage());
 			}
 		}
-				
-		//TODO Frame
-		/*
-		Path p = Paths.get("extract/cemtail");
-		try{Files.delete(p);}catch(Exception e){}
-		Files.createFile(p);
-		fc = FileChannel.open(p, StandardOpenOption.WRITE);
-		fc.write(cem);
-		fc.close();
-		}
-		}*/
 		
-		String name = "gamevariant";
+		/*String name = "world";
 		
 		FileChannel dbf = FileChannel.open(Paths.get("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/data/db/prog", "db"+name+".dat"));
 		ByteBuffer db = dbf.map(MapMode.READ_ONLY, 0, dbf.size());
 		db.order(ByteOrder.LITTLE_ENDIAN);
 		
-		GameVariantEntry[] entries = DBGameVariant.load(db);
+		WorldEntry[] entries = DBWorld.load(db);
 		for(int i = 0;i<entries.length;i++)
 		{
-			//System.out.println("["+i+"]:    \t"+entries[i]);
-		}
+			if(entries[i].type()!=DBWorld.Type.INT&&entries[i].type()!=DBWorld.Type.INT_RANGE)
+			{
+				continue;
+			}
+			System.out.println("["+i+"]:    \t"+entries[i]);
+		}*/
 		
 		/*FileChannel dbf = FileChannel.open(Paths.get("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/data/db/dbterraintype.dat"));
 		ByteBuffer db = dbf.map(MapMode.READ_ONLY, 0, dbf.size());
