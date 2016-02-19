@@ -96,7 +96,6 @@ public class CEMDecoder extends Decoder<CEM>
 					cem.indices1[i][s] = data.getInt();
 					cem.indices2[i][s] = data.getInt();
 				}
-				
 			}
 		}
 		
@@ -151,6 +150,7 @@ public class CEMDecoder extends Decoder<CEM>
 		{
 			CEMFrame frame = new CEMFrame();
 			cem.frames[f] = frame;
+			frame.vertices = nVertices;
 			
 			frame.radius = data.getFloat();
 			
