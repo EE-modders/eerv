@@ -5,13 +5,11 @@ import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.CharsetDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import net.coderbot.log.Log;
-import net.coderbot.util.Charsets;
 
 public class TAIEnv 
 {
@@ -46,7 +44,7 @@ public class TAIEnv
 		} 
 		catch (IOException e) 
 		{
-			Log.log("TAI","failed to load "+tai+": "+e);
+			System.out.println("TAI: failed to load "+tai+": "+e);
 			return null;
 		}
 	}
@@ -54,13 +52,13 @@ public class TAIEnv
 	public TAI load0(String tai) throws IOException
 	{
 		Path path = folder.resolve(tai);
-		Log.log("TAI","loading "+tai);
+		System.out.println("TAI: loading "+tai);
 		
 		FileChannel fc = FileChannel.open(path, StandardOpenOption.READ);
 		
 		ByteBuffer block = ByteBuffer.allocateDirect(4096);
 		CharBuffer chars = CharBuffer.allocate(8192);
-		CharsetDecoder dec = Charsets.ASCII.newDecoder();
+		CharsetDecoder dec = StandardCharsets.US_ASCII.newDecoder();
 		
 		CharBuffer preprocess = CharBuffer.allocate(256);
 		CharBuffer statename = CharBuffer.allocate(256);
@@ -151,7 +149,7 @@ public class TAIEnv
 						}
 						else
 						{
-							Log.log("TAI","Unknown preprocessor statement: "+ppe);
+							System.out.println("TAI: Unknown preprocessor statement: "+ppe);
 						}
 						
 						preprocess.limit(256);

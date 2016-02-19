@@ -1,87 +1,15 @@
 package net.coderbot.eerv;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.CharBuffer;
+import java.io.PrintStream;
+import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
-import java.nio.channels.FileChannel.MapMode;
-import java.nio.charset.CharsetDecoder;
-import java.nio.file.DirectoryStream;
-import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.HashMap;
 
-import net.coderbot.config.json.JSONConfig;
-import net.coderbot.config.json.JSONStringer;
-import net.coderbot.eerv.db.DBAmbientSounds;
-import net.coderbot.eerv.db.DBAmbientSounds.AmbientSoundEntry;
-import net.coderbot.eerv.db.DBAnimals;
-import net.coderbot.eerv.db.DBAnimals.AnimalEntry;
-import net.coderbot.eerv.db.DBAreaEffect;
-import net.coderbot.eerv.db.DBAreaEffect.AreaEffectEntry;
-import net.coderbot.eerv.db.DBButtons;
-import net.coderbot.eerv.db.DBButtons.ButtonEntry;
-import net.coderbot.eerv.db.DBCalamity;
-import net.coderbot.eerv.db.DBCalamity.CalamityEntry;
-import net.coderbot.eerv.db.DBCivilization;
-import net.coderbot.eerv.db.DBCivilization.CivilizationEntry;
-import net.coderbot.eerv.db.DBCliffTerrain;
-import net.coderbot.eerv.db.DBCliffTerrain.CliffEntry;
-import net.coderbot.eerv.db.DBColorTable;
-import net.coderbot.eerv.db.DBColorTable.ColorEntry;
-import net.coderbot.eerv.db.DBEffects;
-import net.coderbot.eerv.db.DBEffects.EffectEntry;
-import net.coderbot.eerv.db.DBEvents;
-import net.coderbot.eerv.db.DBEvents.EventEntry;
-import net.coderbot.eerv.db.DBFamily;
-import net.coderbot.eerv.db.DBFamily.FamilyEntry;
-import net.coderbot.eerv.db.DBGameVariant;
-import net.coderbot.eerv.db.DBGameVariant.GameVariantEntry;
-import net.coderbot.eerv.db.DBGfxEffects;
-import net.coderbot.eerv.db.DBGfxEffects.GfxEntry;
-import net.coderbot.eerv.db.DBMusic;
-import net.coderbot.eerv.db.DBMusic.MusicEntry;
-import net.coderbot.eerv.db.DBPremadeCivs;
-import net.coderbot.eerv.db.DBPremadeCivs.PremadeCivEntry;
-import net.coderbot.eerv.db.DBRandomMap;
-import net.coderbot.eerv.db.DBRandomMap.RandomMapEntry;
-import net.coderbot.eerv.db.DBSounds;
-import net.coderbot.eerv.db.DBSounds.SoundEntry;
-import net.coderbot.eerv.db.DBStartingResources;
-import net.coderbot.eerv.db.DBStartingResources.StartingResourceEntry;
-import net.coderbot.eerv.db.DBTerrain;
-import net.coderbot.eerv.db.DBTerrain.TerrainEntry;
-import net.coderbot.eerv.db.DBTerrainGrayTextures;
-import net.coderbot.eerv.db.DBTerrainGrayTextures.TerrainGrayTextureEntry;
-import net.coderbot.eerv.db.DBTerrainType;
-import net.coderbot.eerv.db.DBTerrainType.TerrainTypeEntry;
-import net.coderbot.eerv.db.DBUIControlEvents;
-import net.coderbot.eerv.db.DBUIControlEvents.ControlEventEntry;
-import net.coderbot.eerv.db.DBUIControlEvents.ControlEventType;
-import net.coderbot.eerv.db.DBUIControls;
-import net.coderbot.eerv.db.DBUIControls.ControlEntry;
-import net.coderbot.eerv.db.DBUIFonts;
-import net.coderbot.eerv.db.DBUIFonts.FontEntry;
-import net.coderbot.eerv.db.DBUnitBehavior;
-import net.coderbot.eerv.db.DBUnitBehavior.UnitBehaviorEntry;
-import net.coderbot.eerv.db.DBUnitSet;
-import net.coderbot.eerv.db.DBUnitSet.UnitSetEntry;
-import net.coderbot.eerv.db.DBUpgrade;
-import net.coderbot.eerv.db.DBUpgrade.UpgradeEntry;
-import net.coderbot.eerv.db.DBWeaponToHit;
-import net.coderbot.eerv.db.DBWeaponToHit.WeaponEntry;
-import net.coderbot.eerv.db.DBWorld;
-import net.coderbot.eerv.db.DBWorld.WorldEntry;
 import net.coderbot.log.Log;
-import net.coderbot.math.Mat44;
-import net.coderbot.math.Vector2;
-import net.coderbot.math.Vector3;
-import net.coderbot.util.Charsets;
 import net.coderbot.util.DecoderException;
 import net.coderbot.util.Timer;
 
@@ -94,12 +22,12 @@ public class Main
 		
 		//Path path = Paths.get("/home/coderbot/.wine/drive_c/Sierra/Empire Earth/Data/Campaigns/EELearningCampaign.ssa");
 		//Path path = Paths.get("/home/coderbot/.wine/drive_c/Sierra/Empire Earth/Data/Campaigns/EETheBritish.ssa");
-		Path ssapath = Paths.get("/home/coderbot/.wine/drive_c/Sierra/Empire Earth/Data/data.ssa");
+		//Path ssapath = Paths.get("/home/coderbot/.wine/drive_c/Sierra/Empire Earth/Data/data.ssa");
 		
-		SSADecoder dec = new SSADecoder(ssapath);
+		/*SSADecoder dec = new SSADecoder(ssapath);
 		SSA ssa = dec.decode();
 		dec.close();
-		PKDecoder pk = new PKDecoder((ByteBuffer)null);
+		PKDecoder pk = new PKDecoder((ByteBuffer)null);*/
 		
 		//SCN.test(null,"/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/learning_thebasics");
 		//SCN.test("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/scn/testcase0.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/testcase0");
@@ -167,7 +95,7 @@ public class Main
 			Log.log("TAI",t.elems[i].toString());
 		}*/
 		
-		DirectoryStream<Path> ds = Files.newDirectoryStream(Paths.get("extract/data/models"));
+		/*DirectoryStream<Path> ds = Files.newDirectoryStream(Paths.get("extract/data/models"));
 		for(Path path: ds)
 		{
 			try
@@ -179,6 +107,88 @@ public class Main
 			catch(Throwable e)
 			{
 				System.out.println("FAIL "+path+" "+e.getMessage());
+			}
+		}*/
+		String name = "bld_capital_10";
+		
+		Path p = Paths.get("extract/data/obj/"+name+".obj");
+		if(Files.exists(p))
+		{
+			Files.delete(p);
+		}
+		FileChannel obj = FileChannel.open(p, StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+		PrintStream ps = new PrintStream(Channels.newOutputStream(obj));
+		ps.println("# OBJ file exported from CEM format");
+		
+		Path cemp = Paths.get("extract/data/models/"+name+".cem");
+		CEMDecoder cemd = new CEMDecoder(cemp);
+		CEM cem = cemd.decode();
+		cemd.close();
+		
+		int frame = 0;
+		ps.println("# CEM Metadata");
+		ps.println("# Center point: "+cem.center);
+		ps.println("# Misc: "+cem.misc);
+		ps.println("# Total Polygons: "+cem.totalPolygons);
+		ps.println("# Sets: "+cem.indices0.length);
+		ps.println("# Tag Point Names: ("+cem.tagPointNames.length+")");
+		for(int i = 0;i<cem.tagPointNames.length;i++)
+		{
+			ps.println("# Tag Point Name ["+i+"]: "+cem.tagPointNames[i]);
+		}
+		ps.println("# Frames: "+cem.frames.length);
+		ps.println("# Embedded Models: "+cem.subModels);
+		ps.println("# Materials: "+cem.materials.length);
+		for(int i = 0;i<cem.materials.length;i++)
+		{
+			ps.println("# Material "+i+": "+cem.materials[i].name);
+			ps.println("# Material "+i+": "+cem.materials[i].vertexStart+"->"+(cem.materials[i].vertexStart+cem.materials[i].vertexLength));
+			for(int j = 0;j<cem.indices0.length;j++)
+			{
+				ps.println("# Material "+i+":"+j+": "+cem.materials[i].polygonStart[j]+"->"+(cem.materials[i].polygonStart[j]+cem.materials[i].polygonLength[j]));
+			}
+		}
+		ps.println("# Using frame: "+frame+"\n");
+		ps.println("# Section 'Vertex Positions'");
+		CEMFrame current = cem.frames[frame];
+		
+		int a = 0;
+		for(int i = 0;i<current.vertices;i++)
+		{
+			ps.format("v %.9f %.9f %.9f\n", current.pos[a++], current.pos[a++], current.pos[a++]);
+		}
+		
+		ps.println();
+		ps.println("# Section 'Vertex Normals'");
+		
+		a = 0;
+		for(int i = 0;i<current.vertices;i++)
+		{
+			ps.format("vn %.9f %.9f %.9f\n", current.normal[a++], current.normal[a++], current.normal[a++]);
+		}
+		
+		ps.println();
+		ps.println("# Section 'Vertex UVs'");
+		
+		a = 0;
+		for(int i = 0;i<current.vertices;i++)
+		{
+			ps.format("vt %.9f %.9f\n", current.uv[a++], current.uv[a++]);
+		}
+		
+		ps.println();
+		ps.println("# Section 'Polygon Indices'");
+		
+		a = 0;
+		for(int i = 0;i<cem.indices0.length;i++)
+		{
+			int[] set = cem.indices0[i];
+			int[] set1 = cem.indices1[i];
+			int[] set2 = cem.indices2[i];
+			
+			for(int s = 0;s<set.length;s++)
+			{
+				ps.println("f "+(set[s]+1)+"/"+(set[s]+1)+"/"+(set[s]+1)+" "+(set1[s]+1)+"/"+(set1[s]+1)+"/"+(set1[s]+1)+" "+(set2[s]+1)+"/"+(set2[s]+1)+"/"+(set2[s]+1));
 			}
 		}
 		
