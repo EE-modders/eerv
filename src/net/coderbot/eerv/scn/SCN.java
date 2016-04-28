@@ -5,7 +5,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -113,6 +112,8 @@ public class SCN
 	public void print()
 	{
 		System.out.println(name+": "+description);
+		System.out.println(date);
+		System.out.println("Players: "+playerList);
 	}
 	
 	public static void test(String in, String out) throws IOException, DecoderException
@@ -136,6 +137,7 @@ public class SCN
 			pk.setInput(scn);
 			scn = pk.decode();
 		}
+		pk.close();
 		
 		/*Path rt = Paths.get(out);
 		if(Files.exists(rt))
