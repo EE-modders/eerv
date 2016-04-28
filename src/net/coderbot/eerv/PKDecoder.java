@@ -5,7 +5,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.file.Path;
 
-import net.coderbot.log.Log;
 import net.coderbot.util.Decoder;
 import net.coderbot.util.DecoderException;
 
@@ -47,7 +46,7 @@ public class PKDecoder extends Decoder<ByteBuffer>
 		
 		if(uk!=0)
 		{
-			Log.log("PKEX","Unknown value isnt 0: "+uk);
+			throw new DecoderException("pk","Unknown value isnt 0: "+uk);
 		}
 		
 		Exploder ex = new Exploder(in);

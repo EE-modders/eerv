@@ -3,8 +3,7 @@ package net.coderbot.eerv.db;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-import net.coderbot.log.Log;
-import net.coderbot.util.Charsets;
+import java.nio.charset.StandardCharsets;
 
 public class DBUIControls 
 {
@@ -79,7 +78,7 @@ public class DBUIControls
 			{
 				/*if(sub0[0]!=0)
 				{
-					String s2name = new String(sub0, Charsets.ASCII);
+					String s2name = new String(sub0, StandardCharsets.US_ASCII);
 					int idx0 = s2name.indexOf(0);
 					if(idx0>-1)
 					{
@@ -90,7 +89,7 @@ public class DBUIControls
 				}*/
 				
 				
-				String sname = new String(name, Charsets.ASCII);
+				String sname = new String(name, StandardCharsets.US_ASCII);
 				int idx0 = sname.indexOf(0);
 				if(idx0>-1)
 				{
@@ -115,7 +114,7 @@ public class DBUIControls
 				
 				if(i!=0)
 				{
-					Log.log("EERV","i: "+Integer.toHexString(i)+" \t"+sname);
+					System.out.println("i: "+Integer.toHexString(i)+" \t"+sname);
 				}
 				else
 				{
@@ -128,7 +127,7 @@ public class DBUIControls
 		
 		public String toString()
 		{
-			String sname = new String(name, Charsets.ASCII);
+			String sname = new String(name, StandardCharsets.US_ASCII);
 			int idx0 = sname.indexOf(0);
 			if(idx0>-1)
 			{

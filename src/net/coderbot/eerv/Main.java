@@ -9,17 +9,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
-import net.coderbot.log.Log;
+import net.coderbot.eerv.scn.SCN;
 import net.coderbot.util.DecoderException;
-import net.coderbot.util.Timer;
 
 public class Main 
 {
 	public static void main(String[] args) throws DecoderException, IOException
 	{
-		Log.init();
-		Timer.init();
-		
 		//Path path = Paths.get("/home/coderbot/.wine/drive_c/Sierra/Empire Earth/Data/Campaigns/EELearningCampaign.ssa");
 		//Path path = Paths.get("/home/coderbot/.wine/drive_c/Sierra/Empire Earth/Data/Campaigns/EETheBritish.ssa");
 		//Path ssapath = Paths.get("/home/coderbot/.wine/drive_c/Sierra/Empire Earth/Data/data.ssa");
@@ -32,15 +28,40 @@ public class Main
 		//SCN.test(null,"/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/learning_thebasics");
 		//SCN.test("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/scn/testcase0.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/testcase0");
 		//SCN.test("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/scn/testcase0_bottom.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/testcase0_bottom");
-		/*SCN.test("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/scn/testcase4_trigger.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/testcase4_trigger");
-		SCN.test("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/scn/testcase5_condition_AllComputerStone_0.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/testcase5_condition_AllComputerStone_0");
-		SCN.test("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/scn/testcase5_condition_AllHumanStone_0.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/testcase5_condition_AllHumanStone_0");
+		//SCN.test("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/scn/testcase4_trigger.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/testcase4_trigger");
+		//SCN.test("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/scn/testcase5_condition_AllComputerStone_0.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/testcase5_condition_AllComputerStone_0");
+		//SCN.test("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/scn/testcase5_condition_AllHumanStone_0.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/testcase5_condition_AllHumanStone_0");
 		SCN.test("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/scn/testcase5_effect_action_none_agressive.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/testcase5_effect_action_none_agressive");
-		SCN.test("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/scn/testcase5_object.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/testcase5_object");
-		SCN.test("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/scn/testcase6_rect_topleft.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/testcase6_rect_topleft");
-		SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/...- nano 01.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/nano 01/");
-		SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/...- nano 02.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/nano 02/");
-		SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/ww1 - ww2 01.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/ww1ww2 01/");*/
+		//SCN.test("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/scn/testcase5_object.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/testcase5_object");
+		//SCN.test("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/scn/testcase6_rect_topleft.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/testcase6_rect_topleft");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/...- nano 01.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/nano 01/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/...- nano 02.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/nano 02/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/ww1 - ww2 01.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/ww1ww2 01/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/CRASH0.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/crash0/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/Dufus Ryan Mom Tough Game.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/tough/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/ElevTR.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/elevtr/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/FlagFilled-Save.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/flagfilled-save/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/AmbientsBL.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/ambientsbl/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/GameSettings.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/gamesettings/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/GameSettingsAllAllies.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/gamesettingsaa/");
+		
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/GS_None.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/gs-none/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/GameSettingsTech_HumanAllDisabled.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/gamesettingstech/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/1_WorldObject.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/1wobj/")
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/2_WorldObject.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/2wobj/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WorldObjectAloeTL.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/wobjaloeTL/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WorldObjectAloeBL.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/wobjaloeBL/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WorldObjectAloeTR.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/wobjaloeTR/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WorldObjectAloeBR.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/wobjaloeBR/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WorldObjectAloeDeleted.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/wobjaloeDEL/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WorldObjectEagle1.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/wobjeagle/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WorldObjectEagle2.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/wobjeagle2/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WorldObjectFish.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/wobjfish/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WorldObjectChicken1.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/wobjchicken/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WorldObjectIronOre1.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/wobjiron/");
+		
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Attrs.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/attrs/");
+		
 		
 		//System.exit(0);
 		
@@ -109,9 +130,9 @@ public class Main
 				System.out.println("FAIL "+path+" "+e.getMessage());
 			}
 		}*/
-		String name = "bld_capital_10";
+		/*String name = "bld_capital_10";
 		
-		Path p = Paths.get("extract/data/obj/"+name+".obj");
+		Path p = Paths.get("extract/data/obj/"+name+".lod0.obj");
 		if(Files.exists(p))
 		{
 			Files.delete(p);
@@ -164,7 +185,7 @@ public class Main
 		a = 0;
 		for(int i = 0;i<current.vertices;i++)
 		{
-			ps.format("vn %.9f %.9f %.9f\n", current.normal[a++], current.normal[a++], current.normal[a++]);
+			//ps.format("vn %.9f %.9f %.9f\n", current.normal[a++], current.normal[a++], current.normal[a++]);
 		}
 		
 		ps.println();
@@ -173,14 +194,14 @@ public class Main
 		a = 0;
 		for(int i = 0;i<current.vertices;i++)
 		{
-			ps.format("vt %.9f %.9f\n", current.uv[a++], current.uv[a++]);
+			//ps.format("vt %.9f %.9f\n", current.uv[a++], current.uv[a++]);
 		}
 		
 		ps.println();
 		ps.println("# Section 'Polygon Indices'");
 		
 		a = 0;
-		for(int i = 0;i<cem.indices0.length;i++)
+		for(int i = 0;i<1;i++)
 		{
 			int[] set = cem.indices0[i];
 			int[] set1 = cem.indices1[i];
@@ -188,9 +209,10 @@ public class Main
 			
 			for(int s = 0;s<set.length;s++)
 			{
-				ps.println("f "+(set[s]+1)+"/"+(set[s]+1)+"/"+(set[s]+1)+" "+(set1[s]+1)+"/"+(set1[s]+1)+"/"+(set1[s]+1)+" "+(set2[s]+1)+"/"+(set2[s]+1)+"/"+(set2[s]+1));
+				//ps.println("f "+(set[s]+1)+"/"+(set[s]+1)+"/"+(set[s]+1)+" "+(set1[s]+1)+"/"+(set1[s]+1)+"/"+(set1[s]+1)+" "+(set2[s]+1)+"/"+(set2[s]+1)+"/"+(set2[s]+1));
+				ps.println("f "+(set[s]+1)+" "+(set1[s]+1)+" "+(set2[s]+1));
 			}
-		}
+		}*/
 		
 		/*String name = "world";
 		

@@ -2,11 +2,11 @@ package net.coderbot.eerv;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
 import net.coderbot.math.Mat44;
 import net.coderbot.math.Vector3;
-import net.coderbot.util.Charsets;
 import net.coderbot.util.Decoder;
 import net.coderbot.util.DecoderException;
 
@@ -70,7 +70,7 @@ public class CEMDecoder extends Decoder<CEM>
 		{
 			byte[] asciiZ = new byte[data.getInt()];
 			data.get(asciiZ);
-			cem.misc = (asciiZ.length>0)?new String(asciiZ, 0, asciiZ.length-1, Charsets.ASCII):"";
+			cem.misc = (asciiZ.length>0)?new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII):"";
 		
 			cem.center = new Vector3();
 			cem.center.x = data.getFloat();
@@ -112,7 +112,7 @@ public class CEMDecoder extends Decoder<CEM>
 				
 				asciiZ = new byte[data.getInt()];
 				data.get(asciiZ);
-				mat.name = (asciiZ.length>0)?new String(asciiZ, 0, asciiZ.length-1, Charsets.ASCII):"";
+				mat.name = (asciiZ.length>0)?new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII):"";
 				
 				mat.textureIndex = data.getInt();
 				mat.polygonStart = new int[nSets];
@@ -128,7 +128,7 @@ public class CEMDecoder extends Decoder<CEM>
 				asciiZ = new byte[data.getInt()];
 				
 				data.get(asciiZ);
-				mat.name2 = (asciiZ.length>0)?new String(asciiZ, 0, asciiZ.length-1, Charsets.ASCII):"";//11Ch
+				mat.name2 = (asciiZ.length>0)?new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII):"";//11Ch
 			}
 		}
 		
@@ -140,7 +140,7 @@ public class CEMDecoder extends Decoder<CEM>
 				byte[] asciiZ = new byte[data.getInt()];
 		
 				data.get(asciiZ);
-				cem.tagPointNames[i] = (asciiZ.length>0)?new String(asciiZ, 0, asciiZ.length-1, Charsets.ASCII):"";
+				cem.tagPointNames[i] = (asciiZ.length>0)?new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII):"";
 			}
 		}
 		

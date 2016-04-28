@@ -5,13 +5,11 @@ import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.CharsetDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import net.coderbot.log.Log;
-import net.coderbot.util.Charsets;
 
 public class RMVEnv 
 {
@@ -46,7 +44,7 @@ public class RMVEnv
 		} 
 		catch (IOException e) 
 		{
-			Log.log("RMV","failed to load "+rmv+": "+e);
+			System.out.println("RMV: failed to load "+rmv+": "+e);
 			return null;
 		}
 	}
@@ -54,12 +52,12 @@ public class RMVEnv
 	private RMV load0(String rmv) throws IOException
 	{
 		Path path = folder.resolve(rmv);
-		Log.log("RMV","loading "+rmv);
+		System.out.println("RMV: loading "+rmv);
 		FileChannel fc = FileChannel.open(path, StandardOpenOption.READ);
 		
 		ByteBuffer block = ByteBuffer.allocateDirect(4096);
 		CharBuffer chars = CharBuffer.allocate(8192);
-		CharsetDecoder dec = Charsets.ASCII.newDecoder();
+		CharsetDecoder dec = StandardCharsets.US_ASCII.newDecoder();
 		
 		CharBuffer keyword = CharBuffer.allocate(256);
 		CharBuffer argument = CharBuffer.allocate(256);

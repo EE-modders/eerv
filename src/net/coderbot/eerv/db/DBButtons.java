@@ -3,7 +3,7 @@ package net.coderbot.eerv.db;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-import net.coderbot.util.Charsets;
+import java.nio.charset.StandardCharsets;
 
 public class DBButtons 
 {
@@ -49,14 +49,14 @@ public class DBButtons
 		
 		public String toString()
 		{
-			String stexture = new String(texture, Charsets.ASCII);
+			String stexture = new String(texture, StandardCharsets.US_ASCII);
 			int idx0 = stexture.indexOf(0);
 			if(idx0>-1)
 			{
 				stexture = stexture.substring(0, idx0);
 			}
 			
-			String sname = new String(name, Charsets.ASCII);
+			String sname = new String(name, StandardCharsets.US_ASCII);
 			idx0 = sname.indexOf(0);
 			if(idx0>-1)
 			{
