@@ -3,7 +3,7 @@ package net.coderbot.eerv.db;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-import net.coderbot.util.Charsets;
+import java.nio.charset.StandardCharsets;
 
 public class DBUpgrade 
 {
@@ -115,7 +115,7 @@ public class DBUpgrade
 		
 		public String toString()
 		{
-			String sname = new String(name, Charsets.ASCII);
+			String sname = new String(name, StandardCharsets.US_ASCII);
 			int idx0 = sname.indexOf(0);
 			if(idx0>-1)
 			{

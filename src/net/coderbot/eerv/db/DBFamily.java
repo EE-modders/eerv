@@ -4,7 +4,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 
-import net.coderbot.util.Charsets;
+import java.nio.charset.StandardCharsets;
 
 public class DBFamily 
 {
@@ -61,7 +61,7 @@ public class DBFamily
 			}
 			sb.append(']');
 			
-			String sname = new String(name, Charsets.ASCII);
+			String sname = new String(name, StandardCharsets.US_ASCII);
 			int idx0 = sname.indexOf(0);
 			if(idx0>-1)
 			{

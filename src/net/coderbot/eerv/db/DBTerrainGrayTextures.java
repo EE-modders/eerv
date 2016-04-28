@@ -3,7 +3,7 @@ package net.coderbot.eerv.db;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-import net.coderbot.util.Charsets;
+import java.nio.charset.StandardCharsets;
 
 public class DBTerrainGrayTextures 
 {
@@ -33,7 +33,7 @@ public class DBTerrainGrayTextures
 			byte[] asciiZ = new byte[data.getInt()];
 			data.get(asciiZ);
 			
-			texture = new String(asciiZ, Charsets.ASCII).replace('\\', '/').toLowerCase();
+			texture = new String(asciiZ, StandardCharsets.US_ASCII).replace('\\', '/').toLowerCase();
 			name = new byte[100];
 			data.get(name);
 			gameid = data.getInt();
@@ -45,7 +45,7 @@ public class DBTerrainGrayTextures
 		
 		public String toString()
 		{
-			String sname = new String(name, Charsets.ASCII);
+			String sname = new String(name, StandardCharsets.US_ASCII);
 			int idx0 = sname.indexOf(0);
 			if(idx0>-1)
 			{

@@ -6,8 +6,6 @@ import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Set;
 
-import net.coderbot.log.Log;
-
 public class SSA 
 {
 	HashMap<String,Entry> files;
@@ -54,7 +52,7 @@ public class SSA
 		} 
 		catch (Exception ex)
 		{
-			Log.logt(ex);
+			ex.printStackTrace();
 			return null;
 		}
 		

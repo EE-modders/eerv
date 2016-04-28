@@ -2,9 +2,9 @@ package net.coderbot.eerv;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
-import net.coderbot.util.Charsets;
 import net.coderbot.util.Decoder;
 import net.coderbot.util.DecoderException;
 
@@ -68,7 +68,7 @@ public class SSADecoder extends Decoder<SSA>
 			e.end = in.getInt();
 			e.size = in.getInt()&0xFFFFFFFFL;
 			
-			ssa.files.put(new String(asciiZ, 0, asciiZ.length-1, Charsets.ASCII).replace('\\', '/'), e);
+			ssa.files.put(new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII).replace('\\', '/'), e);
 		}
 		
 		int ts = in.getInt();
@@ -79,10 +79,10 @@ public class SSADecoder extends Decoder<SSA>
 		{
 			asciiZ = new byte[in.getInt()];
 			in.get(asciiZ);
-			k = new String(asciiZ, 0, asciiZ.length, Charsets.ASCII);
+			k = new String(asciiZ, 0, asciiZ.length, StandardCharsets.US_ASCII);
 			asciiZ = new byte[in.getInt()];
 			in.get(asciiZ);
-			v = new String(asciiZ, 0, asciiZ.length, Charsets.ASCII);
+			v = new String(asciiZ, 0, asciiZ.length, StandardCharsets.US_ASCII);
 			ssa.props.put(k, v);
 		}
 		

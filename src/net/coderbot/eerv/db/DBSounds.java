@@ -3,7 +3,7 @@ package net.coderbot.eerv.db;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-import net.coderbot.util.Charsets;
+import java.nio.charset.StandardCharsets;
 
 public class DBSounds 
 {
@@ -37,7 +37,7 @@ public class DBSounds
 		{
 			byte[] asciiZ = new byte[data.getInt()];
 			data.get(asciiZ);
-			path = new String(asciiZ, 0, asciiZ.length, Charsets.ASCII).toLowerCase().replace('\\', '/');
+			path = new String(asciiZ, 0, asciiZ.length, StandardCharsets.US_ASCII).toLowerCase().replace('\\', '/');
 			name = new byte[100];
 			data.get(name);
 			gameid = data.getInt();
@@ -52,7 +52,7 @@ public class DBSounds
 		
 		public String toString()
 		{
-			String sname = new String(name, Charsets.ASCII);
+			String sname = new String(name, StandardCharsets.US_ASCII);
 			int idx0 = sname.indexOf(0);
 			if(idx0>-1)
 			{
