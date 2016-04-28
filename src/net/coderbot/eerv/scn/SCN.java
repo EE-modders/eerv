@@ -59,7 +59,6 @@ public class SCN
 	int u16;
 	int u17;
 	int u18;
-	int u19;
 	
 	String hints;
 	String history;
@@ -67,6 +66,8 @@ public class SCN
 	String map;
 	String instructions;
 	String soundover;
+	
+	SCNFile[] files;
 	
 	static class File
 	{
@@ -81,7 +82,7 @@ public class SCN
 	
 	static enum FileID
 	{
-		TERRAIN(0x03000000), TRIGGERS(0x0A000000), FILE2_MED(0x0C000000), FILE3_TINY(0x05000000), FILE4_MEDVAR(0x07000000), DIPLOMACY(0x08000000), 
+		TERRAIN(0x03000000), TRIGGERS(0x0A000000), FILE2_MED(0x0C000000), FILE3_TINY(0x05000000), OBJECTS(0x07000000), DIPLOMACY(0x08000000), 
 		FILE6_TINY(0x0B000000),
 		
 		UNKNOWN(0);
