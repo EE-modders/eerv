@@ -1,0 +1,13 @@
+// Include generic death for morbid conformance
+#include("Generic Death.tai")
+
+// Attack ai for Volcano unit (calamity)
+Idle
+{
+	ChooseRandomVolcanoTarget true(AttackLocation)
+}
+
+AttackLocation
+{
+	ReadyToFireAgain true(Idle)
+}

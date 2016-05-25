@@ -1,0 +1,23 @@
+//
+//	Farm AI file
+//
+//	Behaviors:
+//
+//		Handles farms dying.
+//
+//	Notes:
+//
+//	Common modifications:
+//
+//	Known Problems:
+//
+//	Usage:
+//
+
+// are we dying (hitpoints == 0)
+
+Dying
+{
+	AlwaysTrue true(Dead)
+}
+

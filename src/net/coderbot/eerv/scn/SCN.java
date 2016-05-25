@@ -51,8 +51,8 @@ public class SCN
 	int uF;
 	int u10;
 	int u11;
-	int u12;
-	int u13;
+	short u12;
+	float u13;
 	int u14;
 	int u15;
 	int u16;
@@ -81,8 +81,8 @@ public class SCN
 	
 	static enum FileID
 	{
-		TERRAIN(0x03000000), TRIGGERS(0x0A000000), FILE2_MED(0x0C000000), FILE3_TINY(0x05000000), OBJECTS(0x07000000), DIPLOMACY(0x08000000), 
-		FILE6_TINY(0x0B000000),
+		TERRAIN(0x03), TRIGGERS(0x0A), FILE2_MED(0x0C), FILE3_TINY(0x05), OBJECTS(0x07), DIPLOMACY(0x08), 
+		FILE6_TINY(0x0B),
 		
 		UNKNOWN(0);
 		

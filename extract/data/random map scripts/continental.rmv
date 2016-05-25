@@ -1,0 +1,200 @@
+//////////////////////////////////////////////////////////////////////
+//
+// Outland.rmv
+//
+// Input file for the Continental map type.
+//
+// Copyright (c) 1998, Stainless Steel Studios, Inc. All rights reserved.
+// PROPRIETARY and CONFIDENTIAL.
+//
+// $Author: Scott Marison $
+// $Date: 7/27/01 1:49p $
+// $Modified: Richard Bishop
+// $Date: 7/27/01 1:49p $Version: 1.0
+// $Working Versions:
+// $	Tiny - 2 Players
+// $ 	Small - 2, 3, 4 Players
+//////////////////////////////////////////////////////////////////////
+
+
+
+//////////////////////////////////////////////////////////////////////
+// Define the map generator we will use
+//////////////////////////////////////////////////////////////////////
+
+UseMapGenerator		"Default"
+StringTableID		27000
+
+
+//////////////////////////////////////////////////////////////////////
+// Files we always include
+//////////////////////////////////////////////////////////////////////
+
+#include "Common\Map Climate"
+#include "Common\Common Conditions"
+#include "Common\Common Terrain Painting"
+#include "Common\Tourney Common Initial Units"
+#include "Common\Common Forests"
+
+//////////////////////////////////////////////////////////////////////
+// initialize some defintions. it is possible that an included file 
+// might redefine these.
+//////////////////////////////////////////////////////////////////////
+#define		(kShallowsElevation, -1)
+#define		(kShallowsWidth, 4)
+#define		(kMaxShallowConnectionsPerPlayer, 1)
+#define		(kGenerateShallows, false)
+
+
+//////////////////////////////////////////////////////////////////////
+// Files we include based upon map size - these files will define
+// everything we need to set the random map attributes for continental 
+// random maps.
+//////////////////////////////////////////////////////////////////////
+#if		IsTinyMap
+#include "Continental\Continental Tiny"
+#elif	IsSmallMap
+#include "Continental\Continental Small"
+#elif	IsMediumMap
+#include "Continental\Continental Medium"
+#elif	IsLargeMap
+#include "Continental\Continental Large"
+#elif	IsHugeMap
+#include "Continental\Continental Huge"
+#elif	IsGiganticMap
+#include "Continental\Continental Gigantic"
+#endif
+
+
+//////////////////////////////////////////////////////////////////////
+// Attributes we set
+//////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////
+// map elevation attributes
+MinIntElevation					kMinIntElevation
+MaxIntElevation					kMaxIntElevation
+InitialElevation				0
+FlatElevation					0
+ElevationScale					kElevationScale
+HeightMapChaos					kHeightMapChaos
+
+
+//////////////////////////////////////////////////////////////////////
+// land/water attributes
+PercentLand						kPercentLand
+LandElevationThreshold			0
+WaterBorder						kWaterBorder
+RiverWidth						0
+TeamGrowth						false
+
+
+//////////////////////////////////////////////////////////////////////
+// shallows attributes
+CoastalToDeeperWaterPercentage			1.0
+ShallowsElevation				kShallowsElevation
+ShallowsWidth					kShallowsWidth
+MaxShallowConnectionsPerPlayer			kMaxShallowConnectionsPerPlayer
+GenerateShallows				kGenerateShallows
+
+
+//////////////////////////////////////////////////////////////////////
+// player attributes
+PlayerInnerRadius				kPlayerInnerRadius
+PlayerOuterRadius				kPlayerOuterRadius
+PlayerPercentFlat				kPlayerPercentFlat
+PlayerTreePercentage			kPlayerTreePercentage
+PlayerLandChaos					kPlayerLandChaos
+PlayerLandClumps				kPlayerLandClumps
+PlayerFlatChaos					kPlayerFlatChaos
+PlayerFlatClumps				kPlayerFlatClumps
+MaxAngleBetweenTeamMembers		kMaxAngleBetweenTeamMembers
+
+
+//////////////////////////////////////////////////////////////////////
+// general pushing attributes
+MinimumStartPositionToMapEdge	kMinimumStartPositionToMapEdge
+OuterPushFromMapCenter			kOuterPushFromMapCenter
+InnerPushFromMapCenter			kInnerPushFromMapCenter
+
+
+//////////////////////////////////////////////////////////////////////
+// general neutral attributes
+NeutralInnerRadius				kNeutralInnerRadius
+NeutralOuterRadius				kNeutralOuterRadius
+
+
+//////////////////////////////////////////////////////////////////////
+// inner neutral attributes
+NumInnerNeutrals				kNumInnerNeutrals
+InnerNeutralPercentLand			kInnerNeutralPercentLand
+InnerNeutralPercentFlat			kInnerNeutralPercentFlat
+InnerNeutralTreePercentage		kInnerNeutralTreePercentage
+InnerNeutralLandChaos			kInnerNeutralLandChaos
+InnerNeutralLandClumps			kInnerNeutralLandClumps
+InnerNeutralFlatChaos			kInnerNeutralFlatChaos
+InnerNeutralFlatClumps			kInnerNeutralFlatClumps
+
+
+//////////////////////////////////////////////////////////////////////
+// outer neutral attributes
+NumOuterNeutrals				kNumOuterNeutrals
+OuterNeutralPercentLand			kOuterNeutralPercentLand
+OuterNeutralPercentFlat			kOuterNeutralPercentFlat
+OuterNeutralTreePercentage		kOuterNeutralTreePercentage
+OuterNeutralLandChaos			kOuterNeutralLandChaos
+OuterNeutralLandClumps			kOuterNeutralLandClumps
+OuterNeutralFlatChaos			kOuterNeutralFlatChaos
+OuterNeutralFlatClumps			kOuterNeutralFlatClumps
+
+
+//////////////////////////////////////////////////////////////////////
+// resource attributes
+MaxResourceElevation			kMaxResourceElevation
+ResourceToEdgeDistance			kResourceToEdgeDistance	
+ResourceToWaterDistance			kResourceToWaterDistance	
+
+ResourcePerPlayer				(Animal,		kAnimalPerPlayer)
+ResourcePerNeutralLand			(Animal,		kAnimalPerNeutral)
+											
+ResourcePerPlayer				(Berry,			kBerryPerPlayer)
+ResourcePerNeutralLand			(Berry,			kBerryPerNeutral)
+											
+ResourcePerPlayer				(Fish,			kFishPerPlayer)
+ResourcePerNeutralLand			(Fish,			kFishPerNeutral)
+											
+ResourcePerPlayer				(Gold,			kGoldPerPlayer)
+ResourcePerNeutralLand			(Gold,			kGoldPerNeutral)
+											
+ResourcePerPlayer				(Steel,			kSteelPerPlayer)
+ResourcePerNeutralLand			(Steel,			kSteelPerNeutral)
+											
+ResourcePerPlayer				(Stone,			kStonePerPlayer)
+ResourcePerNeutralLand			(Stone,			kStonePerNeutral)
+											
+ResourcePerPlayer				(Tree,			kTreePerPlayer)
+ResourcePerNeutralLand			(Tree,			kTreePerNeutral)
+											
+
+//////////////////////////////////////////////////////////////////////
+// forest attributes
+ForestFreeRadius				kForestFreeRadius
+ForestsPerPlayer				kForestsPerPlayer
+ForestChaosLevel				kForestChaosLevel	
+MaxClumpsPerForest				kMaxClumpsPerForest
+MaximumTreesPerClump			10000
+MaxTreeLoopCount				200
+
+
+//////////////////////////////////////////////////////////////////////
+// misc. attributes
+ConvergentSampleSize			32
+ConvergentThreshold				1.0
+MaxIterationsClumpGrowth		200				
+MaxLoopCount					300
+
+
+//////////////////////////////////////////////////////////////////////
+// debug flags - for debugging use only
+FilterHeightMap					false
+TestingLandDistribution			false

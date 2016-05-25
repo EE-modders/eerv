@@ -55,13 +55,13 @@ public class CEMDecoder extends Decoder<CEM>
 		
 		//CountsChunk
 		//{
-			int nPolygons = data.getInt();//this+0x148
-			int nVertices =  data.getInt();//this+0x14C
-			int nTagPoints = data.getInt();//this+0x150
-			int nMaterials = data.getInt();//this+0x144
-			int nFrames =    data.getInt();//this+0x140
-			int nSubModels =  data.getInt();//this+0x13C
-			int nSets =  data.getInt();//this+0x154	
+			int nPolygons = data.getInt();
+			int nVertices =  data.getInt();
+			int nTagPoints = data.getInt();
+			int nMaterials = data.getInt();
+			int nFrames =    data.getInt();
+			int nSubModels =  data.getInt();
+			int nSets =  data.getInt();
 			cem.subModels = nSubModels;
 			cem.totalPolygons = nPolygons;
 		//}

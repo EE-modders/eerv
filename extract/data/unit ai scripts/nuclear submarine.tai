@@ -1,0 +1,23 @@
+//
+// Nuclear submarine unit AI file
+//
+// Behaviors:
+//
+//		Can attack when told to
+//		Follows target
+//		Keeps firing until target dead
+//		Can attack/move
+//		Does not fire on it's own
+//		Will run away from attackers
+//		Movement,collision detection and death all normal
+//
+//	Notes:
+//
+//	Known Problems:
+//
+
+#include("Generic Attack.tai")
+
+#include("Generic Movement.tai")
+
+#include("Generic Death.tai")

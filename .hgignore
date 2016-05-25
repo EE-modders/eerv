@@ -4,6 +4,5 @@ syntax: glob
 .project
 syntax: regexp
 bin\/.+
-extract\/data\/.+
 hs_err.+
 syntax: glob

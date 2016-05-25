@@ -1,0 +1,124 @@
+////////////////////////////////////////////////////////////////////
+//
+// Common Conditions.rmv
+//
+// Defines a common set of conditions used for RMV scalability.
+//
+// Copyright © 1998, Stainless Steel Studios, Inc. All rights reserved.
+// PROPRIETARY and CONFIDENTIAL.
+//
+// $Author: Scott Marison $
+// $Date: 6/27/01 12:34p $
+// $Revision: 3 $
+//
+////////////////////////////////////////////////////////////////////
+
+
+#if			NOTDEFINED(COMMON_CONDITIONS_RMV)
+#define		(COMMON_CONDITIONS_RMV,1)
+
+
+////////////////////////////////////////////////////////////////////
+// Map size conditions
+
+#define		(IsTinyMap,						EQ($MapSize, TinyMap))
+#define		(IsSmallMap,					EQ($MapSize, SmallMap))
+#define		(IsMediumMap,					EQ($MapSize, MediumMap))
+#define		(IsLargeMap,					EQ($MapSize, LargeMap))
+#define		(IsHugeMap,						EQ($MapSize, HugeMap))
+#define		(IsGiganticMap,					EQ($MapSize, GiganticMap))
+
+
+////////////////////////////////////////////////////////////////////
+// Player count conditions
+
+#define		(Is2Players,					EQ($PlayerCount, 2))
+#define		(Is3Players,					EQ($PlayerCount, 3))
+#define		(Is4Players,					EQ($PlayerCount, 4))
+#define		(Is5Players,					EQ($PlayerCount, 5))
+#define		(Is6Players,					EQ($PlayerCount, 6))
+#define		(Is7Players,					EQ($PlayerCount, 7))
+#define		(Is8Players,					EQ($PlayerCount, 8))
+#define		(Is9Players,					EQ($PlayerCount, 9))
+#define		(Is10Players,					EQ($PlayerCount, 10))
+#define		(Is11Players,					EQ($PlayerCount, 11))
+#define		(Is12Players,					EQ($PlayerCount, 12))
+#define		(Is13Players,					EQ($PlayerCount, 13))
+#define		(Is14Players,					EQ($PlayerCount, 14))
+#define		(Is15Players,					EQ($PlayerCount, 15))
+#define		(Is16Players,					EQ($PlayerCount, 16))
+												
+#define		(LessThan4Players,				LT($PlayerCount, 4))
+#define		(LessThan5Players,				LT($PlayerCount, 5))
+#define		(LessThan6Players,				LT($PlayerCount, 6))
+#define		(LessThan7Players,				LT($PlayerCount, 7))
+#define		(LessThan8Players,				LT($PlayerCount, 8))
+#define		(LessThan9Players,				LT($PlayerCount, 9))
+#define		(LessThan10Players,				LT($PlayerCount, 10))
+#define		(LessThan11Players,				LT($PlayerCount, 11))
+#define		(LessThan12Players,				LT($PlayerCount, 12))
+#define		(LessThan13Players,				LT($PlayerCount, 13))
+#define		(LessThan14Players,				LT($PlayerCount, 14))
+#define		(LessThan15Players,				LT($PlayerCount, 15))
+#define		(LessThan16Players,				LT($PlayerCount, 16))
+											
+#define		(GreaterThan2Players,			GT($PlayerCount, 2))
+#define		(GreaterThan3Players,			GT($PlayerCount, 3))
+#define		(GreaterThan4Players,			GT($PlayerCount, 4))
+#define		(GreaterThan5Players,			GT($PlayerCount, 5))
+#define		(GreaterThan6Players,			GT($PlayerCount, 6))
+#define		(GreaterThan7Players,			GT($PlayerCount, 7))
+#define		(GreaterThan8Players,			GT($PlayerCount, 8))
+#define		(GreaterThan9Players,			GT($PlayerCount, 9))
+#define		(GreaterThan10Players,			GT($PlayerCount, 10))
+#define		(GreaterThan11Players,			GT($PlayerCount, 11))
+#define		(GreaterThan12Players,			GT($PlayerCount, 12))
+#define		(GreaterThan13Players,			GT($PlayerCount, 13))
+#define		(GreaterThan14Players,			GT($PlayerCount, 14))
+
+
+////////////////////////////////////////////////////////////////////
+// Starting epoch conditions
+
+#define		(IsPaleoEpoch,					EQ($StartEpoch, PaleoEpoch))
+#define		(IsStoneEpoch,					EQ($StartEpoch, StoneEpoch))
+#define		(IsCopperEpoch,					EQ($StartEpoch, CopperEpoch))
+#define		(IsBronzeEpoch,					EQ($StartEpoch, BronzeEpoch))
+#define		(IsDarkEpoch,					EQ($StartEpoch, DarkEpoch))
+#define		(IsMiddleEpoch,					EQ($StartEpoch, MiddleEpoch))
+#define		(IsRenaissanceEpoch,			EQ($StartEpoch, RenaissanceEpoch))
+#define		(IsImperialEpoch,				EQ($StartEpoch, ImperialEpoch))
+#define		(IsIndustrialEpoch,				EQ($StartEpoch, IndustrialEpoch))
+#define		(IsWW1Epoch,					EQ($StartEpoch, WW1Epoch))
+#define		(IsWW2Epoch,					EQ($StartEpoch,	WW2Epoch))
+#define		(IsModernEpoch,					EQ($StartEpoch, ModernEpoch))
+#define		(IsInformationEpoch,			EQ($StartEpoch, InformationEpoch))
+#define		(IsNanoEpoch,					EQ($StartEpoch, NanoEpoch))
+
+#define		(LessThanCopperEpoch,			LT($StartEpoch, CopperEpoch))
+#define		(LessThanBronzeEpoch,			LT($StartEpoch, BronzeEpoch))
+#define		(LessThanDarkEpoch,				LT($StartEpoch, DarkEpoch))
+#define		(LessThanMiddleEpoch,			LT($StartEpoch, MiddleEpoch))
+#define		(LessThanRenaissanceEpoch,		LT($StartEpoch, RenaissanceEpoch))
+#define		(LessThanImperialEpoch,			LT($StartEpoch, ImperialEpoch))
+#define		(LessThanIndustrialEpoch,		LT($StartEpoch, IndustrialEpoch))
+#define		(LessThanWW1Epoch,				LT($StartEpoch, WW1Epoch))
+#define		(LessThanWW2Epoch,				LT($StartEpoch,	WW2Epoch))
+#define		(LessThanModernEpoch,			LT($StartEpoch, ModernEpoch))
+#define		(LessThanInformationEpoch,		LT($StartEpoch, InformationEpoch))
+#define		(LessThanNanoEpoch,				LT($StartEpoch, NanoEpoch))
+
+#define		(GreaterThanPaleoEpoch,			GT($StartEpoch, PaleoEpoch))
+#define		(GreaterThanStoneEpoch,			GT($StartEpoch, StoneEpoch))
+#define		(GreaterThanCopperEpoch,		GT($StartEpoch, CopperEpoch))
+#define		(GreaterThanBronzeEpoch,		GT($StartEpoch, BronzeEpoch))
+#define		(GreaterThanDarkEpoch,			GT($StartEpoch, DarkEpoch))
+#define		(GreaterThanMiddleEpoch,		GT($StartEpoch, MiddleEpoch))
+#define		(GreaterThanRenaissanceEpoch,	GT($StartEpoch, RenaissanceEpoch))
+#define		(GreaterThanImperialEpoch,		GT($StartEpoch, ImperialEpoch))
+#define		(GreaterThanIndustrialEpoch,	GT($StartEpoch, IndustrialEpoch))
+#define		(GreaterThanWW1Epoch,			GT($StartEpoch, WW1Epoch))
+#define		(GreaterThanWW2Epoch,			GT($StartEpoch,	WW2Epoch))
+#define		(GreaterThanModernEpoch,		GT($StartEpoch, ModernEpoch))
+
+#endif		// NOTDEFINED(COMMON_CONDITIONS_RMV)

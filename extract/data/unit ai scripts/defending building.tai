@@ -1,0 +1,15 @@
+//
+// Defending Building unit AI file
+//
+// Behaviors:
+//
+//		Track enemy units in line of sight until in weapon range, then attack.
+//
+//	Notes:
+//
+//	Known Problems:
+//
+
+#include("Stationary Target Tracking.tai")
+
+#include("Generic Death.tai")

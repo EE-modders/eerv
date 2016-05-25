@@ -2,7 +2,6 @@ package net.coderbot.eerv;
 
 import java.io.EOFException;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
 
 /**
  * PKWARE DCL Decompressor, ported to Java from StormLib.<br>
@@ -139,7 +138,6 @@ public class Exploder extends ExploderConstants
 		else
 		{
 			waste(8);
-
 			value = asc8lut[bit_buff & 0xFF];
 		}
 
@@ -177,6 +175,11 @@ public class Exploder extends ExploderConstants
 		return distance + 1;
 	}
 	
+	/**
+	 * Decodes a block. If it is the end, decrements in.position by 1.
+	 * @return
+	 * @throws EOFException
+	 */
 	public ByteBuffer nextBlock() throws EOFException
 	{
 		if(end)
@@ -241,6 +244,11 @@ public class Exploder extends ExploderConstants
 		}
 		
 		end = true;
+		if(in.position()>0)
+		{
+			//We grabbed an extra byte.
+			in.position(in.position()-1);
+		}
 		
 		return out;
 	}
@@ -248,34 +256,5 @@ public class Exploder extends ExploderConstants
 	public boolean remaining()
 	{
 		return !end;
-	}
-	
-	public ByteBuffer allBlocks() throws EOFException
-	{
-		ArrayList<ByteBuffer> blocks = new ArrayList<ByteBuffer>();
-		int total = 0;
-		while(remaining())
-		{
-			blocks.add(nextBlock());
-			total+=blocks.get(blocks.size()-1).limit();
-		}
-		
-		if(blocks.isEmpty())
-		{
-			return ByteBuffer.allocate(0);
-		}
-		else if(blocks.size()==1)
-		{
-			return blocks.get(0);
-		}
-		else
-		{
-			ByteBuffer tot = ByteBuffer.allocate(total);
-			for(ByteBuffer block: blocks)
-			{
-				tot.put(block);
-			}
-			return tot;
-		}
 	}
 }

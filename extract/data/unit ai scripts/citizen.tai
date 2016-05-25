@@ -1,0 +1,139 @@
+//
+// Citizen unit AI file
+//
+// Behaviors:
+//
+//		If given an order to gather, continue to do so until there are no more resources within
+//                 the visibility map and wander range.
+//		If not gathering resources, keep an eye out for enemy units, pursue and attack if spotted.
+//		If Idle, Gathering Resources, or Moving and Taking damage, flee to the nearest
+//                 Town Center.
+//
+//	Notes:
+//
+//		At some point, need to have citizen search for something to do if idle.
+//		Add transition from Idle when enemies spotted to flee.
+//
+//	Known Problems:
+//
+
+
+////////////////////////
+// Resource Gathering //
+////////////////////////
+
+#include("Gather.tai")
+
+
+//////////////////////////
+// Building & Repairing //
+//////////////////////////
+
+// assumption here is that there are still some waypoints left
+CheckBuildSiteValidity
+{
+	allof(BuildingRepaired,GoalIsBuild,BuildQueueEmpty) true(TaskSmartCitizen)
+	anyof(BuildingDestroyed,BuildingRepaired) true(Idle)
+	BuildSiteValid true(Advance) false(CheckOwner)
+}
+
+// assumption here is that there are still some waypoints left
+CheckBuildSiteVisibility
+{
+	allof(BuildingRepaired,GoalIsBuild,BuildQueueEmpty) true(TaskSmartCitizen)
+	anyof(BuildingDestroyed,BuildingRepaired) true(Idle)
+	BuildSiteVisible true(CheckBuildSiteValidity) false(Advance)
+}
+
+CheckOwner
+{
+	OwnerIsHuman true(ConvertToLocationGoal)
+	OwnerIsComputer true(WaitForBuildSiteToClear)
+}
+
+// assumption here is that there are no more waypoints
+CheckRepairSiteAccessibility
+{
+	allof(BuildingRepaired,GoalIsBuild,BuildQueueEmpty) true(TaskSmartCitizen)
+	anyof(BuildingDestroyed,BuildingRepaired) true(Idle)
+	RepairIsSpecialUnit true(ChangeTargetForSpecialRepair)
+	RepairSiteInRange false(Idle)
+	BuildSiteValid true(WaitForBuildSiteToClear) false(CheckOwner)
+	NextWaypointRetrieved false(PrepareToMove)
+}
+
+ConvertToLocationGoal
+{
+	GoalIsLocation true(PrepareToMove)
+}
+
+MoveToRepairSite
+{
+	allof(BuildingRepaired,GoalIsBuild,BuildQueueEmpty) true(TaskSmartCitizen)
+	anyof(BuildingDestroyed,BuildingRepaired) true(Idle)
+	RepairSiteInRange false(PrepareToMove)
+	BuildSiteValid true(WaitForBuildSiteToClear) false(ConvertToLocationGoal)
+}
+
+ReacquireGoal
+{
+	GoalIsRepairSite true(CheckRepairSiteAccessibility)
+}
+
+RepairBuilding
+{
+	allof(BuildingRepaired,GoalIsBuild,BuildQueueEmpty) true(TaskSmartCitizen)
+	anyof(BuildingRepaired,BuildingDestroyed) true(Idle)
+	anyof(CannotAffordRepair,BuildingNotPaidFor) true(InsufficientResources)
+	allof(TakingLightDamage,OwnerIsComputer) true(UnderAttack)
+}
+
+InsufficientResources
+{
+	AlwaysTrue true(Idle)
+}
+
+ChangeTargetForSpecialRepair
+{
+	AlwaysTrue true(MoveToRepairSite)
+}
+
+TaskSmartCitizen
+{
+	SmartTaskNotAssigned true(Idle)
+}
+
+WaitForBuildSiteToClear
+{
+	allof(BuildingRepaired,GoalIsBuild,BuildQueueEmpty) true(TaskSmartCitizen)
+	anyof(BuildingRepaired,BuildingDestroyed) true(Idle)
+	RepairIsSpecialUnit true(ChangeTargetForSpecialRepair)
+	BuildSiteClear true(RepairBuilding)
+}
+
+
+//////////////////
+// Other Stuff //
+/////////////////
+
+Idle
+{
+	BuildingInBuildQueue true(MoveToRepairSite)
+	TakingLightDamage true(FleeDanger)
+}
+
+#include("Generic Attack.tai")
+
+// important that this go BEFORE including generic movement
+GetNextMoveWaypoint
+{
+	allof(GoalIsResource,ResourceTargetIsTree,ResourceInRange) true(GatherResource)
+	allof(GoalIsStorage,StorageInRange) true(AddResourceToStorage)
+	ShouldMoveToNextAutoWaypoint true(GetNextAutoWaypoint)
+	allof(GoalIsRepairSite,NextWaypointRetrieved) true(CheckBuildSiteVisibility)
+	allof(GoalIsWaitingArea,CanUseThisTileAsWaitingArea) true(MoveToWaitingArea)
+}
+
+#include("Generic Movement.tai")
+
+#include("Generic Death.tai")

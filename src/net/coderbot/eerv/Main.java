@@ -2,6 +2,7 @@ package net.coderbot.eerv;
 
 import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
@@ -16,6 +17,12 @@ public class Main
 {
 	public static void main(String[] args) throws DecoderException, IOException
 	{
+		/*Path path = Paths.get("/home/coderbot/wingames/ee1/Data/Scenarios/een1ve1s_the basics.scn");
+		PKDecoder pk = new PKDecoder(path);
+		ByteBuffer bb = pk.decode();
+		Path out = Paths.get("/home/coderbot/wingames/ee1/Data/Scenarios/een1ve1s_the basics_decompressed.scn");
+		Files.write(out, bb.array());*/
+		
 		//Path path = Paths.get("/home/coderbot/.wine/drive_c/Sierra/Empire Earth/Data/Campaigns/EELearningCampaign.ssa");
 		//Path path = Paths.get("/home/coderbot/.wine/drive_c/Sierra/Empire Earth/Data/Campaigns/EETheBritish.ssa");
 		//Path ssapath = Paths.get("/home/coderbot/.wine/drive_c/Sierra/Empire Earth/Data/data.ssa");
@@ -25,43 +32,188 @@ public class Main
 		dec.close();
 		PKDecoder pk = new PKDecoder((ByteBuffer)null);*/
 		
-		SCN.test(null,"/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/learning_thebasics");
-		SCN.test("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/scn/testcase0.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/testcase0");
+		//SCN.test(null,"/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/learning_thebasics");
+		/*SCN.test("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/scn/testcase0.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/testcase0");
 		SCN.test("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/scn/testcase0_bottom.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/testcase0_bottom");
 		SCN.test("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/scn/testcase4_trigger.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/testcase4_trigger");
-		SCN.test("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/scn/testcase5_condition_AllComputerStone_0.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/testcase5_condition_AllComputerStone_0");
-		SCN.test("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/scn/testcase5_condition_AllHumanStone_0.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/testcase5_condition_AllHumanStone_0");
-		SCN.test("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/scn/testcase5_effect_action_none_agressive.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/testcase5_effect_action_none_agressive");
+		*///SCN.test("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/scn/testcase5_condition_AllComputerStone_0.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/testcase5_condition_AllComputerStone_0");
+		//SCN.test("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/scn/testcase5_condition_AllHumanStone_0.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/testcase5_condition_AllHumanStone_0");
+		/*SCN.test("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/scn/testcase5_effect_action_none_agressive.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/testcase5_effect_action_none_agressive");
 		SCN.test("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/scn/testcase5_object.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/testcase5_object");
-		SCN.test("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/scn/testcase6_rect_topleft.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/testcase6_rect_topleft");
-		SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/...- nano 01.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/nano 01/");
-		SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/...- nano 02.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/nano 02/");
-		SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/ww1 - ww2 01.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/ww1ww2 01/");
-		SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/CRASH0.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/crash0/");
-		SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/Dufus Ryan Mom Tough Game.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/tough/");
-		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/ElevTR.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/elevtr/");
+		*///SCN.test("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/scn/testcase6_rect_topleft.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/testcase6_rect_topleft");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/...- nano 01.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/nano 01/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/...- nano 02.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/nano 02/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/ww1 - ww2 01.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/ww1ww2 01/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/CRASH0.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/crash0/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/Dufus Ryan Mom Tough Game.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/tough/");
+		/*SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/ElevTR.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/elevtr/");
 		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/FlagFilled-Save.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/flagfilled-save/");
 		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/AmbientsBL.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/ambientsbl/");
 		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/GameSettings.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/gamesettings/");
 		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/GameSettingsAllAllies.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/gamesettingsaa/");
 		
 		SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/GS_None.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/gs-none/");
-		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/GameSettingsTech_HumanAllDisabled.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/gamesettingstech/");
-		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/1_WorldObject.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/1wobj/");
-		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/2_WorldObject.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/2wobj/");
-		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WorldObjectAloeTL.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/wobjaloeTL/");
-		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WorldObjectAloeBL.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/wobjaloeBL/");
-		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WorldObjectAloeTR.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/wobjaloeTR/");
-		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WorldObjectAloeBR.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/wobjaloeBR/");
-		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WorldObjectAloeDeleted.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/wobjaloeDEL/");
-		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WorldObjectEagle1.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/wobjeagle/");
-		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WorldObjectEagle2.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/wobjeagle2/");
-		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WorldObjectFish.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/wobjfish/");
-		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WorldObjectChicken1.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/wobjchicken/");
-		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WorldObjectIronOre1.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/wobjiron/");
 		
-		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Attrs.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/attrs/");
+		*///SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/1_WorldObject.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/1wobj/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/2_WorldObject.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/2wobj/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WorldObjectAloeTL.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/wobjaloeTL/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WorldObjectAloeBL.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/wobjaloeBL/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WorldObjectAloeTR.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/wobjaloeTR/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WorldObjectAloeBR.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/wobjaloeBR/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WorldObjectAloeDeleted.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/wobjaloeDEL/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WorldObjectEagle1.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/wobjeagle/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WorldObjectEagle2.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/wobjeagle2/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WorldObjectFish.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/wobjfish/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WorldObjectChicken1.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/wobjchicken/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WorldObjectIronOre1.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/wobjiron/");
 		
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Attrs.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/attrs/");
+		
+		/*SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Trigger_NotTrue_NothingAAOO.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Condition_P1Stone_4321.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Condition_Trigger.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Trigger_ActiveFor1234_ANANA.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Trigger_Looping.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Trigger_InCinematic.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Trigger_2.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Condition_PAttr.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Condition_PTech.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Condition_TAttr.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Condition_PDipl.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Condition_GAttr.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Condition_CMContains.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Conditions.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Conditions_Trigger.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Conditions_Diplomacy.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Conditions_ChatMessageContains.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Conditions_GameAttribute.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Conditions_Tech.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");*/
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Effects.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Effects_Object.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Effects_Player.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Effects_Game.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Effects_SetAttr.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Effects_ScriptCam.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Effects_AI.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		//SCN.test("extract/-- Eternal Darkness 3 -- Breakthrough -- v1.43.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Objects_Specification.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Areas.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/Clock_speed1_00:00:00.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/Clock_speed1_00:00:01.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/Clock_speed1_00:00:02.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/Clock_speed1_00:00:10.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/Clock_speed1_00:00:30.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Player_CPU_Shared.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Player_CPU_Shared_NoneSet.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		/*SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Player_CitizenPercentage.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Map_-24.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Map_40.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Map_40_4Corners.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Map_25x15.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");*/
+		
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WObj_Wolf_BismarkPalm.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WObj_Walrus_BismarkPalm.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WObj_Vermin_BismarkPalm.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WObj_Tiger_BismarkPalm.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WObj_Ostrich_BismarkPalm.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WObj_Horse_BismarkPalm.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WObj_Hippo_BismarkPalm.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WObj_Goat_BismarkPalm.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WObj_Giraffe_BismarkPalm.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WObj_Flies_BismarkPalm.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		/*SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WObj_Elephant_BismarkPalm.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WObj_Deer_BismarkPalm.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WObj_Chicken_BismarkPalm.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WObj_Canine_BismarkPalm.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WObj_Artifact_BismarkPalm.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WObj_Eagle_BismarkPalm.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WObj_Tarpit_BismarkPalm.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WObj_Gaslight_BismarkPalm.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WObj_Flag2_BismarkPalm.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		*///SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WObj_Flag1_BismarkPalm.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		/*SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WObj_Statue_BismarkPalm.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WObj_Streetlamp_BismarkPalm.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		*/
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WObj_Eagle_NoWaypoint.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/WObj_Eagle_Waypoint1.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		/*SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Civ_HumanCarthage_ComputerNONE.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Civ_HumanByzantineRome_ComputerNONE.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Civ_HumanBabylon_ComputerNONE.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		*/ //SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Civ_HumanAssyrianEmpire_ComputerNONE.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		   //SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Civ_HumanAncientGreece_ComputerNONE.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Civ_HumanNONE_ComputerNONE.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/GameSettingsTech_HumanAllDisabled.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/gamesettingstech/");
+		
+		
+		//Clock_speed1_00:00:XX
+		/*
+*: name
+*: desc
+MEDIA: duration
+MEDIA: message
+#: u0
+#: u1
+OBJECT: className
+MEDIA: soundFile
+MEDIA: line
+
+PLAYER: attributeId
+*: byteField0
+MEDIA: playerId
+OBJECT: playerId
+PLAYER+AI: playerPrimaryId
+PLAYER: playerSecondaryId
+MEDIA: subType
+#: u2
+PLAYER: subType
+TRIGGER: setState
+*: type
+OBJECT: subType
+OBJECT: techId
+GAME: databaseId
+GAME: areaId
+GAME: objectId
+GAME: daylightHour
+GAME: dayNightTime
+GAME: subType
+MEDIA: changeTextTarget
+OBJECT: attributeId
+#: u3
+#: u4
+#: u5
+OBJECT: attributeModifyType
+OBJECT: attributeValue
+union{OBJECT+MEDIA: objectId, AI: favoriteAir}
+OBJECT: stance
+OBJECT: task
+OBJECT: areaId
+#: u6
+PLAYER: awardedCivPoints
+PLAYER: attributeModifyType
+PLAYER: attributeValue
+PLAYER: areaId
+PLAYER: objectId
+TRIGGER: triggerId
+*: byteField1
+*: byteField2
+AI: subType
+union{PLAYER: secondaryAreaId, AI: areaId}
+AI: variableId
+*: byteField3
+AI: floatValue
+union{MEDIA+PLAYER: camScrollSpeed, AI: union{favoriteLand, intValue0}}
+union{MEDIA+PLAYER: camZoomLevel, AI: union(favoriteSea, intValue1)}
+AI: listSize
+AI: objectIdList[]
+#: u7
+union{PLAYER: secondaryObjectId, AI: objectId}
+AI: toggleId
+*: byteField4
+*: id
+*: byteField5
+		 */
 		
 		//System.exit(0);
 		

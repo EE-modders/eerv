@@ -1,0 +1,26 @@
+//
+// Stationary Naval Resource AI file
+//
+// Behaviors:
+//
+//		Specifically for non-moving fish.
+//
+//	Notes:
+//
+//	Known Problems:
+//
+
+Dying
+{
+	AlwaysTrue true(ResourcesDepleting)
+}
+
+ResourcesDepleting
+{
+	ResourceDepleted true(UnitRotting)
+}
+
+UnitRotting
+{
+	UnitRottedAway true(Dead)
+}
