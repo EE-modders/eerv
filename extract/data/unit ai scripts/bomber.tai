@@ -1,0 +1,17 @@
+//
+// Bomber unit AI file
+//
+// Behaviors:
+//
+//		AI for bombers.
+//
+//	Notes:
+//
+//	Known Problems:
+//
+
+#include("Generic Air Attack.tai")
+#include("Generic Air Movement.tai")
+#include("Generic Death.tai")
+
+

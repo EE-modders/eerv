@@ -5,6 +5,9 @@ import java.nio.charset.StandardCharsets;
 
 public class Player 
 {
+	boolean u0;
+	boolean u1;
+	boolean sharedLos;
 	boolean human;
 	boolean inactive;
 	boolean defeated;
@@ -17,9 +20,9 @@ public class Player
 	
 	public Player(ByteBuffer data)
 	{
-		data.get();
-		data.get();
-		data.get();
+		u0 = data.get()==1;
+		u1 = data.get()==1;
+		sharedLos = data.get()==1;
 		int bitfield = data.getInt();
 		human = (bitfield&1)==1;
 		inactive = (bitfield&4)==4;
@@ -30,8 +33,8 @@ public class Player
 		name = (asciiZ.length>0)?new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1):"";
 		
 		unknown = data.getFloat();
-		color = data.getInt();
 		id = data.getInt();
+		color = data.getInt();
 		team = data.getInt();
 		startingCitizens = data.getInt();
 		
@@ -45,7 +48,7 @@ public class Player
 	
 	public String toString()
 	{
-		return (human?"H":"-")+(inactive?"I":"-")+(defeated?"D":"-")+" "+unknown+" \tcolor: "+color+" \tid: "+id+" \tteam: "+team+" \tstartingCitizens: "+startingCitizens
+		return (u0?"?":"-")+(u1?"?":"-")+(sharedLos?"S":"-")+(human?"H":"-")+(inactive?"I":"-")+(defeated?"D":"-")+" "+unknown+" \tcolor: "+color+" \tid: "+id+" \tteam: "+team+" \tstartingCitizens: "+startingCitizens
 				+" \tname: "+name;
 	}
 }

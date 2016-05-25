@@ -1,0 +1,20 @@
+//
+// Sea Transport unit AI file
+//
+// Behaviors:
+//
+//		Keep an eye out for enemy units, DO NOT pursue.
+//
+//	Notes:
+//
+//	Known Problems:
+//
+
+// Override these three transitions to inhibit pursuit
+CheckRange
+{
+	UnitInWeaponRange true(FaceEnemyUnit) false(Idle)
+}
+
+#include("Transport.tai")
+

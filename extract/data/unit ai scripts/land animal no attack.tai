@@ -1,0 +1,38 @@
+//
+// Land unit AI file
+//
+// Behaviors:
+//
+//		Keep an eye out for enemy units, pursue and attack if spotted.
+//
+//	Notes:
+//
+//	Known Problems:
+//
+
+AnimalRetaliation
+{
+	CanFlee true(RunFromAttacker) false(ReacquireGoal)
+}
+
+UnderAttack
+{
+	HasGroupFlee true(AnimalRetaliation)
+	allof(IsAttackerInRetaliationRange,CanDamageAttacker,AttackerIsReachable) true(RetaliateAgainstAttacker)
+	CanFlee true(RunFromAttacker) false(ReacquireGoal)
+}
+
+#include("Generic Attack.tai")
+
+InitialAttackState
+{
+	Reloaded remove()
+	GoalIsAttackLocation remove()
+	UnitInWeaponRange remove()
+	FacingEnemyUnit remove()
+	AlwaysTrue true(Idle)
+}
+
+#include("Generic Movement.tai")
+#include("Generic Death.tai")
+

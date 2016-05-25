@@ -1,0 +1,127 @@
+//
+// Priest unit AI file
+//
+// Behaviors:
+//
+//		At players request, convert enemy units.
+//
+//	Notes:
+//
+//		Add transition from Idle when enemies spotted to flee.
+//
+//	Known Problems:
+//
+
+Idle
+{
+	CanISeeEnemy true(CheckRange)
+	AmIUnderAttack true(UnderAttack)
+}
+
+FaceEnemyUnit
+{
+	allof(AmIUnderAttack,GoalIsNotPlayerInitiated,CanFlee) true(RunFromAttacker)
+	anyof(EnemyUnitDestroyed,CeaseFire,UnitNotOnMap,EnemyWithinMinimumRange) true(ShouldIReturnToInitialContactLocation)
+	allof(EnemyUnitNoLongerVisible,GoalIsNotPlayerInitiated) true(ShouldIReturnToInitialContactLocation)
+	UnitInWeaponRange false(ShouldIFollowEnemyUnit)
+	FacingEnemyUnit true(ConvertEnemyUnit)	
+}
+
+ShouldIFollowEnemyUnit
+{
+	// these two need to be ordered this way: 2nd statement is TRUE case of first statement 
+	anyof(CanIMoveFreely,GoalIsPlayerInitiated) false(ShouldIReturnToInitialContactLocation)
+	anyof(CanIPursuePastInitialContactLOS,EnemyInsideInitialContactLOS,GoalIsPlayerInitiated) true(PrepareToMove) false(ShouldIReturnToInitialContactLocation)
+}
+
+ShouldIReturnToInitialContactLocation
+{
+	allof(HasValidInitialContactLocation,ReturnsToInitialContactLocation,GoalIsNotPlayerInitiated) true(ReturnToInitialContactLocation) false(Idle)
+}
+
+ReturnToInitialContactLocation
+{
+	AlwaysTrue true(PrepareToMove)
+}
+
+ReacquireGoal
+{
+	GoalIsConversion true(ConvertEnemyUnit) 
+}
+
+// is the target in weapon range already?
+CheckRange
+{
+	anyof(EnemyUnitDestroyed,CeaseFire,UnitNotOnMap,EnemyWithinMinimumRange) true(ShouldIReturnToInitialContactLocation)
+	allof(EnemyUnitNoLongerVisible,GoalIsNotPlayerInitiated) true(ShouldIReturnToInitialContactLocation)
+	UnitInWeaponRange true(ConvertEnemyUnit) false(ShouldIFollowEnemyUnit)
+}
+
+ConvertEnemyUnit
+{
+	// allof(AmIUnderAttack,GoalIsNotPlayerInitiated,CanFlee) true(RunFromAttacker)
+	EnemyUnitDestroyed true(ShouldIReturnToInitialContactLocation)
+	EnemyUnitConverted true(FindSafeLocation)
+	ConvertGoalStillValid false(ShouldIReturnToInitialContactLocation)
+	UnitInWeaponRange false(ShouldIFollowEnemyUnit)
+	EnemyUnitInsideFiringArch false(FaceEnemyUnit)
+	Reloaded false(WaitForReload)	
+}
+
+PrepareToMove
+{
+	EnemyUnitDestroyed true(ShouldIReturnToInitialContactLocation)
+}
+
+Advance
+{
+	EnemyUnitDestroyed true(ShouldIReturnToInitialContactLocation)
+	EnemyUnitConverted true(FindSafeLocation)
+	allof(GoalIsConversion,UnitInWeaponRange) true(ConvertEnemyUnit)
+}
+
+FindSafeLocation
+{
+	CanITargetEnemies true(ShouldIReturnToInitialContactLocation)
+	SafeLocationFound false(ShouldIReturnToInitialContactLocation)
+}
+
+WaitForReload
+{
+	allof(AmIUnderAttack,GoalIsNotPlayerInitiated,CanFlee) true(RunFromAttacker)
+	EnemyUnitDestroyed true(ShouldIReturnToInitialContactLocation)
+	ConvertGoalStillValid false(ShouldIReturnToInitialContactLocation)
+	Reloaded true(ConvertEnemyUnit)
+	UnitInWeaponRange false(ShouldIFollowEnemyUnit)	
+}
+
+InitialAttackState
+{
+	//Reloaded			false(WaitForReload)
+	GoalIsConversion	true(ConvertEnemyUnit)
+	// we shouldn't hit this trigger, but just in case... 
+	AlwaysTrue			true(ShouldIReturnToInitialContactLocation)
+}
+
+ReacquireEnemyUnit
+{
+	EnemyUnitReachable true(CheckRange) false(ShouldIReturnToInitialContactLocation)
+}
+
+UnderAttack
+{
+	// allof(CanITargetEnemies,EnemyIsBuilding,TargetIsNotDefensiveBuilding,IsAttackerInRetaliationRange,CanDamageAttacker,AttackerIsReachable) true(RetaliateAgainstAttacker)
+	allof(CanDamageAttacker,HasEnoughManaForConversion,IsAttackerInRetaliationRange,AttackerIsLegalConversionTarget,AttackerIsReachable) true(RetaliateAgainstAttacker) 
+	CanFlee true(RunFromAttacker)
+	UnitHasGoal true(ReacquireGoal)
+}
+
+RunFromAttacker
+{
+	AlwaysTrue true(PrepareToMove)
+}
+
+RetaliateAgainstAttacker
+{
+	GoalIsUnit true(CheckRange) false(PrepareToMove)
+}

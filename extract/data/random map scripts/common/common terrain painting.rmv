@@ -1,0 +1,185 @@
+//////////////////////////////////////////////////////////////////////
+//
+// Common Terrain Painting.rmv
+//
+// Describes a common set of terrain painting attributes.
+//
+// Copyright © 1998, Stainless Steel Studios, Inc. All rights reserved.
+// PROPRIETARY and CONFIDENTIAL.
+//
+// $Author: Scott Marison $
+// $Date: 8/28/01 3:36p $
+// $Revision: 10 $
+//
+//////////////////////////////////////////////////////////////////////
+
+
+#if			NOTDEFINED(COMMON_TERRAIN_PAINTING_RMV)
+#define		(COMMON_TERRAIN_PAINTING_RMV,1)
+
+
+// grass, snow or desert map?
+#if			DEFINED(kGrassMap)
+
+
+////////////////////////////////////////////////////////////////////
+// declare the terrains for grass 
+
+#define				(kGrassTerrain,				100)
+#define				(kGrassTuftsTerrain,		101)
+#define				(kGrassTallTerrain,			102)
+#define				(kGrassPatchesTerrain,		103)
+
+DeclareRandomMapTerrain			(kGrassTerrain,				Grass)
+RandomMapTerrainRange			(kGrassTerrain,				-2,			-1,			Beach)
+RandomMapTerrainRange			(kGrassTerrain,				-8,			-3,			Underwater)
+RandomMapTerrainRange			(kGrassTerrain,				-10,		-9,			Rock1)
+
+DeclareRandomMapTerrain			(kGrassTuftsTerrain,		Grass-Tufts)
+RandomMapTerrainRange			(kGrassTuftsTerrain,		-2,			-1,			Beach)
+RandomMapTerrainRange			(kGrassTuftsTerrain,		-10,		-3,			Rock1)
+
+DeclareRandomMapTerrain			(kGrassTallTerrain,			Grass-Tall)
+RandomMapTerrainRange			(kGrassTallTerrain,			-2,			-1,			Beach)
+RandomMapTerrainRange			(kGrassTallTerrain,			-10,		-3,			Rock1)
+
+DeclareRandomMapTerrain			(kGrassPatchesTerrain,		Grass-Patches)
+RandomMapTerrainRange			(kGrassPatchesTerrain,		-2,			-1,			Beach)
+RandomMapTerrainRange			(kGrassPatchesTerrain,		-10,		-3,			Rock1)
+
+
+////////////////////////////////////////////////////////////////////
+// grass terrain attributes		lower		upper		terrain type
+TerrainRegion					(0,			25,			kGrassTerrain)
+TerrainRegion					(26,		32,			kGrassTuftsTerrain)
+TerrainRegion					(33,		50,			kGrassTerrain)
+TerrainRegion					(51,		53,			kGrassTallTerrain)
+TerrainRegion					(54,		75,			kGrassTerrain)
+TerrainRegion					(76,		81,			kGrassPatchesTerrain)
+TerrainRegion					(82,		100,		kGrassTerrain)
+
+TerrainChaos					2.0
+
+CliffTexture					DefaultCliff
+
+ResourceTerrainTexture			(Tree,		Grass-Sparse)
+ResourceTerrainTexture			(Berry,		Grass-Sparse)
+ResourceTerrainTexture			(Stone,		Sand-Medium)
+ResourceTerrainTexture			(Gold,		Sand-Medium)
+ResourceTerrainTexture			(Iron,		Sand-Medium)
+
+
+#elif		DEFINED(kWinterMap)
+
+
+////////////////////////////////////////////////////////////////////
+// declare the terrains for winter 
+
+#define				(kSnowTerrain,			200)
+#define				(kSnowTuftsTerrain,		201)
+#define				(kSnowGrassTerrain,		202)
+#define				(kIceTerrain,			203)
+
+DeclareRandomMapTerrain			(kSnowTerrain,			Snow)
+RandomMapTerrainRange			(kSnowTerrain,			-2,			-1,			Ice)
+RandomMapTerrainRange			(kSnowTerrain,			-8,			-3,			Underwater)
+RandomMapTerrainRange			(kSnowTerrain,			-10,		-9,			Rock1)
+
+DeclareRandomMapTerrain			(kSnowTuftsTerrain,		Snow-Tufts)
+RandomMapTerrainRange			(kSnowTuftsTerrain,		-2,			-1,			Ice)
+RandomMapTerrainRange			(kSnowTuftsTerrain,		-10,		-3,			Rock1)
+
+DeclareRandomMapTerrain			(kSnowGrassTerrain,		Snow-GrassPatches)
+RandomMapTerrainRange			(kSnowGrassTerrain,		-2,			-1,			Ice)
+RandomMapTerrainRange			(kSnowGrassTerrain,		-10,		-3,			Rock1)
+
+DeclareRandomMapTerrain			(kIceTerrain,			Ice)
+RandomMapTerrainRange			(kIceTerrain,			-2,			-1,			Ice)
+RandomMapTerrainRange			(kIceTerrain,			-10,		-3,			Rock1)
+
+
+////////////////////////////////////////////////////////////////////
+// grass terrain attributes		lower		upper		terrain type
+TerrainRegion					(0,			25,			kSnowTerrain)
+TerrainRegion					(26,		32,			kSnowGrassTerrain)
+TerrainRegion					(33,		45,			kSnowTerrain)
+TerrainRegion					(46,		51,			kIceTerrain)
+TerrainRegion					(52,		62,			kSnowTerrain)
+TerrainRegion					(63,		73,			kSnowTuftsTerrain)
+TerrainRegion					(74,		86,			kSnowTerrain)
+TerrainRegion					(87,		93,			kSnowTuftsTerrain)
+TerrainRegion					(94,		100,		kSnowTerrain)
+
+TerrainChaos					2.0
+
+CliffTexture					WinterCliff
+
+ResourceTerrainTexture			(Tree,		Snow-Tufts)
+ResourceTerrainTexture			(Berry,		Snow-Tufts)
+ResourceTerrainTexture			(Stone,		Snow-DirtPatches)
+ResourceTerrainTexture			(Gold,		Snow-DirtPatches)
+ResourceTerrainTexture			(Iron,		Snow-DirtPatches)
+
+
+#elif		DEFINED(kDesertMap)
+
+
+////////////////////////////////////////////////////////////////////
+// declare the terrains for grass 
+
+#define				(kDesertTerrain,				300)
+#define				(kSandCrackedTerrain,			301)
+#define				(kSandFineTerrain,				302)
+#define				(kSandMediumTerrain,			303)
+#define				(kDesertGrassPatchesTerrain,	304)
+
+DeclareRandomMapTerrain			(kSandFineTerrain,				Sand-Fine)
+RandomMapTerrainRange			(kSandFineTerrain,				-2,			-1,			Desert)
+RandomMapTerrainRange			(kSandFineTerrain,				-8,			-3,			Underwater)
+RandomMapTerrainRange			(kSandFineTerrain,				-10,		-9,			Rock1)
+																
+DeclareRandomMapTerrain			(kSandCrackedTerrain,			Sand-Cracked)
+RandomMapTerrainRange			(kSandCrackedTerrain,			-2,			-1,			Desert)
+RandomMapTerrainRange			(kSandCrackedTerrain,			-10,		-3,			Rock1)
+																
+DeclareRandomMapTerrain			(kDesertTerrain,				Desert)
+RandomMapTerrainRange			(kDesertTerrain,				-2,			-1,			Desert)
+RandomMapTerrainRange			(kDesertTerrain,				-10,		-3,			Rock1)
+																
+DeclareRandomMapTerrain			(kSandMediumTerrain,			Sand-Medium)
+RandomMapTerrainRange			(kSandMediumTerrain,			-2,			-1,			Desert)
+RandomMapTerrainRange			(kSandMediumTerrain,			-10,		-3,			Rock1)
+
+DeclareRandomMapTerrain			(kDesertGrassPatchesTerrain,	Grass-Patches)
+RandomMapTerrainRange			(kDesertGrassPatchesTerrain,	-2,			-1,			Desert)
+RandomMapTerrainRange			(kDesertGrassPatchesTerrain,	-10,		-3,			Rock1)
+
+
+////////////////////////////////////////////////////////////////////
+// grass terrain attributes		lower		upper		terrain type
+TerrainRegion					(0,			10,			kSandFineTerrain)
+TerrainRegion					(11,		20,			kSandMediumTerrain)
+TerrainRegion					(21,		29,			kDesertTerrain)
+TerrainRegion					(30,		45,			kSandFineTerrain)
+TerrainRegion					(46,		54,			kDesertGrassPatchesTerrain)
+TerrainRegion					(55,		64,			kSandMediumTerrain)
+TerrainRegion					(65,		72,			kDesertTerrain)
+TerrainRegion					(73,		79,			kSandMediumTerrain)
+TerrainRegion					(80,		92,			kSandFineTerrain)
+TerrainRegion					(93,		100,		kSandCrackedTerrain)
+
+TerrainChaos					2.0
+
+CliffTexture					DefaultCliff
+
+ResourceTerrainTexture			(Tree,		Grass-Sparse)
+ResourceTerrainTexture			(Berry,		Grass-Sparse)
+ResourceTerrainTexture			(Stone,		Pebbles-Small)
+ResourceTerrainTexture			(Gold,		Pebbles-Small)
+ResourceTerrainTexture			(Iron,		Pebbles-Small)
+
+
+#endif		// DEFINED(kGrassMap)
+
+
+#endif		// NOTDEFINED(COMMON_TERRAIN_PAINTING_RMV)

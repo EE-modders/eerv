@@ -1,0 +1,227 @@
+////////////////////////////////////////////////////////////////////
+//
+// Tourney Common Initial Units.rmv
+//
+// This rmv file describes the common initial units setup for the 
+// following random maps: Plains, Continental, and Tournament Islands
+//
+// Copyright (c) 1998, Stainless Steel Studios, Inc. All rights reserved.
+// PROPRIETARY and CONFIDENTIAL.
+//
+// $Creator: Richard Bishop $ 
+// $Date: 9/13/01 12:31p $
+// $Revisions: 1 $
+//  
+// Version 1.1
+// 	-Changed player herds from two to one
+//	-Doubled the number of animals in player herds 
+//	-Pushed player herds out a couple of tiles for non-tiny games
+//	-Added extra animal herds if game starts in first or second epoch (Doesn't Work)
+//////////////////////////////////////////////////////////////////////
+
+
+#if			NOTDEFINED(TOURNEY_COMMON_INITIAL_UNITS_RMV)
+#define			(TOURNEY_COMMON_INITIAL_UNITS_RMV,1)
+
+#if			DEFINED(kGrassMap)
+
+//////////////////////////////////////////////////////////////////////
+// Animal units
+
+//////////////////////////////////////////////////////////////////////
+//Animals available to the random maps
+
+AvailableAnimals			(Res-Deer, Res-Giraffe, Res-Goat, Res-Horse, Res-Wolf, Res-Elephant, Res-Ostrich, Res-Tiger)
+
+//////////////////////////////////////////////////////////////////////
+// Animals available to be placed as herds
+
+#define		(kDeerHerd,			10)
+#define		(kGiraffeHerd,			11)
+#define		(kElephantHerd,			12)
+#define		(kGoatHerd,			13)
+#define		(kOstrichHerd,			14)
+#define		(kHorseHerd,			16)
+
+//////////////////////////////////////////////////////////////////////
+// Animal herd/# in herd/Min. dist. From TC/Max. dist. From TC
+
+#if		IsTinyMap
+
+DefineHerd	(kDeerHerd,		Res-Deer,		4,	9,	10)
+DefineHerd	(kGiraffeHerd,		Res-Giraffe,		4,	9,	10)
+DefineHerd	(kElephantHerd,		Res-Elephant,		2,	9,	10)
+DefineHerd	(kGoatHerd,		Res-Goat,		4,	9,	10)
+DefineHerd	(kOstrichHerd,		Res-Ostrich,		4,	9,	10)
+DefineHerd	(kHorseHerd,		Res-Horse,		4,	9,	10)
+
+#else
+
+DefineHerd	(kDeerHerd,		Res-Deer,		4,	12,	14)
+DefineHerd	(kGiraffeHerd,		Res-Giraffe,		4,	12,	14)
+DefineHerd	(kElephantHerd,		Res-Elephant,		2,	12,	14)
+DefineHerd	(kGoatHerd,		Res-Goat,		4,	12,	14)
+DefineHerd	(kOstrichHerd,		Res-Ostrich,		4,	12,	14)
+DefineHerd	(kHorseHerd,		Res-Horse,		4,	12,	14)
+
+#endif
+
+//////////////////////////////////////////////////////////////////////
+// Define a set of random herds from which to choose
+
+DefineRandomHerdSet			(kDeerHerd, kGoatHerd, kGiraffeHerd, kElephantHerd, kHorseHerd, kOstrichHerd)
+
+/////////////////////////////////////////////////////////////////////
+// Place random herds per player.  Random herds in neutral land.
+
+RandomHerdPerPlayer				1
+RandomHerdPerNeutral				2
+
+#elif		DEFINED(kWinterMap)
+
+
+//////////////////////////////////////////////////////////////////////
+// Animal units
+
+//////////////////////////////////////////////////////////////////////
+//Animals available to the random maps
+
+AvailableAnimals			(Res-Deer, Res-Goat, Res-Horse)
+
+//////////////////////////////////////////////////////////////////////
+// Animals available to be placed as herds
+
+#define		(kDeerHerd,				10)
+#define		(kGoatHerd,				13)
+#define		(kHorseHerd,				16)
+
+//////////////////////////////////////////////////////////////////////
+// Animal herd/# in herd/Min. dist. From TC/Max. dist. From TC
+
+#if		IsTinyMap
+
+DefineHerd	(kDeerHerd,		Res-Deer,		4,	9,	10)
+DefineHerd	(kGoatHerd,		Res-Goat,		4,	9,	10)
+DefineHerd	(kHorseHerd,		Res-Horse,		4,	9,	10)
+
+#else
+
+DefineHerd	(kDeerHerd,		Res-Deer,		4,	12,	14)
+DefineHerd	(kGoatHerd,		Res-Goat,		4,	12,	14)
+DefineHerd	(kHorseHerd,		Res-Horse,		4,	12,	14)
+
+#endif
+
+//////////////////////////////////////////////////////////////////////
+// Define a set of random herds from which to choose
+
+DefineRandomHerdSet			(kDeerHerd, kGoatHerd, kHorseHerd)
+
+/////////////////////////////////////////////////////////////////////
+// Place random herds per player.  Random herds in neutral land.
+
+RandomHerdPerPlayer				1
+RandomHerdPerNeutral				2
+
+#elif		DEFINED(kDesertMap)
+
+//////////////////////////////////////////////////////////////////////
+// Animal units
+
+//////////////////////////////////////////////////////////////////////
+//Animals available to the random maps
+
+AvailableAnimals			(Res-Giraffe, Res-Goat, Res-Horse, Res-Elephant, Res-Ostrich)
+
+//////////////////////////////////////////////////////////////////////
+// Animals available to be placed as herds
+
+#define		(kGiraffeHerd,			11)
+#define		(kElephantHerd,			12)
+#define		(kGoatHerd,			13)
+#define		(kOstrichHerd,			14)
+#define		(kHorseHerd,			16)
+
+//////////////////////////////////////////////////////////////////////
+// Animal herd/# in herd/Min. dist. From TC/Max. dist. From TC
+
+#if		IsTinyMap
+
+DefineHerd	(kGiraffeHerd,		Res-Giraffe,		4,	9,	10)
+DefineHerd	(kElephantHerd,		Res-Elephant,		2,	9,	10)
+DefineHerd	(kGoatHerd,		Res-Goat,		4,	9,	10)
+DefineHerd	(kOstrichHerd,		Res-Ostrich,		4,	9,	10)
+DefineHerd	(kHorseHerd,		Res-Horse,		4,	9,	10)
+
+#else
+
+DefineHerd	(kGiraffeHerd,		Res-Giraffe,		4,	12,	14)
+DefineHerd	(kElephantHerd,		Res-Elephant,		2,	12,	14)
+DefineHerd	(kGoatHerd,		Res-Goat,		4,	12,	14)
+DefineHerd	(kOstrichHerd,		Res-Ostrich,		4,	12,	14)
+DefineHerd	(kHorseHerd,		Res-Horse,		4,	12,	14)
+
+#endif
+
+//////////////////////////////////////////////////////////////////////
+// Define a set of random herds from which to choose
+
+DefineRandomHerdSet			(kGoatHerd, kGiraffeHerd, kElephantHerd, kHorseHerd, kOstrichHerd)
+
+/////////////////////////////////////////////////////////////////////
+// Place random herds per player.  Random herds in neutral land.
+
+RandomHerdPerPlayer				1
+RandomHerdPerNeutral				2
+
+#endif		// DEFINED(kGrassMap)
+
+//////////////////////////////////////////////////////////////////////
+// Initial units		
+//
+// The common set of initial units is a capitol plus 20 citizens. the 
+// actual number of citizens placed on the map is affected by the citizen
+// handicap specified in the UI of the game.
+// 
+//					unit type		x	y		yaw
+PlaceUnit				(bCapitol,		-0.5,	-0.5)
+
+// first row on south side of building
+
+PlaceUnit				(Citizen,		-1,	-2,		180)
+PlaceUnit				(FemaleCitizen,		2,	1,		-90)
+
+PlaceUnit				(Citizen,		0,	-1.5,		180)
+PlaceUnit				(FemaleCitizen,		0.5,	-1.5,		180)
+
+PlaceUnit				(Citizen,		1,	-1.5,		180)
+
+// first row on east side of building
+PlaceUnit				(FemaleCitizen,		1.5,	-1,		-90)
+PlaceUnit				(Citizen,		1.5,	-0.5,		-90)
+
+PlaceUnit				(FemaleCitizen,		1.5,	0,		-90)
+PlaceUnit				(Citizen,		1.5,	0.5,		-90)
+
+PlaceUnit				(FemaleCitizen,		1.5,	1,		-90)
+
+// second row on south side of building
+PlaceUnit				(Citizen,		-1,	-1.5,		180)
+PlaceUnit				(FemaleCitizen,		-0.5,	-2,		180)
+															
+PlaceUnit				(Citizen,		0,	-2,		180)
+PlaceUnit				(FemaleCitizen,		0.5,	-2,		180)
+															
+PlaceUnit				(Citizen,		1,	-2,		180)
+
+// second row on east side of building
+PlaceUnit				(FemaleCitizen,		2,	-1,		-90)
+PlaceUnit				(Citizen,		2,	-0.5,		-90)
+													
+PlaceUnit				(FemaleCitizen,		2,	0,		-90)
+PlaceUnit				(Citizen,		2,	0.5,		-90)
+													
+PlaceUnit				(FemaleCitizen,		-0.5,	-1.5,		180)
+
+
+#endif		// NOTDEFINED(TOURNEY_COMMON_INITIAL_UNITS_RMV)

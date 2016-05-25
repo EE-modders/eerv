@@ -1,0 +1,20 @@
+//
+// Anti Matter storm AI file
+//
+// Behaviors:
+//
+//		Basically this is the helicopter ai file without patrol.
+//
+//	Notes:
+//
+//	Known Problems:
+//
+
+#include("Generic Attack.tai")
+#include("Generic Movement.tai")
+// remove obstacle repathing from helicopters -ckd
+Advance
+{
+	ObstacleDetected remove()
+}
+#include("Generic Death.tai")

@@ -1,0 +1,31 @@
+//
+//	Generic Death AI file
+//
+//	Behaviors:
+//
+//		Handles dying and rotting away.
+//
+//	Notes:
+//
+//	Common modifications:
+//
+//	Known Problems:
+//
+//	Usage:
+//
+
+// are we dying (hitpoints == 0)
+Dying
+{
+	DyingAnimationFinished true(ResourcesRotting)
+}
+
+ResourcesRotting
+{
+	ResourcesRottedAway true(UnitRotting)
+}
+
+UnitRotting
+{
+	UnitRottedAway true(Dead)
+}

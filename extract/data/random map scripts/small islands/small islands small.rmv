@@ -1,0 +1,1577 @@
+//////////////////////////////////////////////////////////////////////
+//
+// Small Island Small.rmv
+//
+// Copyright (c) 2000, Stainless Steel Studios, Inc. All rights reserved.
+// PROPRIETARY and CONFIDENTIAL.
+//
+// $Author: Scott Marison $
+// $Date: 8/13/01 5:43p $
+// $Revision: 26 $
+// $Revision: 26 $ 
+//   Adjusted number of neutrals and percent land
+// $Revision: 26 $Revision: 8 
+//   Adjusted Angle between team members
+// $Revision:
+//   Increased # of islands and amount of forest
+//  Revision: 10 tweaked land percent
+//  Revision: 11 Pushed players and outer neutrals toward the map edge 
+//  Revision: 12 Added hills
+//  Revision: 13 Lowered hills
+//  Revision: 15 Miniaturized
+//  Revision: 16 Elevation 
+//  Revision: 17 Revised # of resources 3 by 3
+//  Revision: 18 8+ player adjustment and enhanced resource placement. 
+//  Revision: 19 General Enhancements
+//  Revision: 23 Reduced Resources
+//  Revision: 26 Evened-out resource distribution 
+//  Revision: 26e Small Islands from Large Islands 
+//  Revision: 26f Added 1 island
+//  Revision: 26g Added 1 island in 2 player maps
+//
+//////////////////////////////////////////////////////////////////////
+
+#if			NOTDEFINED(SMALL_ISLANDS_TINY_RMV)
+#define		(SMALL_ISLANDS_TINY_RMV,1)
+
+//////////////////////////////////////////////////////////////////////
+// Definitions we are required to define for small island maps
+//////////////////////////////////////////////////////////////////////
+
+ResourcePlacementLimit (Gold, 	5,	10)
+ResourcePlacementLimit (Steel, 	5, 	10)
+ResourcePlacementLimit (Stone, 	5, 	10)
+ResourcePlacementLimit (Berry, 	3, 	7)
+ResourcePlacementLimit (Fish, 	1,	40)
+ResourcePlacementLimit (Tree, 	4, 	10)
+ResourcePlacementLimit (Animal, 	7, 	15)
+
+#if Is2Players
+//////////////////////////////////////////////////////////////////////
+// 2 PLAYERS...
+//////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////
+// terrain definitions
+#define		(kMinIntElevation,				-8)
+#define		(kMaxIntElevation,				8)
+#define		(kElevationScale,					1)
+#define		(kPercentLand,					Between(0.4, 0.4))
+#define		(kWaterBorder,					0)
+#define		(kRiverWidth,					10)
+#define		(kCoastToDeepWaterPercentage	    		1.0)
+#define		(kHeightMapChaos,					Between(4, 4))
+		
+#define		(kMinimumStartPositionToMapEdge		1)
+#define		(kOuterPushFromMapCenter			20)
+#define		(kInnerPushFromMapCenter 			0)								
+
+//////////////////////////////////////////////////////////////////////
+// player definitions
+#define		(kMaxAngleBetweenTeamMembers,	    		40.0)
+#define		(kPlayerInnerRadius,				0.6)
+#define		(kPlayerOuterRadius,				0.9)
+#define		(kPlayerOptimalFactor,				Between(0.5, 0.8))
+#define		(kPlayerPercentFlat,				Between(0.75, 0.75))
+#define		(kPlayerLandChaos,				.1)
+#define		(kPlayerLandClumps,				1)
+#define		(kPlayerFlatChaos,				0.8)
+#define		(kPlayerFlatClumps,				1)
+#define		(kPlayerTreePercentage,				0.1)
+
+
+//////////////////////////////////////////////////////////////////////
+// inner neutral definitions
+#define		(kNeutralInnerRadius,				0.05)
+#define		(kNeutralOuterRadius,				0.05)
+#define		(kNeutralOptimalFactor,				0.7)
+#define		(kNumInnerNeutrals,				Between(1, 1))
+#define		(kInnerNeutralPercentLand,			0.25)
+#define		(kInnerNeutralPercentFlat,			Between(.75, .75))
+#define		(kInnerNeutralTreePercentage,	    		0.1)
+#define		(kInnerNeutralLandChaos,			0.8)
+#define		(kInnerNeutralLandClumps,			Between(1, 1))
+#define		(kInnerNeutralFlatChaos,			0.8)
+#define		(kInnerNeutralFlatClumps,			1)
+
+
+//////////////////////////////////////////////////////////////////////
+// outer neutral definitions
+#define		(kNumOuterNeutrals,				Between(1, 1))
+#define		(kOuterNeutralPercentLand,			0.25)
+#define		(kOuterNeutralPercentFlat,			Between(.75, .75))
+#define		(kOuterNeutralTreePercentage,	    		0.1)
+#define		(kOuterNeutralLandChaos,			0.8)
+#define		(kOuterNeutralLandClumps,			1)
+#define		(kOuterNeutralFlatChaos,			0.8)
+#define		(kOuterNeutralFlatClumps,			1)
+
+
+//////////////////////////////////////////////////////////////////////
+// resource definitions
+#define		(kMaxResourceElevation,				2)
+#define		(kResourceToEdgeDistance,			1)
+#define		(kResourceToWaterDistance,			1)
+
+#define		(kAnimalPerPlayer,				0)
+#define		(kAnimalPerNeutral,				0)
+
+#if (IsPaleoEpoch) 
+  #define  (kBerryPerPlayer,    2)
+#else
+  #define  (kBerryPerPlayer,    1)
+#endif 
+#define		(kBerryPerNeutral,			0)
+
+#define		(kFishPerPlayer,					20)
+#define		(kFishPerNeutral,					0)
+												
+#define		(kGoldPerPlayer,					2)
+#define		(kGoldPerNeutral,					2)
+
+#define		(kOilPerPlayer,					0)
+#define		(kOilPerNeutral,					0)
+												
+#define		(kSteelPerPlayer,					2)
+#define		(kSteelPerNeutral,				2)		
+												
+#define		(kStonePerPlayer,					1)
+#define		(kStonePerNeutral,				1)		
+											
+#define		(kTreePerPlayer,					2)
+#define		(kTreePerNeutral,					0)
+
+
+//////////////////////////////////////////////////////////////////////
+// forest definitions
+#define		(kForestFreeRadius,				6.0)
+#define		(kForestsPerPlayer,				2)
+#define		(kForestChaosLevel,				0.1)
+#define		(kMaxClumpsPerForest,				1)
+
+
+#elif Is3Players
+//////////////////////////////////////////////////////////////////////
+// 3 PLAYERS...
+//////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////
+// terrain definitions
+#define		(kMinIntElevation,				-8)
+#define		(kMaxIntElevation,				8)
+#define		(kElevationScale,				      1)
+#define		(kPercentLand,					Between(0.35, 0.35))
+#define		(kWaterBorder,					0)
+#define		(kRiverWidth,					9)
+#define		(kCoastToDeepWaterPercentage	            1.0)
+#define		(kHeightMapChaos,					Between(4, 4))
+		
+#define		(kMinimumStartPositionToMapEdge		1)
+#define		(kOuterPushFromMapCenter			20)
+#define		(kInnerPushFromMapCenter 			0)
+
+//////////////////////////////////////////////////////////////////////
+// player definitions
+#define		(kMaxAngleBetweenTeamMembers,	      40.0)
+#define		(kPlayerInnerRadius,			0.7)
+#define		(kPlayerOuterRadius,			0.9)
+#define		(kPlayerOptimalFactor,			Between(0.5, 0.8))
+#define		(kPlayerPercentFlat,			Between(0.75, 0.75))
+#define		(kPlayerLandChaos,			0.8)
+#define		(kPlayerLandClumps,			1)
+#define		(kPlayerFlatChaos,			0.8)
+#define		(kPlayerFlatClumps,			1)
+#define		(kPlayerTreePercentage,			0.1)
+
+
+//////////////////////////////////////////////////////////////////////
+// inner neutral definitions
+#define		(kNeutralInnerRadius,			0.05)
+#define		(kNeutralOuterRadius,			0.3)
+#define		(kNeutralOptimalFactor,			0.7)
+#define		(kNumInnerNeutrals,			Between(1, 1))
+#define		(kInnerNeutralPercentLand,		0.25)
+#define		(kInnerNeutralPercentFlat,		Between(.85, .85))
+#define		(kInnerNeutralTreePercentage,	      0.01)
+#define		(kInnerNeutralLandChaos,		0.8)
+#define		(kInnerNeutralLandClumps,		Between(1, 1))
+#define		(kInnerNeutralFlatChaos,		0.8)
+#define		(kInnerNeutralFlatClumps,		1)
+
+
+//////////////////////////////////////////////////////////////////////
+// outer neutral definitions
+#define		(kNumOuterNeutrals,			Between(0, 0))
+#define		(kOuterNeutralPercentLand,		0.33)
+#define		(kOuterNeutralPercentFlat,		Between(.5, .8))
+#define		(kOuterNeutralTreePercentage,	      0.1)
+#define		(kOuterNeutralLandChaos,		0.8)
+#define		(kOuterNeutralLandClumps,		1)
+#define		(kOuterNeutralFlatChaos,		0.8)
+#define		(kOuterNeutralFlatClumps,		1)
+
+
+//////////////////////////////////////////////////////////////////////
+// resource definitions
+#define		(kMaxResourceElevation,			2)
+#define		(kResourceToEdgeDistance,		1)
+#define		(kResourceToWaterDistance,		1)
+
+#define		(kAnimalPerPlayer,			0)
+#define		(kAnimalPerNeutral,			0)
+
+#if (IsPaleoEpoch) 
+  #define  (kBerryPerPlayer,    2)
+#else
+  #define  (kBerryPerPlayer,    1)
+#endif 
+#define		(kBerryPerNeutral,			0)
+
+#define		(kFishPerPlayer,				18)
+#define		(kFishPerNeutral,				0)
+
+#define		(kGoldPerPlayer,				2)
+#define		(kGoldPerNeutral,				3)
+
+#define		(kOilPerPlayer,				0)
+#define		(kOilPerNeutral,				0)
+
+#define		(kSteelPerPlayer,				2)
+#define		(kSteelPerNeutral,			1)
+
+#define		(kStonePerPlayer,				1)
+#define		(kStonePerNeutral,			3)
+
+#define		(kTreePerPlayer,				1)
+#define		(kTreePerNeutral,				0)
+
+
+//////////////////////////////////////////////////////////////////////
+// forest definitions
+#define		(kForestFreeRadius,			6.0)
+#define		(kForestsPerPlayer,			2)
+#define		(kForestChaosLevel,			0.1)
+#define		(kMaxClumpsPerForest,			1)
+
+
+#elif Is4Players
+//////////////////////////////////////////////////////////////////////
+// 4 PLAYERS...
+//////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////
+// terrain definitions
+#define		(kMinIntElevation,				-8)
+#define		(kMaxIntElevation,				8)
+#define		(kElevationScale,				      1)
+#define		(kPercentLand,					Between(0.4, 0.4))
+#define		(kWaterBorder,					0)
+#define		(kRiverWidth,					9)
+#define		(kCoastToDeepWaterPercentage	            1.0)
+#define		(kHeightMapChaos,					Between(4, 4))
+		
+#define		(kMinimumStartPositionToMapEdge		1)
+#define		(kOuterPushFromMapCenter			20)
+#define		(kInnerPushFromMapCenter 			0)									
+//////////////////////////////////////////////////////////////////////
+// player definitions
+#define		(kMaxAngleBetweenTeamMembers,	      70.0)
+#define		(kPlayerInnerRadius,			0.7)
+#define		(kPlayerOuterRadius,			0.9)
+#define		(kPlayerOptimalFactor,			Between(0.5, 0.8))
+#define		(kPlayerPercentFlat,			Between(0.75, 0.75))
+#define		(kPlayerLandChaos,			0.8)
+#define		(kPlayerLandClumps,			1)
+#define		(kPlayerFlatChaos,			0.8)
+#define		(kPlayerFlatClumps,			1)
+#define		(kPlayerTreePercentage,			0.1)
+
+
+//////////////////////////////////////////////////////////////////////
+// inner neutral definitions
+#define		(kNeutralInnerRadius,			0.05)
+#define		(kNeutralOuterRadius,			0.05)
+#define		(kNeutralOptimalFactor,			0.7)
+#define		(kNumInnerNeutrals,			Between(1, 1))
+#define		(kInnerNeutralPercentLand,		0.24)
+#define		(kInnerNeutralPercentFlat,		Between(.99, .99))
+#define		(kInnerNeutralTreePercentage,	      0.1)
+#define		(kInnerNeutralLandChaos,		0.8)
+#define		(kInnerNeutralLandClumps,		Between(1, 1))
+#define		(kInnerNeutralFlatChaos,		0.8)
+#define		(kInnerNeutralFlatClumps,		1)
+
+
+//////////////////////////////////////////////////////////////////////
+// outer neutral definitions
+#define		(kNumOuterNeutrals,			Between(0, 0))
+#define		(kOuterNeutralPercentLand,		0.22)
+#define		(kOuterNeutralPercentFlat,		Between(.5, .8))
+#define		(kOuterNeutralTreePercentage,	      0.1)
+#define		(kOuterNeutralLandChaos,		0.8)
+#define		(kOuterNeutralLandClumps,		1)
+#define		(kOuterNeutralFlatChaos,		0.8)
+#define		(kOuterNeutralFlatClumps,		1)
+
+
+//////////////////////////////////////////////////////////////////////
+// resource definitions
+#define		(kMaxResourceElevation,			2)
+#define		(kResourceToEdgeDistance,		1)
+#define		(kResourceToWaterDistance,		1)
+
+#define		(kAnimalPerPlayer,			0)
+#define		(kAnimalPerNeutral,			0)
+
+#if (IsPaleoEpoch) 
+  #define  (kBerryPerPlayer,    2)
+#else
+  #define  (kBerryPerPlayer,    1)
+#endif 
+#define		(kBerryPerNeutral,			0)
+
+#define		(kFishPerPlayer,				16)
+#define		(kFishPerNeutral,				0)
+
+#define		(kGoldPerPlayer,				2)
+#define		(kGoldPerNeutral,				2)
+
+#define		(kOilPerPlayer,				0)
+#define		(kOilPerNeutral,				0)
+
+#define		(kSteelPerPlayer,				2)
+#define		(kSteelPerNeutral,			2)
+
+#define		(kStonePerPlayer,				1)
+#define		(kStonePerNeutral,			1)
+
+#define		(kTreePerPlayer,				2)
+#define		(kTreePerNeutral,				0)
+
+
+//////////////////////////////////////////////////////////////////////
+// forest definitions
+#define		(kForestFreeRadius,			6.0)
+#define		(kForestsPerPlayer,			2)
+#define		(kForestChaosLevel,			0.1)
+#define		(kMaxClumpsPerForest,			1)
+
+
+#elif Is5Players
+//////////////////////////////////////////////////////////////////////
+// 5 PLAYERS...
+//////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////
+// terrain definitions
+#define		(kMinIntElevation,				-8)
+#define		(kMaxIntElevation,				8)
+#define		(kElevationScale,				      1)
+#define		(kPercentLand,					Between(0.45, 0.45))
+#define		(kWaterBorder,					0)
+#define		(kRiverWidth,					10)
+#define		(kCoastToDeepWaterPercentage	            1.0)
+#define		(kHeightMapChaos,					Between(4, 4))
+		
+#define		(kMinimumStartPositionToMapEdge		2)
+#define		(kOuterPushFromMapCenter			20)
+#define		(kInnerPushFromMapCenter 			0)
+
+//////////////////////////////////////////////////////////////////////
+// player definitions
+#define		(kMaxAngleBetweenTeamMembers,	      70.0)
+#define		(kPlayerInnerRadius,			0.7)
+#define		(kPlayerOuterRadius,			0.90)
+#define		(kPlayerOptimalFactor,			Between(0.5, 0.8))
+#define		(kPlayerPercentFlat,			Between(0.75, 0.85))
+#define		(kPlayerLandChaos,			0.8)
+#define		(kPlayerLandClumps,			1)
+#define		(kPlayerFlatChaos,			0.8)
+#define		(kPlayerFlatClumps,			1)
+#define		(kPlayerTreePercentage,			0.1)
+
+
+//////////////////////////////////////////////////////////////////////
+// inner neutral definitions
+#define		(kNeutralInnerRadius,			0.05)
+#define		(kNeutralOuterRadius,			0.05)
+#define		(kNeutralOptimalFactor,			0.7)
+#define		(kNumInnerNeutrals,			Between(1, 1))
+#define		(kInnerNeutralPercentLand,		0.16)
+#define		(kInnerNeutralPercentFlat,		Between(.99, .99))
+#define		(kInnerNeutralTreePercentage, 	0.1)
+#define		(kInnerNeutralLandChaos,		0.8)
+#define		(kInnerNeutralLandClumps,		1)
+#define		(kInnerNeutralFlatChaos,		0.8)
+#define		(kInnerNeutralFlatClumps,		1)
+
+
+//////////////////////////////////////////////////////////////////////
+// outer neutral definitions
+#define		(kNumOuterNeutrals,			Between(0, 0))
+#define		(kOuterNeutralPercentLand,		0.11)
+#define		(kOuterNeutralPercentFlat,		Between(.5, .8))
+#define		(kOuterNeutralTreePercentage,	      0.05)
+#define		(kOuterNeutralLandChaos,		0.8)
+#define		(kOuterNeutralLandClumps,		1)
+#define		(kOuterNeutralFlatChaos,		0.8)
+#define		(kOuterNeutralFlatClumps,		1)
+
+
+//////////////////////////////////////////////////////////////////////
+// resource definitions
+#define		(kMaxResourceElevation,			2)
+#define		(kResourceToEdgeDistance,		1)
+#define		(kResourceToWaterDistance,		1)
+
+#define		(kAnimalPerPlayer,			0)
+#define		(kAnimalPerNeutral,			0)
+
+#if (IsPaleoEpoch) 
+  #define  (kBerryPerPlayer,    2)
+#else
+  #define  (kBerryPerPlayer,    1)
+#endif 
+#define		(kBerryPerNeutral,			0)
+
+#define		(kFishPerPlayer,				14)
+#define		(kFishPerNeutral,				0)
+
+#define		(kGoldPerPlayer,				2)
+#define		(kGoldPerNeutral,				2)
+
+#define		(kOilPerPlayer,				0)
+#define		(kOilPerNeutral,				2)
+
+#define		(kSteelPerPlayer,				2)
+#define		(kSteelPerNeutral,			2)
+
+#define		(kStonePerPlayer,				1)
+#define		(kStonePerNeutral,			0)
+
+#define		(kTreePerPlayer,				2)
+#define		(kTreePerNeutral,				0)
+
+
+
+//////////////////////////////////////////////////////////////////////
+// forest definitions
+#define		(kForestFreeRadius,			5.0)
+#define		(kForestsPerPlayer,			2)
+#define		(kForestChaosLevel,			0.1)
+#define		(kMaxClumpsPerForest,			1)
+
+
+#elif Is6Players
+//////////////////////////////////////////////////////////////////////
+// 6 PLAYERS...
+//////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////
+// terrain definitions
+#define		(kMinIntElevation,				-8)
+#define		(kMaxIntElevation,				8)
+#define		(kElevationScale,				      1)
+#define		(kPercentLand,					Between(0.5, 0.5))
+#define		(kWaterBorder,					0)
+#define		(kRiverWidth,					9)
+#define		(kCoastToDeepWaterPercentage	            1.0)
+#define		(kHeightMapChaos,					Between(4, 4))
+		
+#define		(kMinimumStartPositionToMapEdge		2)
+#define		(kOuterPushFromMapCenter			20)
+#define		(kInnerPushFromMapCenter 			0)
+
+//////////////////////////////////////////////////////////////////////
+// player definitions
+#define		(kMaxAngleBetweenTeamMembers,	      60.0)
+#define		(kPlayerInnerRadius,			0.7)
+#define		(kPlayerOuterRadius,			0.9)
+#define		(kPlayerOptimalFactor,			Between(0.5, 0.8))
+#define		(kPlayerPercentFlat,			Between(0.85, 0.85))
+#define		(kPlayerLandChaos,			0.8)
+#define		(kPlayerLandClumps,			1)
+#define		(kPlayerFlatChaos,			0.8)
+#define		(kPlayerFlatClumps,			1)
+#define		(kPlayerTreePercentage,			0.1)
+
+
+//////////////////////////////////////////////////////////////////////
+// inner neutral definitions
+#define		(kNeutralInnerRadius,			0.05)
+#define		(kNeutralOuterRadius,			0.4)
+#define		(kNeutralOptimalFactor,			0.7)
+#define		(kNumInnerNeutrals,			Between(0, 0))
+#define		(kInnerNeutralPercentLand,		0.33)
+#define		(kInnerNeutralPercentFlat,		Between(.5, .8))
+#define		(kInnerNeutralTreePercentage,	      0.05)
+#define		(kInnerNeutralLandChaos,		0.8)
+#define		(kInnerNeutralLandClumps,		1)
+#define		(kInnerNeutralFlatChaos,		0.8)
+#define		(kInnerNeutralFlatClumps,		1)
+
+
+//////////////////////////////////////////////////////////////////////
+// outer neutral definitions
+#define		(kNumOuterNeutrals,			Between(0, 0))
+#define		(kOuterNeutralPercentLand,		0.0)
+#define		(kOuterNeutralPercentFlat,		Between(.5, .8))
+#define		(kOuterNeutralTreePercentage,	      0.05)
+#define		(kOuterNeutralLandChaos,		0.8)
+#define		(kOuterNeutralLandClumps,		1)
+#define		(kOuterNeutralFlatChaos,		0.8)
+#define		(kOuterNeutralFlatClumps,		1)
+
+
+//////////////////////////////////////////////////////////////////////
+// resource definitions
+#define		(kMaxResourceElevation,			2)
+#define		(kResourceToEdgeDistance,		1)
+#define		(kResourceToWaterDistance,		1)
+
+#define		(kAnimalPerPlayer,			0)
+#define		(kAnimalPerNeutral,			0)
+
+#if (IsPaleoEpoch) 
+  #define  (kBerryPerPlayer,    2)
+#else
+  #define  (kBerryPerPlayer,    1)
+#endif 
+#define		(kBerryPerNeutral,			0)
+
+#define		(kFishPerPlayer,				12)
+#define		(kFishPerNeutral,				0)
+
+#define		(kGoldPerPlayer,				2)
+#define		(kGoldPerNeutral,				0)
+
+#define		(kOilPerPlayer,				0)
+#define		(kOilPerNeutral,				0)
+
+#define		(kSteelPerPlayer,				2)
+#define		(kSteelPerNeutral,			0)
+
+#define		(kStonePerPlayer,				1)
+#define		(kStonePerNeutral,			0)
+
+#define		(kTreePerPlayer,				2)
+#define		(kTreePerNeutral,				0)
+
+
+//////////////////////////////////////////////////////////////////////
+// forest definitions
+#define		(kForestFreeRadius,			5.0)
+#define		(kForestsPerPlayer,			2)
+#define		(kForestChaosLevel,			0.1)
+#define		(kMaxClumpsPerForest,			1)
+
+
+#elif Is7Players
+//////////////////////////////////////////////////////////////////////
+// 7 PLAYERS...
+//////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////
+// terrain definitions
+#define		(kMinIntElevation,				-8)
+#define		(kMaxIntElevation,				8)
+#define		(kElevationScale,				      1)
+#define		(kPercentLand,					Between(0.5, 0.5))
+#define		(kWaterBorder,					0)
+#define		(kRiverWidth,					9)
+#define		(kCoastToDeepWaterPercentage	            1.0)
+#define		(kHeightMapChaos,					Between(4, 4))
+		
+#define		(kMinimumStartPositionToMapEdge		2)
+#define		(kOuterPushFromMapCenter			20)
+#define		(kInnerPushFromMapCenter 			0)
+											
+
+//////////////////////////////////////////////////////////////////////
+// player definitions
+#define		(kMaxAngleBetweenTeamMembers,	      50.0)
+#define		(kPlayerInnerRadius,			0.7)
+#define		(kPlayerOuterRadius,			0.9)
+#define		(kPlayerOptimalFactor,			Between(0.5, 0.8))
+#define		(kPlayerPercentFlat,			Between(0.95, 0.95))
+#define		(kPlayerLandChaos,			0.8)
+#define		(kPlayerLandClumps,			1)
+#define		(kPlayerFlatChaos,			0.8)
+#define		(kPlayerFlatClumps,			1)
+#define		(kPlayerTreePercentage,			0.1)
+
+//////////////////////////////////////////////////////////////////////
+// inner neutral definitions
+#define		(kNeutralInnerRadius,			0.05)
+#define		(kNeutralOuterRadius,			0.4)
+#define		(kNeutralOptimalFactor,			0.7)
+#define		(kNumInnerNeutrals,			Between(0, 0))
+#define		(kInnerNeutralPercentLand,		0.22)
+#define		(kInnerNeutralPercentFlat,		Between(.5, .8))
+#define		(kInnerNeutralTreePercentage,	      0.05)
+#define		(kInnerNeutralLandChaos,		0.8)
+#define		(kInnerNeutralLandClumps,		1)
+#define		(kInnerNeutralFlatChaos,		0.8)
+#define		(kInnerNeutralFlatClumps,		1)
+
+
+//////////////////////////////////////////////////////////////////////
+// outer neutral definitions
+#define		(kNumOuterNeutrals,			Between(0, 0))
+#define		(kOuterNeutralPercentLand,		0.14)
+#define		(kOuterNeutralPercentFlat,		Between(.5, .8))
+#define		(kOuterNeutralTreePercentage,	      0.05)
+#define		(kOuterNeutralLandChaos,		0.8)
+#define		(kOuterNeutralLandClumps,		1)
+#define		(kOuterNeutralFlatChaos,		0.8)
+#define		(kOuterNeutralFlatClumps,		1)
+
+
+//////////////////////////////////////////////////////////////////////
+// resource definitions
+#define		(kMaxResourceElevation,			2)
+#define		(kResourceToEdgeDistance,		1)
+#define		(kResourceToWaterDistance,		1)
+
+#define		(kAnimalPerPlayer,			0)
+#define		(kAnimalPerNeutral,			0)
+
+#if (IsPaleoEpoch) 
+  #define  (kBerryPerPlayer,    2)
+#else
+  #define  (kBerryPerPlayer,    1)
+#endif 
+#define		(kBerryPerNeutral,			0)
+
+#define		(kFishPerPlayer,				10)
+#define		(kFishPerNeutral,				0)
+
+#define		(kGoldPerPlayer,				2)
+#define		(kGoldPerNeutral,				0)
+
+#define		(kOilPerPlayer,				0)
+#define		(kOilPerNeutral,				0)
+
+#define		(kSteelPerPlayer,				2)
+#define		(kSteelPerNeutral,			0)
+
+#define		(kStonePerPlayer,				1)
+#define		(kStonePerNeutral,			0)
+
+#define		(kTreePerPlayer,				1)
+#define		(kTreePerNeutral,				0)
+
+
+//////////////////////////////////////////////////////////////////////
+// forest definitions
+#define		(kForestFreeRadius,			5.0)
+#define		(kForestsPerPlayer,			2)
+#define		(kForestChaosLevel,			0.1)
+#define		(kMaxClumpsPerForest,			1)
+
+
+#elif Is8Players
+//////////////////////////////////////////////////////////////////////
+// 8 PLAYERS...
+//////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////
+// terrain definitions
+#define		(kMinIntElevation,				-8)
+#define		(kMaxIntElevation,				8)
+#define		(kElevationScale,				      1)
+#define		(kPercentLand,					Between(0.5, 0.5))
+#define		(kWaterBorder,					0)
+#define		(kRiverWidth,					9)
+#define		(kCoastToDeepWaterPercentage	            1.0)
+#define		(kHeightMapChaos,					Between(4, 4))
+		
+#define		(kMinimumStartPositionToMapEdge		2)
+#define		(kOuterPushFromMapCenter			20)
+#define		(kInnerPushFromMapCenter 			0)
+
+//////////////////////////////////////////////////////////////////////
+// player definitions
+#define		(kMaxAngleBetweenTeamMembers,		40.0)
+#define		(kPlayerInnerRadius,			0.7)
+#define		(kPlayerOuterRadius,			0.9)
+#define		(kPlayerOptimalFactor,			Between(0.5, 0.8))
+#define		(kPlayerPercentFlat,			Between(0.95, 0.95))
+#define		(kPlayerLandChaos,			0.8)
+#define		(kPlayerLandClumps,			1)
+#define		(kPlayerFlatChaos,			0.8)
+#define		(kPlayerFlatClumps,			1)
+#define		(kPlayerTreePercentage,			0.1)
+
+
+//////////////////////////////////////////////////////////////////////
+// inner neutral definitions
+#define		(kNeutralInnerRadius,			0.05)
+#define		(kNeutralOuterRadius,			0.4)
+#define		(kNeutralOptimalFactor,			0.7)
+#define		(kNumInnerNeutrals,			Between(0, 0))
+#define		(kInnerNeutralPercentLand,		0.11)
+#define		(kInnerNeutralPercentFlat,		Between(.5, .8))
+#define		(kInnerNeutralTreePercentage,	      0.05)
+#define		(kInnerNeutralLandChaos,		0.8)
+#define		(kInnerNeutralLandClumps,		1)
+#define		(kInnerNeutralFlatChaos,		0.8)
+#define		(kInnerNeutralFlatClumps,		1)
+
+
+//////////////////////////////////////////////////////////////////////
+// outer neutral definitions
+#define		(kNumOuterNeutrals,			Between(0, 0))
+#define		(kOuterNeutralPercentLand,		0.35)
+#define		(kOuterNeutralPercentFlat,		Between(.5, .8))
+#define		(kOuterNeutralTreePercentage,	      0.05)
+#define		(kOuterNeutralLandChaos,		0.8)
+#define		(kOuterNeutralLandClumps,		1)
+#define		(kOuterNeutralFlatChaos,		0.8)
+#define		(kOuterNeutralFlatClumps,		1)
+
+
+//////////////////////////////////////////////////////////////////////
+// resource definitions
+#define		(kMaxResourceElevation,			2)
+#define		(kResourceToEdgeDistance,		1)
+#define		(kResourceToWaterDistance,		1)
+
+#define		(kAnimalPerPlayer,			0)
+#define		(kAnimalPerNeutral,			0)
+
+#if (IsPaleoEpoch) 
+  #define  (kBerryPerPlayer,    2)
+#else
+  #define  (kBerryPerPlayer,    1)
+#endif 
+#define		(kBerryPerNeutral,			0)
+
+#define		(kFishPerPlayer,				10)
+#define		(kFishPerNeutral,				0)
+
+#define		(kGoldPerPlayer,				2)
+#define		(kGoldPerNeutral,				0)
+
+#define		(kOilPerPlayer,				0)
+#define		(kOilPerNeutral,				0)
+
+#define		(kSteelPerPlayer,				2)
+#define		(kSteelPerNeutral,			0)
+
+#define		(kStonePerPlayer,				1)
+#define		(kStonePerNeutral,			0)
+
+#define		(kTreePerPlayer,				1)
+#define		(kTreePerNeutral,				0)
+
+//////////////////////////////////////////////////////////////////////
+// forest definitions
+#define		(kForestFreeRadius,			5.0)
+#define		(kForestsPerPlayer,			2)
+#define		(kForestChaosLevel,			0.1)
+#define		(kMaxClumpsPerForest,			1)
+
+
+#elif Is9Players
+//////////////////////////////////////////////////////////////////////
+// 9 PLAYERS...
+//////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////
+// terrain definitions
+#define		(kMinIntElevation,				-10)
+#define		(kMaxIntElevation,				12)
+#define		(kElevationScale,				      1)
+#define		(kPercentLand,					Between(0.5, 0.5))
+#define		(kWaterBorder,					0)
+#define		(kRiverWidth,					10)
+#define		(kCoastToDeepWaterPercentage	            1.0)
+#define		(kHeightMapChaos,					Between(6, 8))
+		
+#define		(kMinimumStartPositionToMapEdge		4)
+#define		(kOuterPushFromMapCenter			10)
+#define		(kInnerPushFromMapCenter 			0)
+
+//////////////////////////////////////////////////////////////////////
+// player definitions
+#define		(kMaxAngleBetweenTeamMembers,		40.0)
+#define		(kPlayerInnerRadius,			0.4)
+#define		(kPlayerOuterRadius,			0.9)
+#define		(kPlayerOptimalFactor,			Between(0.5, 0.8))
+#define		(kPlayerPercentFlat,			Between(0.75, 0.75))
+#define		(kPlayerLandChaos,			0.8)
+#define		(kPlayerLandClumps,			1)
+#define		(kPlayerFlatChaos,			0.8)
+#define		(kPlayerFlatClumps,			1)
+#define		(kPlayerTreePercentage,			0.06)
+
+
+//////////////////////////////////////////////////////////////////////
+// inner neutral definitions
+#define		(kNeutralInnerRadius,			0.05)
+#define		(kNeutralOuterRadius,			0.4)
+#define		(kNeutralOptimalFactor,			0.7)
+#define		(kNumInnerNeutrals,			Between(0, 0))
+#define		(kInnerNeutralPercentLand,		0.11)
+#define		(kInnerNeutralPercentFlat,		Between(.5, .8))
+#define		(kInnerNeutralTreePercentage,	      0.05)
+#define		(kInnerNeutralLandChaos,		0.8)
+#define		(kInnerNeutralLandClumps,		1)
+#define		(kInnerNeutralFlatChaos,		0.8)
+#define		(kInnerNeutralFlatClumps,		1)
+
+
+//////////////////////////////////////////////////////////////////////
+// outer neutral definitions
+#define		(kNumOuterNeutrals,			Between(0, 0))
+#define		(kOuterNeutralPercentLand,		0.35)
+#define		(kOuterNeutralPercentFlat,		Between(.5, .8))
+#define		(kOuterNeutralTreePercentage,	      0.05)
+#define		(kOuterNeutralLandChaos,		0.8)
+#define		(kOuterNeutralLandClumps,		1)
+#define		(kOuterNeutralFlatChaos,		0.8)
+#define		(kOuterNeutralFlatClumps,		1)
+
+
+//////////////////////////////////////////////////////////////////////
+// resource definitions
+#define		(kMaxResourceElevation,			2)
+#define		(kResourceToEdgeDistance,		2)
+#define		(kResourceToWaterDistance,		2)
+
+#define		(kAnimalPerPlayer,			0)
+#define		(kAnimalPerNeutral,			0)
+
+#if (IsPaleoEpoch) 
+  #define  (kBerryPerPlayer,    2)
+#else
+  #define  (kBerryPerPlayer,    1)
+#endif 
+#define		(kBerryPerNeutral,			0)
+
+#define		(kFishPerPlayer,				9)
+#define		(kFishPerNeutral,				0)
+
+#define		(kGoldPerPlayer,				2)
+#define		(kGoldPerNeutral,				0)
+
+#define		(kOilPerPlayer,				0)
+#define		(kOilPerNeutral,				0)
+
+#define		(kSteelPerPlayer,				2)
+#define		(kSteelPerNeutral,			0)
+
+#define		(kStonePerPlayer,				1)
+#define		(kStonePerNeutral,			0)
+
+#define		(kTreePerPlayer,				0)
+#define		(kTreePerNeutral,				0)
+
+//////////////////////////////////////////////////////////////////////
+// forest definitions
+#define		(kForestFreeRadius,			5.0)
+#define		(kForestsPerPlayer,			2)
+#define		(kForestChaosLevel,			0.1)
+#define		(kMaxClumpsPerForest,			2)
+
+
+#elif Is10Players
+//////////////////////////////////////////////////////////////////////
+// 10 PLAYERS...
+//////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////
+// terrain definitions
+#define		(kMinIntElevation,				-10)
+#define		(kMaxIntElevation,				12)
+#define		(kElevationScale,				      1)
+#define		(kPercentLand,					Between(0.5, 0.5))
+#define		(kWaterBorder,					0)
+#define		(kRiverWidth,					10)
+#define		(kCoastToDeepWaterPercentage	            1.0)
+#define		(kHeightMapChaos,					Between(6, 8))
+		
+#define		(kMinimumStartPositionToMapEdge		4)
+#define		(kOuterPushFromMapCenter			10)
+#define		(kInnerPushFromMapCenter 			0)
+
+//////////////////////////////////////////////////////////////////////
+// player definitions
+#define		(kMaxAngleBetweenTeamMembers,		40.0)
+#define		(kPlayerInnerRadius,			0.4)
+#define		(kPlayerOuterRadius,			0.9)
+#define		(kPlayerOptimalFactor,			Between(0.5, 0.8))
+#define		(kPlayerPercentFlat,			Between(0.75, 0.75))
+#define		(kPlayerLandChaos,			0.8)
+#define		(kPlayerLandClumps,			1)
+#define		(kPlayerFlatChaos,			0.8)
+#define		(kPlayerFlatClumps,			1)
+#define		(kPlayerTreePercentage,			0.06)
+
+
+//////////////////////////////////////////////////////////////////////
+// inner neutral definitions
+#define		(kNeutralInnerRadius,			0.05)
+#define		(kNeutralOuterRadius,			0.4)
+#define		(kNeutralOptimalFactor,			0.7)
+#define		(kNumInnerNeutrals,			Between(0, 0))
+#define		(kInnerNeutralPercentLand,		0.11)
+#define		(kInnerNeutralPercentFlat,		Between(.5, .8))
+#define		(kInnerNeutralTreePercentage,	      0.05)
+#define		(kInnerNeutralLandChaos,		0.8)
+#define		(kInnerNeutralLandClumps,		1)
+#define		(kInnerNeutralFlatChaos,		0.8)
+#define		(kInnerNeutralFlatClumps,		1)
+
+
+//////////////////////////////////////////////////////////////////////
+// outer neutral definitions
+#define		(kNumOuterNeutrals,			Between(0, 0))
+#define		(kOuterNeutralPercentLand,		0.35)
+#define		(kOuterNeutralPercentFlat,		Between(.5, .8))
+#define		(kOuterNeutralTreePercentage,	      0.05)
+#define		(kOuterNeutralLandChaos,		0.8)
+#define		(kOuterNeutralLandClumps,		1)
+#define		(kOuterNeutralFlatChaos,		0.8)
+#define		(kOuterNeutralFlatClumps,		1)
+
+
+//////////////////////////////////////////////////////////////////////
+// resource definitions
+#define		(kMaxResourceElevation,			2)
+#define		(kResourceToEdgeDistance,		2)
+#define		(kResourceToWaterDistance,		2)
+
+#define		(kAnimalPerPlayer,			0)
+#define		(kAnimalPerNeutral,			0)
+
+#define		(kBerryPerPlayer,				0)
+#define		(kBerryPerNeutral,			0)
+
+#define		(kFishPerPlayer,				9)
+#define		(kFishPerNeutral,				0)
+
+#define		(kGoldPerPlayer,				2)
+#define		(kGoldPerNeutral,				0)
+
+#define		(kOilPerPlayer,				0)
+#define		(kOilPerNeutral,				0)
+
+#define		(kSteelPerPlayer,				2)
+#define		(kSteelPerNeutral,			0)
+
+#define		(kStonePerPlayer,				1)
+#define		(kStonePerNeutral,			0)
+
+#define		(kTreePerPlayer,				0)
+#define		(kTreePerNeutral,				0)
+
+//////////////////////////////////////////////////////////////////////
+// forest definitions
+#define		(kForestFreeRadius,			5.0)
+#define		(kForestsPerPlayer,			2)
+#define		(kForestChaosLevel,			0.1)
+#define		(kMaxClumpsPerForest,			2)
+
+
+#elif Is11Players
+//////////////////////////////////////////////////////////////////////
+// 11 PLAYERS...
+//////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////
+// terrain definitions
+#define		(kMinIntElevation,				-10)
+#define		(kMaxIntElevation,				12)
+#define		(kElevationScale,				      1)
+#define		(kPercentLand,					Between(0.5, 0.5))
+#define		(kWaterBorder,					0)
+#define		(kRiverWidth,					10)
+#define		(kCoastToDeepWaterPercentage	            1.0)
+#define		(kHeightMapChaos,					Between(10, 15))
+		
+#define		(kMinimumStartPositionToMapEdge		4)
+#define		(kOuterPushFromMapCenter			10)
+#define		(kInnerPushFromMapCenter 			0)
+
+//////////////////////////////////////////////////////////////////////
+// player definitions
+#define		(kMaxAngleBetweenTeamMembers,		40.0)
+#define		(kPlayerInnerRadius,			0.3)
+#define		(kPlayerOuterRadius,			0.9)
+#define		(kPlayerOptimalFactor,			Between(0.5, 0.8))
+#define		(kPlayerPercentFlat,			Between(0.75, 0.75))
+#define		(kPlayerLandChaos,			0.8)
+#define		(kPlayerLandClumps,			1)
+#define		(kPlayerFlatChaos,			0.8)
+#define		(kPlayerFlatClumps,			1)
+#define		(kPlayerTreePercentage,			0.06)
+
+
+//////////////////////////////////////////////////////////////////////
+// inner neutral definitions
+#define		(kNeutralInnerRadius,			0.05)
+#define		(kNeutralOuterRadius,			0.4)
+#define		(kNeutralOptimalFactor,			0.7)
+#define		(kNumInnerNeutrals,			Between(0, 0))
+#define		(kInnerNeutralPercentLand,		0.11)
+#define		(kInnerNeutralPercentFlat,		Between(.5, .8))
+#define		(kInnerNeutralTreePercentage,	      0.05)
+#define		(kInnerNeutralLandChaos,		0.8)
+#define		(kInnerNeutralLandClumps,		1)
+#define		(kInnerNeutralFlatChaos,		0.8)
+#define		(kInnerNeutralFlatClumps,		1)
+
+
+//////////////////////////////////////////////////////////////////////
+// outer neutral definitions
+#define		(kNumOuterNeutrals,			Between(0, 0))
+#define		(kOuterNeutralPercentLand,		0.35)
+#define		(kOuterNeutralPercentFlat,		Between(.5, .8))
+#define		(kOuterNeutralTreePercentage,	      0.05)
+#define		(kOuterNeutralLandChaos,		0.8)
+#define		(kOuterNeutralLandClumps,		1)
+#define		(kOuterNeutralFlatChaos,		0.8)
+#define		(kOuterNeutralFlatClumps,		1)
+
+
+//////////////////////////////////////////////////////////////////////
+// resource definitions
+#define		(kMaxResourceElevation,			2)
+#define		(kResourceToEdgeDistance,		2)
+#define		(kResourceToWaterDistance,		2)
+
+#define		(kAnimalPerPlayer,			0)
+#define		(kAnimalPerNeutral,			0)
+
+#define		(kBerryPerPlayer,				0)
+#define		(kBerryPerNeutral,			0)
+
+#define		(kFishPerPlayer,				9)
+#define		(kFishPerNeutral,				0)
+
+#define		(kGoldPerPlayer,				2)
+#define		(kGoldPerNeutral,				0)
+
+#define		(kOilPerPlayer,				0)
+#define		(kOilPerNeutral,				0)
+
+#define		(kSteelPerPlayer,				2)
+#define		(kSteelPerNeutral,			0)
+
+#define		(kStonePerPlayer,				1)
+#define		(kStonePerNeutral,			0)
+
+#define		(kTreePerPlayer,				0)
+#define		(kTreePerNeutral,				0)
+
+//////////////////////////////////////////////////////////////////////
+// forest definitions
+#define		(kForestFreeRadius,			5.0)
+#define		(kForestsPerPlayer,			2)
+#define		(kForestChaosLevel,			0.1)
+#define		(kMaxClumpsPerForest,			2)
+
+
+#elif Is12Players
+//////////////////////////////////////////////////////////////////////
+// 12 PLAYERS...
+//////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////
+// terrain definitions
+#define		(kMinIntElevation,				-10)
+#define		(kMaxIntElevation,				12)
+#define		(kElevationScale,				      1)
+#define		(kPercentLand,					Between(0.5, 0.5))
+#define		(kWaterBorder,					0)
+#define		(kRiverWidth,					9)
+#define		(kCoastToDeepWaterPercentage	            1.0)
+#define		(kHeightMapChaos,					Between(10, 15))
+		
+#define		(kMinimumStartPositionToMapEdge		4)
+#define		(kOuterPushFromMapCenter			10)
+#define		(kInnerPushFromMapCenter 			0)
+
+//////////////////////////////////////////////////////////////////////
+// player definitions
+#define		(kMaxAngleBetweenTeamMembers,		40.0)
+#define		(kPlayerInnerRadius,			0.2)
+#define		(kPlayerOuterRadius,			0.9)
+#define		(kPlayerOptimalFactor,			Between(0.5, 0.8))
+#define		(kPlayerPercentFlat,			Between(0.75, 0.75))
+#define		(kPlayerLandChaos,			0.8)
+#define		(kPlayerLandClumps,			1)
+#define		(kPlayerFlatChaos,			0.8)
+#define		(kPlayerFlatClumps,			1)
+#define		(kPlayerTreePercentage,			0.06)
+
+
+//////////////////////////////////////////////////////////////////////
+// inner neutral definitions
+#define		(kNeutralInnerRadius,			0.05)
+#define		(kNeutralOuterRadius,			0.4)
+#define		(kNeutralOptimalFactor,			0.7)
+#define		(kNumInnerNeutrals,			Between(0, 0))
+#define		(kInnerNeutralPercentLand,		0.11)
+#define		(kInnerNeutralPercentFlat,		Between(.5, .8))
+#define		(kInnerNeutralTreePercentage,	      0.05)
+#define		(kInnerNeutralLandChaos,		0.8)
+#define		(kInnerNeutralLandClumps,		1)
+#define		(kInnerNeutralFlatChaos,		0.8)
+#define		(kInnerNeutralFlatClumps,		1)
+
+
+//////////////////////////////////////////////////////////////////////
+// outer neutral definitions
+#define		(kNumOuterNeutrals,			Between(0, 0))
+#define		(kOuterNeutralPercentLand,		0.35)
+#define		(kOuterNeutralPercentFlat,		Between(.5, .8))
+#define		(kOuterNeutralTreePercentage,	      0.05)
+#define		(kOuterNeutralLandChaos,		0.8)
+#define		(kOuterNeutralLandClumps,		1)
+#define		(kOuterNeutralFlatChaos,		0.8)
+#define		(kOuterNeutralFlatClumps,		1)
+
+
+//////////////////////////////////////////////////////////////////////
+// resource definitions
+#define		(kMaxResourceElevation,			2)
+#define		(kResourceToEdgeDistance,		2)
+#define		(kResourceToWaterDistance,		2)
+
+#define		(kAnimalPerPlayer,			0)
+#define		(kAnimalPerNeutral,			0)
+
+#define		(kBerryPerPlayer,				0)
+#define		(kBerryPerNeutral,			0)
+
+#define		(kFishPerPlayer,				8)
+#define		(kFishPerNeutral,				0)
+
+#define		(kGoldPerPlayer,				2)
+#define		(kGoldPerNeutral,				0)
+
+#define		(kOilPerPlayer,				0)
+#define		(kOilPerNeutral,				0)
+
+#define		(kSteelPerPlayer,				2)
+#define		(kSteelPerNeutral,			0)
+
+#define		(kStonePerPlayer,				1)
+#define		(kStonePerNeutral,			0)
+
+#define		(kTreePerPlayer,				0)
+#define		(kTreePerNeutral,				0)
+
+//////////////////////////////////////////////////////////////////////
+// forest definitions
+#define		(kForestFreeRadius,			5.0)
+#define		(kForestsPerPlayer,			2)
+#define		(kForestChaosLevel,			0.1)
+#define		(kMaxClumpsPerForest,			2)
+
+
+#elif Is13Players
+//////////////////////////////////////////////////////////////////////
+// 13 PLAYERS...
+//////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////
+// terrain definitions
+#define		(kMinIntElevation,				-10)
+#define		(kMaxIntElevation,				12)
+#define		(kElevationScale,				      1)
+#define		(kPercentLand,					Between(0.5, 0.5))
+#define		(kWaterBorder,					0)
+#define		(kRiverWidth,					8)
+#define		(kCoastToDeepWaterPercentage	            1.0)
+#define		(kHeightMapChaos,					Between(10, 15))
+		
+#define		(kMinimumStartPositionToMapEdge		4)
+#define		(kOuterPushFromMapCenter			10)
+#define		(kInnerPushFromMapCenter 			0)
+
+//////////////////////////////////////////////////////////////////////
+// player definitions
+#define		(kMaxAngleBetweenTeamMembers,		40.0)
+#define		(kPlayerInnerRadius,			0.1)
+#define		(kPlayerOuterRadius,			0.9)
+#define		(kPlayerOptimalFactor,			Between(0.5, 0.8))
+#define		(kPlayerPercentFlat,			Between(0.75, 0.75))
+#define		(kPlayerLandChaos,			0.8)
+#define		(kPlayerLandClumps,			1)
+#define		(kPlayerFlatChaos,			0.8)
+#define		(kPlayerFlatClumps,			1)
+#define		(kPlayerTreePercentage,			0.06)
+
+
+//////////////////////////////////////////////////////////////////////
+// inner neutral definitions
+#define		(kNeutralInnerRadius,			0.05)
+#define		(kNeutralOuterRadius,			0.4)
+#define		(kNeutralOptimalFactor,			0.7)
+#define		(kNumInnerNeutrals,			Between(0, 0))
+#define		(kInnerNeutralPercentLand,		0.11)
+#define		(kInnerNeutralPercentFlat,		Between(.5, .8))
+#define		(kInnerNeutralTreePercentage,	      0.05)
+#define		(kInnerNeutralLandChaos,		0.8)
+#define		(kInnerNeutralLandClumps,		1)
+#define		(kInnerNeutralFlatChaos,		0.8)
+#define		(kInnerNeutralFlatClumps,		1)
+
+
+//////////////////////////////////////////////////////////////////////
+// outer neutral definitions
+#define		(kNumOuterNeutrals,			Between(0, 0))
+#define		(kOuterNeutralPercentLand,		0.35)
+#define		(kOuterNeutralPercentFlat,		Between(.5, .8))
+#define		(kOuterNeutralTreePercentage,	      0.05)
+#define		(kOuterNeutralLandChaos,		0.8)
+#define		(kOuterNeutralLandClumps,		1)
+#define		(kOuterNeutralFlatChaos,		0.8)
+#define		(kOuterNeutralFlatClumps,		1)
+
+
+//////////////////////////////////////////////////////////////////////
+// resource definitions
+#define		(kMaxResourceElevation,			2)
+#define		(kResourceToEdgeDistance,		2)
+#define		(kResourceToWaterDistance,		2)
+
+#define		(kAnimalPerPlayer,			0)
+#define		(kAnimalPerNeutral,			0)
+
+#define		(kBerryPerPlayer,				0)
+#define		(kBerryPerNeutral,			0)
+
+#define		(kFishPerPlayer,				8)
+#define		(kFishPerNeutral,				0)
+
+#define		(kGoldPerPlayer,				2)
+#define		(kGoldPerNeutral,				0)
+
+#define		(kOilPerPlayer,				0)
+#define		(kOilPerNeutral,				0)
+
+#define		(kSteelPerPlayer,				2)
+#define		(kSteelPerNeutral,			0)
+
+#define		(kStonePerPlayer,				1)
+#define		(kStonePerNeutral,			0)
+
+#define		(kTreePerPlayer,				0)
+#define		(kTreePerNeutral,				0)
+
+//////////////////////////////////////////////////////////////////////
+// forest definitions
+#define		(kForestFreeRadius,			5.0)
+#define		(kForestsPerPlayer,			2)
+#define		(kForestChaosLevel,			0.1)
+#define		(kMaxClumpsPerForest,			2)
+
+
+#elif Is14Players
+//////////////////////////////////////////////////////////////////////
+// 14 PLAYERS...
+//////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////
+// terrain definitions
+#define		(kMinIntElevation,				-10)
+#define		(kMaxIntElevation,				12)
+#define		(kElevationScale,				      1)
+#define		(kPercentLand,					Between(0.5, 0.5))
+#define		(kWaterBorder,					0)
+#define		(kRiverWidth,					7)
+#define		(kCoastToDeepWaterPercentage	            1.0)
+#define		(kHeightMapChaos,					Between(10, 15))
+		
+#define		(kMinimumStartPositionToMapEdge		4)
+#define		(kOuterPushFromMapCenter			10)
+#define		(kInnerPushFromMapCenter 			0)
+
+//////////////////////////////////////////////////////////////////////
+// player definitions
+#define		(kMaxAngleBetweenTeamMembers,		40.0)
+#define		(kPlayerInnerRadius,			0.01)
+#define		(kPlayerOuterRadius,			0.9)
+#define		(kPlayerOptimalFactor,			Between(0.5, 0.8))
+#define		(kPlayerPercentFlat,			Between(0.75, 0.75))
+#define		(kPlayerLandChaos,			0.8)
+#define		(kPlayerLandClumps,			1)
+#define		(kPlayerFlatChaos,			0.8)
+#define		(kPlayerFlatClumps,			1)
+#define		(kPlayerTreePercentage,			0.06)
+
+
+//////////////////////////////////////////////////////////////////////
+// inner neutral definitions
+#define		(kNeutralInnerRadius,			0.05)
+#define		(kNeutralOuterRadius,			0.4)
+#define		(kNeutralOptimalFactor,			0.7)
+#define		(kNumInnerNeutrals,			Between(0, 0))
+#define		(kInnerNeutralPercentLand,		0.11)
+#define		(kInnerNeutralPercentFlat,		Between(.5, .8))
+#define		(kInnerNeutralTreePercentage,	      0.05)
+#define		(kInnerNeutralLandChaos,		0.8)
+#define		(kInnerNeutralLandClumps,		1)
+#define		(kInnerNeutralFlatChaos,		0.8)
+#define		(kInnerNeutralFlatClumps,		1)
+
+
+//////////////////////////////////////////////////////////////////////
+// outer neutral definitions
+#define		(kNumOuterNeutrals,			Between(0, 0))
+#define		(kOuterNeutralPercentLand,		0.35)
+#define		(kOuterNeutralPercentFlat,		Between(.5, .8))
+#define		(kOuterNeutralTreePercentage,	      0.05)
+#define		(kOuterNeutralLandChaos,		0.8)
+#define		(kOuterNeutralLandClumps,		1)
+#define		(kOuterNeutralFlatChaos,		0.8)
+#define		(kOuterNeutralFlatClumps,		1)
+
+
+//////////////////////////////////////////////////////////////////////
+// resource definitions
+#define		(kMaxResourceElevation,			2)
+#define		(kResourceToEdgeDistance,		2)
+#define		(kResourceToWaterDistance,		2)
+
+#define		(kAnimalPerPlayer,			0)
+#define		(kAnimalPerNeutral,			0)
+
+#define		(kBerryPerPlayer,				0)
+#define		(kBerryPerNeutral,			0)
+
+#define		(kFishPerPlayer,				8)
+#define		(kFishPerNeutral,				0)
+
+#define		(kGoldPerPlayer,				2)
+#define		(kGoldPerNeutral,				0)
+
+#define		(kOilPerPlayer,				0)
+#define		(kOilPerNeutral,				0)
+
+#define		(kSteelPerPlayer,				2)
+#define		(kSteelPerNeutral,			0)
+
+#define		(kStonePerPlayer,				1)
+#define		(kStonePerNeutral,			0)
+
+#define		(kTreePerPlayer,				0)
+#define		(kTreePerNeutral,				0)
+
+//////////////////////////////////////////////////////////////////////
+// forest definitions
+#define		(kForestFreeRadius,			5.0)
+#define		(kForestsPerPlayer,			2)
+#define		(kForestChaosLevel,			0.1)
+#define		(kMaxClumpsPerForest,			2)
+
+
+#elif Is15Players
+//////////////////////////////////////////////////////////////////////
+// 15 PLAYERS...
+//////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////
+// terrain definitions
+#define		(kMinIntElevation,				-10)
+#define		(kMaxIntElevation,				12)
+#define		(kElevationScale,				      1)
+#define		(kPercentLand,					Between(0.5, 0.5))
+#define		(kWaterBorder,					0)
+#define		(kRiverWidth,					6)
+#define		(kCoastToDeepWaterPercentage	            1.0)
+#define		(kHeightMapChaos,					Between(10, 15))
+		
+#define		(kMinimumStartPositionToMapEdge		4)
+#define		(kOuterPushFromMapCenter			10)
+#define		(kInnerPushFromMapCenter 			0)
+
+//////////////////////////////////////////////////////////////////////
+// player definitions
+#define		(kMaxAngleBetweenTeamMembers,		40.0)
+#define		(kPlayerInnerRadius,			0.01)
+#define		(kPlayerOuterRadius,			0.9)
+#define		(kPlayerOptimalFactor,			Between(0.5, 0.8))
+#define		(kPlayerPercentFlat,			Between(0.75, 0.75))
+#define		(kPlayerLandChaos,			0.8)
+#define		(kPlayerLandClumps,			1)
+#define		(kPlayerFlatChaos,			0.8)
+#define		(kPlayerFlatClumps,			1)
+#define		(kPlayerTreePercentage,			0.06)
+
+
+//////////////////////////////////////////////////////////////////////
+// inner neutral definitions
+#define		(kNeutralInnerRadius,			0.05)
+#define		(kNeutralOuterRadius,			0.4)
+#define		(kNeutralOptimalFactor,			0.7)
+#define		(kNumInnerNeutrals,			Between(0, 0))
+#define		(kInnerNeutralPercentLand,		0.11)
+#define		(kInnerNeutralPercentFlat,		Between(.5, .8))
+#define		(kInnerNeutralTreePercentage,	      0.05)
+#define		(kInnerNeutralLandChaos,		0.8)
+#define		(kInnerNeutralLandClumps,		2)
+#define		(kInnerNeutralFlatChaos,		0.8)
+#define		(kInnerNeutralFlatClumps,		2)
+
+
+//////////////////////////////////////////////////////////////////////
+// outer neutral definitions
+#define		(kNumOuterNeutrals,			Between(0, 0))
+#define		(kOuterNeutralPercentLand,		0.35)
+#define		(kOuterNeutralPercentFlat,		Between(.5, .8))
+#define		(kOuterNeutralTreePercentage,	      0.05)
+#define		(kOuterNeutralLandChaos,		0.8)
+#define		(kOuterNeutralLandClumps,		2)
+#define		(kOuterNeutralFlatChaos,		0.8)
+#define		(kOuterNeutralFlatClumps,		2)
+
+
+//////////////////////////////////////////////////////////////////////
+// resource definitions
+#define		(kMaxResourceElevation,			2)
+#define		(kResourceToEdgeDistance,		2)
+#define		(kResourceToWaterDistance,		2)
+
+#define		(kAnimalPerPlayer,			0)
+#define		(kAnimalPerNeutral,			0)
+
+#define		(kBerryPerPlayer,				0)
+#define		(kBerryPerNeutral,			0)
+
+#define		(kFishPerPlayer,				7)
+#define		(kFishPerNeutral,				0)
+
+#define		(kGoldPerPlayer,				2)
+#define		(kGoldPerNeutral,				0)
+
+#define		(kOilPerPlayer,				0)
+#define		(kOilPerNeutral,				0)
+
+#define		(kSteelPerPlayer,				2)
+#define		(kSteelPerNeutral,			0)
+
+#define		(kStonePerPlayer,				1)
+#define		(kStonePerNeutral,			0)
+
+#define		(kTreePerPlayer,				0)
+#define		(kTreePerNeutral,				0)
+
+//////////////////////////////////////////////////////////////////////
+// forest definitions
+#define		(kForestFreeRadius,			5.0)
+#define		(kForestsPerPlayer,			2)
+#define		(kForestChaosLevel,			0.1)
+#define		(kMaxClumpsPerForest,			2)
+
+
+#elif Is16Players
+//////////////////////////////////////////////////////////////////////
+// 16 PLAYERS...
+//////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////
+// terrain definitions
+#define		(kMinIntElevation,				-10)
+#define		(kMaxIntElevation,				12)
+#define		(kElevationScale,				      1)
+#define		(kPercentLand,					Between(0.5, 0.5))
+#define		(kWaterBorder,					0)
+#define		(kRiverWidth,					5)
+#define		(kCoastToDeepWaterPercentage	            1.0)
+#define		(kHeightMapChaos,					Between(10, 15))
+		
+#define		(kMinimumStartPositionToMapEdge		4)
+#define		(kOuterPushFromMapCenter			10)
+#define		(kInnerPushFromMapCenter 			0)
+
+//////////////////////////////////////////////////////////////////////
+// player definitions
+#define		(kMaxAngleBetweenTeamMembers,		40.0)
+#define		(kPlayerInnerRadius,			0.01)
+#define		(kPlayerOuterRadius,			0.9)
+#define		(kPlayerOptimalFactor,			Between(0.5, 0.8))
+#define		(kPlayerPercentFlat,			Between(0.75, 0.75))
+#define		(kPlayerLandChaos,			0.8)
+#define		(kPlayerLandClumps,			1)
+#define		(kPlayerFlatChaos,			0.8)
+#define		(kPlayerFlatClumps,			1)
+#define		(kPlayerTreePercentage,			0.06)
+
+
+//////////////////////////////////////////////////////////////////////
+// inner neutral definitions
+#define		(kNeutralInnerRadius,			0.05)
+#define		(kNeutralOuterRadius,			0.4)
+#define		(kNeutralOptimalFactor,			0.7)
+#define		(kNumInnerNeutrals,			Between(0, 0))
+#define		(kInnerNeutralPercentLand,		0.11)
+#define		(kInnerNeutralPercentFlat,		Between(.5, .8))
+#define		(kInnerNeutralTreePercentage,	      0.05)
+#define		(kInnerNeutralLandChaos,		0.8)
+#define		(kInnerNeutralLandClumps,		2)
+#define		(kInnerNeutralFlatChaos,		0.8)
+#define		(kInnerNeutralFlatClumps,		2)
+
+
+//////////////////////////////////////////////////////////////////////
+// outer neutral definitions
+#define		(kNumOuterNeutrals,			Between(0, 0))
+#define		(kOuterNeutralPercentLand,		0.35)
+#define		(kOuterNeutralPercentFlat,		Between(.5, .8))
+#define		(kOuterNeutralTreePercentage,	      0.05)
+#define		(kOuterNeutralLandChaos,		0.8)
+#define		(kOuterNeutralLandClumps,		2)
+#define		(kOuterNeutralFlatChaos,		0.8)
+#define		(kOuterNeutralFlatClumps,		2)
+
+
+//////////////////////////////////////////////////////////////////////
+// resource definitions
+#define		(kMaxResourceElevation,			2)
+#define		(kResourceToEdgeDistance,		2)
+#define		(kResourceToWaterDistance,		2)
+
+#define		(kAnimalPerPlayer,			0)
+#define		(kAnimalPerNeutral,			0)
+
+#define		(kBerryPerPlayer,				0)
+#define		(kBerryPerNeutral,			0)
+
+#define		(kFishPerPlayer,				7)
+#define		(kFishPerNeutral,				0)
+
+#define		(kGoldPerPlayer,				2)
+#define		(kGoldPerNeutral,				0)
+
+#define		(kOilPerPlayer,				0)
+#define		(kOilPerNeutral,				0)
+
+#define		(kSteelPerPlayer,				2)
+#define		(kSteelPerNeutral,			0)
+
+#define		(kStonePerPlayer,				1)
+#define		(kStonePerNeutral,			0)
+
+#define		(kTreePerPlayer,				0)
+#define		(kTreePerNeutral,				0)
+
+//////////////////////////////////////////////////////////////////////
+// forest definitions
+#define		(kForestFreeRadius,			5.0)
+#define		(kForestsPerPlayer,			2)
+#define		(kForestChaosLevel,			0.1)
+#define		(kMaxClumpsPerForest,			2)
+
+
+
+//////////////////////////////////////////////////////////////////////
+// End of if...elif... command
+#endif
+
+#endif		// NOTDEFINED(LARGE_ISLANDS_SMALL_RMV)

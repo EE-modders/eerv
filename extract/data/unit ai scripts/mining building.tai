@@ -1,0 +1,20 @@
+//
+// Mining Building unit AI file
+//
+// Behaviors:
+//
+//		Gathers resources from the associated mine.
+//
+//	Notes:
+//
+//	Known Problems:
+//
+
+#include("Generic Death.tai")
+
+GatherResource
+{
+	ResourceDepleted true(Idle)
+}
+
+// transitions from Idle to GatherResource take place in code.

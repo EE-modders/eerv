@@ -1,0 +1,25 @@
+//
+// Torpedo unit AI file
+//
+// Behaviors:
+//
+//		torpedo ai.
+//
+//	Notes:
+//
+//	Known Problems:
+//
+
+// advance
+Advance
+{
+	anyof(ProjectileHitUnit,ProjectileHitGround,ProjectileHitWater,UnitTargetNoLongerValid) true(Dying)
+}
+
+// select ground target
+SelectNewTarget
+{
+	NewTargetSelected true(Advance)
+}
+
+#include("Generic Death.tai")

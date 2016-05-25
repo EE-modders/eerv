@@ -1,0 +1,81 @@
+////////////////////////////////////////////////////////////////////
+//
+// Common Forests.rmv
+//
+// This rmv file describes the common forests used for most
+// random maps.
+//
+// Copyright (c) 2001, Stainless Steel Studios, Inc. All rights reserved.
+// PROPRIETARY and CONFIDENTIAL.
+//
+// $Author: Scott Marison $
+// $Date: 6/27/01 12:34p $
+// $Revision: 13 $
+//
+////////////////////////////////////////////////////////////////////
+
+
+#if			NOTDEFINED(COMMON_FORESTS_RMV)
+#define		(COMMON_FORESTS_RMV,1)
+
+
+#if			DEFINED(kGrassMap)
+
+
+//////////////////////////////////////////////////////////////////////
+// define the forest names
+#define				(kMapleForest,		1000)
+#define				(kSpruceForest,		1001)
+
+
+//////////////////////////////////////////////////////////////////////
+// define the trees that belong to each forest
+DefineForest		(kMapleForest,		Grass-Sparse,		Tree01[Maple],	Tree02[Maple],	Tree04[Maple],	Tree30[Maple])
+DefineForest		(kSpruceForest,		Grass-Sparse,		Tree07[Spruce], Tree09[Spruce],	Tree10[Spruce], Tree11[Spruce])
+
+
+//////////////////////////////////////////////////////////////////////
+// decide which forests to use in the map
+AvailableForests	(kMapleForest, kSpruceForest)
+
+
+#elif		DEFINED(kWinterMap)
+
+
+//////////////////////////////////////////////////////////////////////
+// define the forest names
+#define				(kWinterSpruceForest,	2000)
+
+
+//////////////////////////////////////////////////////////////////////
+// define the trees that belong to each forest
+DefineForest		(kWinterSpruceForest,	Snow-Tufts,		Tree31-WinterSpruce1, Tree32-WinterSpruce2, Tree33-WinterSpruce3, Tree34-WinterSpruce4, Tree35-WinterSpruce5, Tree36-WinterSpruce6)
+
+
+//////////////////////////////////////////////////////////////////////
+// decide which forests to use in the map
+AvailableForests	(kWinterSpruceForest)
+
+
+#elif		DEFINED(kDesertMap)
+
+
+//////////////////////////////////////////////////////////////////////
+// define the forest names
+#define				(kPalmForest,		3000)
+
+
+//////////////////////////////////////////////////////////////////////
+// define the trees that belong to each forest
+DefineForest		(kPalmForest,		Grass-Sparse,		Tree21[Palm],	Tree22[Palm],	Tree23[Palm],	Tree26[Palm])
+
+
+//////////////////////////////////////////////////////////////////////
+// decide which forests to use in the map
+AvailableForests	(kPalmForest)
+
+
+#endif		// DEFINED(kGrassMap)
+
+
+#endif		// NOTDEFINED(COMMON_FORESTS_RMV)
