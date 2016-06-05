@@ -10,15 +10,11 @@ import java.nio.file.StandardOpenOption;
 
 import net.coderbot.eerv.PKDecoder;
 import net.coderbot.eerv.scn.SCN.FileID;
-import net.coderbot.eerv.scn.SCNTriggers.ChainType;
-import net.coderbot.eerv.scn.SCNTriggers.CompareType;
-import net.coderbot.eerv.scn.SCNTriggers.ConditionType;
-import net.coderbot.eerv.scn.SCNTriggers.PlayerAttributeType;
-import net.coderbot.eerv.scn.SCNTriggers.SCNCondition;
-import net.coderbot.eerv.scn.SCNTriggers.SCNConditionBinding;
-import net.coderbot.eerv.scn.SCNTriggers.SCNEffect;
-import net.coderbot.eerv.scn.SCNTriggers.SCNEffectBinding;
-import net.coderbot.eerv.scn.SCNTriggers.SCNTrigger;
+import net.coderbot.eerv.scn.trigger.Area;
+import net.coderbot.eerv.scn.trigger.Condition;
+import net.coderbot.eerv.scn.trigger.Effect;
+import net.coderbot.eerv.scn.trigger.Selector;
+import net.coderbot.eerv.scn.trigger.Trigger;
 
 import java.nio.charset.StandardCharsets;
 
@@ -73,11 +69,11 @@ public class SCNDecoder extends Decoder<SCN>
 		
 		asciiZ = new byte[data.getInt()];
 		data.get(asciiZ);
-		scn.name = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
+		scn.name = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
 		
 		asciiZ = new byte[data.getInt()];
 		data.get(asciiZ);
-		scn.description = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
+		scn.description = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
 		
 		if(data.getInt()!=0||data.getInt()!=231)
 		{
@@ -87,11 +83,11 @@ public class SCNDecoder extends Decoder<SCN>
 		
 		asciiZ = new byte[data.getInt()];
 		data.get(asciiZ);
-		scn.playerList = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
+		scn.playerList = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
 		
 		asciiZ = new byte[data.getInt()];
 		data.get(asciiZ);
-		scn.date = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
+		scn.date = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
 		
 		System.out.println("Date: "+scn.date);
 		
@@ -133,53 +129,67 @@ public class SCNDecoder extends Decoder<SCN>
 		scn.customCivs = data.get()==1;
 		scn.u5 = data.get()==1;
 		
-		scn.u6 = data.getInt();
-		scn.u7 = data.getInt();
-		scn.u8 = data.getInt();
-		scn.u9 = data.getInt();
-		scn.uA = data.getInt();
-		scn.uB = data.getInt();
+		asciiZ = new byte[data.getInt()];
+		data.get(asciiZ);
+		scn.campaignName = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
+		System.out.println("CampaignName: "+scn.campaignName);
 		
-		scn.uC = new int[13];
+		asciiZ = new byte[data.getInt()];
+		data.get(asciiZ);
+		scn.scenarioName = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
+		System.out.println("ScenarioName: "+scn.scenarioName);
+		
+		
+		scn.u6 = data.getInt();
+		scn.u7 = data.get();
+		
+		System.out.println(scn.u6+" "+scn.u7);
+		
+		asciiZ = new byte[data.getInt()];
+		data.get(asciiZ);
+		scn.forcedName = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
+		System.out.println("ForcedName: "+scn.forcedName);
+		
+		scn.u8 = new int[13];
 		for(int i = 0;i<13;i++)
 		{
-			scn.uC[i] = data.getInt();
-		}
-		
-		split = data.get();
-		if(split!=0)
-		{
-			throw new DecoderException("scn", "split byte was not 0");
+			scn.u8[i] = data.getInt();
+			System.out.println(scn.u8[i]);
 		}
 		
 		asciiZ = new byte[data.getInt()];
 		data.get(asciiZ);
-		scn.hints = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
+		scn.u9 = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
+		System.out.println("UnknownString: "+scn.u9);
+		
+		asciiZ = new byte[data.getInt()];
+		data.get(asciiZ);
+		scn.hints = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
 		System.out.println("Hints: "+scn.hints);
 		
 		asciiZ = new byte[data.getInt()];
 		data.get(asciiZ);
-		scn.history = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
+		scn.history = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
 		System.out.println("History: "+scn.history);
 		
 		asciiZ = new byte[data.getInt()];
 		data.get(asciiZ);
-		scn.movie = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
+		scn.movie = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
 		System.out.println("Movie: "+scn.movie);
 		
 		asciiZ = new byte[data.getInt()];
 		data.get(asciiZ);
-		scn.map = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
+		scn.map = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
 		System.out.println("Map: "+scn.map);
 		
 		asciiZ = new byte[data.getInt()];
 		data.get(asciiZ);
-		scn.instructions = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
+		scn.instructions = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
 		System.out.println("Instructions: "+scn.instructions);
 		
 		asciiZ = new byte[data.getInt()];
 		data.get(asciiZ);
-		scn.soundover = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
+		scn.soundover = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
 		System.out.println("Soundover: "+scn.soundover);
 		
 		scn.uD = data.getInt();
@@ -238,7 +248,7 @@ public class SCNDecoder extends Decoder<SCN>
 			
 			file.data = pk.decode();
 			
-			if(!data.hasRemaining())
+			if(data.remaining()<4)
 			{
 				break;
 			}
@@ -304,7 +314,7 @@ public class SCNDecoder extends Decoder<SCN>
 				e.printStackTrace();
 			}
 			
-			System.out.println("File"+(i++)+": "+file.id+" \t<"+file.data.limit()+"> \t"+file.u0+" \t"+Integer.toHexString(file.u1&0xFF)+" \t"+Integer.toHexString(file.u2&0xFF)+" \t"+Integer.toHexString(file.u3&0xFF)+" \t"+((file.hasExtendedAttribs)?"xattribs":""));
+			System.out.println("File"+(i++)+": "+file.id+" \t<"+file.data.limit()+"> \t"+file.u0+"  \t"+((file.hasExtendedAttribs)?"xattribs":""));
 		}
 		while(pkMagic==825248592);
 		
@@ -314,11 +324,6 @@ public class SCNDecoder extends Decoder<SCN>
 	
 	static void handleFile(SCNFile file)
 	{
-		/*if(file.id!=FileID.TRIGGERS&&file.id!=FileID.DIPLOMACY)
-		{
-			return;
-		}*/
-		
 		byte[] asciiZ;
 		ByteBuffer data = file.data;
 		
@@ -327,456 +332,177 @@ public class SCNDecoder extends Decoder<SCN>
 			int triggers = data.getInt();
 			for(int i = 0;i<triggers;i++)
 			{
-				SCNTrigger trig = new SCNTrigger();
+				Trigger trig = new Trigger();
 				asciiZ = new byte[data.getInt()];
 				data.get(asciiZ);
-				trig.name = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
+				trig.setName(new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1));
 				
 				asciiZ = new byte[data.getInt()];
 				data.get(asciiZ);
-				trig.desc = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
+				trig.setDescription(new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1));
 				
-				trig.active = data.get()==1;
-				trig.looping = data.get()==1;
-				trig.u0 = data.get()==1;
-				trig.inCinematic = data.get()==1;
+				trig.setActive(data.get()==1);
+				trig.setLooping(data.get()==1);
+				trig.setFired(data.get()==1);
+				trig.setInCinematic(data.get()==1);
 				
-				trig.activeFor = data.getInt();
-				trig.u1 = data.getInt();
-				trig.id = data.getInt();
+				trig.setActiveFor(data.getInt());
+				trig.setSecondsActive(data.getInt());
+				trig.setId(data.getInt());
 				
 				System.out.println("triggers["+i+"] "+trig);
 				
-				int conditions = data.getInt();
-				trig.conditions = new SCNConditionBinding[conditions];
+				int conds = data.getInt();
+				Trigger.ConditionBinding[] conditions = new Trigger.ConditionBinding[conds];
+				trig.setConditions(conditions);
 				
-				for(int c = 0;c<conditions;c++)
+				for(int c = 0;c<conds;c++)
 				{
-					SCNConditionBinding binding = new SCNConditionBinding();
-					binding.not = data.get()==1;
+					boolean not = data.get()==1;
 					int chainType = data.getInt();
-					binding.chainType = ChainType.values()[chainType];
-					binding.condition = data.getInt();
-					trig.conditions[c] = binding;
+					int conditionId = data.getInt();
+					conditions[c] = new Trigger.ConditionBinding(conditionId, not, Trigger.ChainType.values()[chainType]);
 					
-					System.out.println("["+c+"] "+binding);
+					System.out.println("["+c+"] "+conditions[c]);
 				}
 				
 				
-				int effects = data.getInt();
-				trig.effects = new SCNEffectBinding[effects];
+				int effs = data.getInt();
+				Trigger.EffectBinding[] effects = new Trigger.EffectBinding[effs];
 				
-				for(int e = 0;e<effects;e++)
+				for(int e = 0;e<effs;e++)
 				{
-					SCNEffectBinding binding = new SCNEffectBinding();
-					binding.delay = data.getInt();
+					int delay = data.getInt();
 					int chainType = data.getInt();
-					binding.chainType = ChainType.values()[chainType];
-					binding.effect = data.getInt();
+					int effectId = data.getInt();
+					effects[e] = new Trigger.EffectBinding(effectId, delay, Trigger.ChainType.values()[chainType]);
 					
-					System.out.println("["+e+"] "+binding);
+					System.out.println("["+e+"] "+effects[e]);
 				}
 			}
 			
-			SCNCondition cond = new SCNCondition();
 			int conditions = data.getInt();
 			for(int i = 0;i<conditions;i++)
 			{
-				asciiZ = new byte[data.getInt()];
-				data.get(asciiZ);
-				cond.name = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
-				
-				asciiZ = new byte[data.getInt()];
-				data.get(asciiZ);
-				cond.desc = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
-				
-				//CHAT MESSAGE CONTAINS
-				
-				asciiZ = new byte[data.getInt()];
-				data.get(asciiZ);
-				String chatMessageContains = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
-				
-				//PLAYER ATTRIBUTES
-				
-				int iConditionType = data.getInt();
-				ConditionType type = ConditionType.values()[iConditionType];
-				
-				System.out.println("["+i+"] "+cond+" "+type+" contains: "+chatMessageContains);
-				
-				int existsId = data.getInt();
-				int player = data.getInt();
-				int iAttribute = data.getInt();
-				PlayerAttributeType attribute = PlayerAttributeType.values()[iAttribute];
-					
-				System.out.println("[PAttr] existsId: "+existsId+" player: "+player+" attribute: "+attribute);
-					
-				int iCompareType = data.getInt();
-				CompareType compareType = CompareType.values()[iCompareType];
-				int amount = data.getInt();
-					
-				int otherPlayer = data.getInt();
-				int otheriAttribute = data.getInt();
-				PlayerAttributeType otherAttribute = PlayerAttributeType.values()[otheriAttribute];
-				
-				System.out.println(compareType+" "+amount+" ["+otherPlayer+":"+otherAttribute+"]");
-					
-				//TECH
-				int tech = data.getInt();
-				
-				//TRIGGER ATTRIBUTES
-				int trigger = data.getInt();
-				boolean triggerOn = data.get()==1;
-				boolean triggerFired = data.get()==1;
-				boolean compareOtherPlayer = data.get()==1;
-					
-				System.out.println("tech: "+tech+" trigger: "+trigger+" on: "+triggerOn+" fired: "+triggerFired+" [PAttr]compareOtherPlayer: "+compareOtherPlayer);
-					
-				//GAME ATTRIBUTES
-				
-				int elapsedTimeMax = data.getInt();
-				int elapsedTimeMin = data.getInt();
-				int hourLeast = data.getInt();
-				
-				boolean dlevel = data.get()==1;
-				boolean etime = data.get()==1;
-				boolean hleast = data.get()==1;
-				
-				int difficultyLevel = data.getInt();
-				
-				System.out.println("gameAttributes: "+(dlevel?"D":"-")+(etime?"E":"-")+(hleast?"H":"-")+" elapsedTime: "+elapsedTimeMin+"->"+elapsedTimeMax+" hourLeast: "+hourLeast+" difficultyLevel: "+difficultyLevel);
-					
-				int bf0 = data.getInt();
-				if((bf0&0xFFFFFF00)!=0)
-				{
-					System.out.println("bytefield unknown flags: "+Integer.toHexString(bf0&0xFFFFFF00));
-				}
-				
-				//DIPLOMACY: 
-				
-				boolean enemies = (bf0&1)==1;
-				System.out.println("enemies: "+enemies);
-				
-				int id = data.getInt();
-				System.out.println("id: "+id);
+				Condition cond = new Condition();
+				cond.read(data);
+				System.out.println("cond "+cond);
 			}
 			
-			/*
-*: name
-*: desc
-*: conditionId
-*: conditionType
-
-PLAYER_*: player
-PLAYER_*: otherPlayer
-PLAYER_ATTRIBUTE: attribute
-PLAYER_ATTRIBUTE: compareType
-PLAYER_ATTRIBUTE: amount
-PLAYER_ATTRIBUTE: otherAttribute
-PLAYER_ATTRIBIUTE: compareOtherPlayer
-PLAYER_TECH: techId
-PLAYER_DIPLOMACY: isEnemies
-TRIGGER_ATTRIBUTE: triggerId
-TRIGGER_ATTRIBUTE: triggerOn
-TRIGGER_ATTRIBUTE: triggerFired
-GAME_ATTRIBUTE: elapsedTimeMax
-GAME_ATTRIBUTE: elapsedTimeMin
-GAME_ATTRIBUTE: hourLeast
-GAME_ATTRIBUTE: useDifficultyLevel
-GAME_ATTRIBUTE: useElapsedTime
-GAME_ATTRIBUTE: useHourLeast
-GAME_ATTRIBUTE: difficultyLevel
-CHAT:containsString
-EXISTS:existsId
-			 */
-			
-			SCNEffect effect = new SCNEffect();
 			int effects = data.getInt();
 			for(int i = 0;i<effects;i++)
 			{
-				asciiZ = new byte[data.getInt()];
-				data.get(asciiZ);
-				effect.name = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
-				
-				asciiZ = new byte[data.getInt()];
-				data.get(asciiZ);
-				effect.desc = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
-				
-				int duration = data.getInt();//Media
-				System.out.println("-------------------------------- "+effect+" "+duration);
-				
-				asciiZ = new byte[data.getInt()];
-				data.get(asciiZ);
-				String message = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
-				System.out.println("[Message] "+message);
-				
-				asciiZ = new byte[data.getInt()];
-				data.get(asciiZ);
-				String u0 = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
-				System.out.println("[0] "+u0);
-				
-				asciiZ = new byte[data.getInt()];
-				data.get(asciiZ);
-				String u1 = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
-				System.out.println("[1] "+u1);
-				
-				asciiZ = new byte[data.getInt()];
-				data.get(asciiZ);
-				String setClassName = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
-				System.out.println("[ClassName] "+setClassName);
-				
-				asciiZ = new byte[data.getInt()];
-				data.get(asciiZ);
-				String soundFile = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
-				System.out.println("[SoundFile] "+soundFile);
-				
-				asciiZ = new byte[data.getInt()];
-				data.get(asciiZ);
-				String line = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
-				System.out.println("[Line] "+line);
-				
-				int playerAttributeId = data.getInt();//Player
-				int bf3 = data.getInt();//Player: [0x1=IsEnemy][0x100=?][0x10000=?][0x1000000=?]
-				int mediaPlayer = data.getInt();//Media: player
-				int objectPlayer = data.getInt();//Object: player
-				int player0 = data.getInt();//Player+AI: first player
-				int player1 = data.getInt();//Player: second player
-				int mediaSubtype = data.getInt();//Media
-				int u2 = data.getInt();
-				int playerSubtype = data.getInt();//Player
-				
-				System.out.println("[0] playerAttributeId="+playerAttributeId+" bf3="+Integer.toHexString(bf3)+" media:player="+mediaPlayer+" object:player="+objectPlayer+" player0="+player0+" player1="+player1+" mediaSubtype="+mediaSubtype+" "+u2+" playerSubtype="+playerSubtype);
-				
-				int triggerState = data.getInt();//Trigger
-				int type = data.getInt();//*
-				int objectSubtype = data.getInt();//Object
-				int techId = data.getInt();//Object
-				int gameId = data.getInt();//Game: Gfx/Calamity Id
-				int areaId = data.getInt();//Game
-				int objectId = data.getInt();//Game
-				int daylightHour = data.getInt();//Game daylightHour/cinematicGameSpeed: 0.1(x+1)
-				int dayNightTime = data.getInt();//Game
-				
-				System.out.println("[1] triggerState="+triggerState+" type="+type+" objectSubtype="+objectSubtype+" techId="+techId+" gameId="+gameId+" areaId="+areaId+" objectId="+objectId+" daylightHourAndCGameSpeed="+daylightHour+" dayNightTime="+dayNightTime);
-				
-				int gameSubtype = data.getInt();//Game
-				int changeTextTarget = data.getInt();//Media
-				int attributeId = data.getInt();//Object
-				int u3 = data.getInt();
-				int u4 = data.getInt();
-				int u5 = data.getInt();
-				int attrModifier = data.getInt();//Object: 0=Inc/1=Dec/2=Set
-				
-				System.out.println("[2] gameSubtype="+gameSubtype+" changeTextTarget="+changeTextTarget+" attributeId="+attributeId+" "+u3+" "+u4+" "+u5+" attrModifier="+attrModifier);
-				
-				int attrValue = data.getInt();//Object
-				int objectId2 = data.getInt();//Media/Object or AI:FavoriteAir
-				int stance = data.getInt();//Object
-				int task = data.getInt();//Object
-				int areaId2 = data.getInt();//Object
-				int u6 = data.getInt();
-				int awardedCivPoints = data.getInt();//Player
-				int playerAttrModifier = data.getInt();//Player
-				int playerAttrValue = data.getInt();//Player
-				
-				System.out.println("[3] attrValue="+attrValue+" objectId2|ai:favoriteAir="+objectId2+" stance="+stance+" task="+task+" areaId2="+areaId2+" "+u6+" awardedCivPoints="+awardedCivPoints+" playerAttrModifier="+playerAttrModifier+" playerAttrValue="+playerAttrValue);
-				
-				int playerAreaId = data.getInt();//Player
-				int playerObjectId = data.getInt();//Player
-				int triggerId = data.getInt();//Trigger
-				int bf0 = data.getInt();//[0x1=?][0x100=Media:IsAddLine][0x10000=Player:UseArea][0x1000000=Object:UsePercent]
-				int bf1 = data.getInt()&0x00FFFFFF;//[0x1=Player:IsAddingTech][0x100=Game:UseArea][0x10000=?]
-				data.position(data.position()-1);//Bytefield is only 3 bytes
-				
-				int aiSubtype = data.getInt();//AI
-				int camFaceAreaId = data.getInt();//Player+AI
-				byte varId = data.get();//AI
-				
-				System.out.println("[4] playerAreaId="+playerAreaId+" playerObjectId="+playerObjectId+" triggerId="+triggerId+" bf0="+Integer.toHexString(bf0)+" bf1="+Integer.toHexString(bf1)+" aiSubtype="+aiSubtype+" camFaceAreaId="+camFaceAreaId+" varId="+varId);
-				
-				int bf2 = data.getInt();//[0x1=?][0x100=?][0x10000=?][0x1000000=Game:AmbientWeather_Active or AI:ToggleOn]
-				float floatVar = data.getFloat();//AI
-				int camScrollSpeed = data.getInt();//Media+Player or AI:FavoriteLand or AI:IntValue0
-				int camZoomLevel = data.getInt();//Player Current=0,HighPitch=1,x=(x+51) for x(>=-49) or AI:FavoriteSea or AI:IntValue1
-				
-				int listSize = data.getInt();
-				System.out.print("[6] objectId list: [");
-				for(int l = 0;l<listSize;l++)
-				{
-					System.out.print(data.getInt());
-					if(l+1<listSize)
-					{
-						System.out.print(", ");
-					}
-				}
-				System.out.println(']');
-				
-				int u7 = data.getInt();
-				int camFaceObjectId = data.getInt();//Player+AI
-				int toggleId = data.getInt();//AI
-				short bf4 = data.getShort();//[0x1=Player:CamFaceUseArea or AI:UseArea][0x100=AI:AddingX]
-				int id = data.getInt();//*
-				short bf5 = data.getShort();//[0x1=Player:CamFollow or AI:IsAttack][0x100=Player:CamTrack or AI:IsFavorite]
-				
-				System.out.println("[6] bf2="+bf2+" floatVar="+floatVar+" camScrollSpeed|ai:favoriteLand="+camScrollSpeed+" camZoomLevel|ai:favoriteSea="+camZoomLevel+" "+u7+" camFaceObjectId="+camFaceObjectId+" toggleId="+toggleId+" bf4="+bf4+" id="+id+" bf5="+bf5);
+				Effect effect = new Effect();
+				effect.read(data);
+				System.out.println(effect);
 			}
 			
-			int objects = data.getInt();
+			int selectors = data.getInt();
 			
-			SCNObject object = new SCNObject();
-			for(int i = 0;i<objects;i++)
+			for(int i = 0;i<selectors;i++)
 			{
-				asciiZ = new byte[data.getInt()];
-				data.get(asciiZ);
-				object.name = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
-				
-				//91
-				
-				System.out.println(object);
-				
-				System.out.print("ObjectsOnMap: [");
-				int onMap = data.getInt();
-				for(int o = 0;o<onMap;o++)
-				{
-					System.out.print(data.getInt());
-					if(o+1<onMap)
-					{
-						System.out.print(", ");
-					}
-				}
-				
-				System.out.println("]");
-				
-				boolean selectOnMap = data.get()==1;
-				int selectionPlayerId = data.getInt();//Owner of object must be this player
-				int familySelectionId = data.getInt();//Family must be this
-				int classSelectionId = data.getInt();//Class must be this
-				int objectSelectionId = data.getInt();//Constrain to single object id
-				int minSelected = data.getInt();
-				int maxSelected = data.getInt();
-				boolean dynamic = data.get()==1;
-				int areaMode = data.getInt();
-				int losMode = data.getInt();//Also range and near
-				
-				System.out.println("selectOnMap="+selectOnMap+" selectionPlayerId="+selectionPlayerId+" familySelectionId="+familySelectionId+" classSelectionId="+classSelectionId+" objectSelectionId="+objectSelectionId+" minSelected="+minSelected+" maxSelected="+maxSelected+" dynamic="+dynamic+" areaMode="+areaMode+" losMode="+losMode);
-				
-				int attrMode = data.getInt();
-				int visibleByMode = data.getInt();//DISABLED/NORMAL/NOT
-				int hasStateMode = data.getInt();
-				int selectedByMode = data.getInt();
-				int areaId = data.getInt();
-				int rangeType = data.getInt();//LOS/RANGE/NEAR
-				int objectId = data.getInt();
-				int attrId = data.getInt();
-				
-				System.out.println("attrMode="+attrMode+" visibleByMode="+visibleByMode+" hasStateMode="+hasStateMode+" selectedByMode="+selectedByMode+" areaId="+areaId+" rangeType="+rangeType+" objectId="+objectId+" attrId="+attrId);
-				
-				int min = data.getInt();
-				int max = data.getInt();
-				int u1 = data.getInt();
-				int u2 = data.getInt();
-				int player = data.getInt();
-				boolean u3 = data.get()==1;
-				int id = data.getInt();
-				
-				System.out.println("min="+min+" max="+max+" "+u1+" "+u2+" "+u3+" player="+player+" id="+id);
+				Selector selector = new Selector();
+				selector.read(data);
+				System.out.println(selector);
 			}
 			
 			int areas = data.getInt();
-			SCNArea area = new SCNArea();
 			for(int i = 0;i<areas;i++)
+			{
+				Area area = new Area();
+				area.read(data);
+				System.out.println(area);
+			}
+			
+			int queued = data.getInt();
+			System.out.println(queued+" queued effects");
+			for(int i = 0;i<queued;i++)
+			{
+				int effectId = data.getInt();
+				int executeAt = data.getInt();
+				byte u0 = data.get();
+				
+				System.out.println("["+i+"] effectId="+effectId+" executeAt="+executeAt+"ms u0="+u0);
+			}
+			
+			System.out.println("pos: "+data.position());
+			
+			int len = data.getInt();
+			System.out.println("len: "+len);
+			for(int i = 0;i<len;i++)
 			{
 				asciiZ = new byte[data.getInt()];
 				data.get(asciiZ);
-				area.name = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
+				String name = new String(asciiZ, 0, asciiZ.length>0?asciiZ.length-1:0, StandardCharsets.ISO_8859_1);
 				
-				asciiZ = new byte[data.getInt()];
-				data.get(asciiZ);
-				area.desc = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
+				System.out.println("["+i+"] "+name);
 				
-				System.out.println(area);
-				
-				float x = data.getFloat();
-				float y = data.getFloat();
-				float xMin = data.getFloat();
-				float yMin = data.getFloat();
-				float xMax = data.getFloat();
-				float yMax = data.getFloat();
-				
-				byte u8 = data.get();
-				byte u9 = data.get();
-				int type = data.getInt();
-				int u7 = data.getInt();
-				int id = data.getInt();
-				
-				System.out.println("x="+x+" y="+y+" xMin="+xMin+" yMin="+yMin+" xMax="+xMax+" yMax="+yMax);
-				System.out.println("type="+type+" "+u7+" "+u8+" "+u9+" id="+id);
+				data.position(data.position()+243);
 			}
 			
-			int u0 = data.getInt();
-			int u1 = data.getInt();
-			int u2 = data.getInt();
-			int u3 = data.getInt();
-			
-			int u4 = data.getInt();
-			int u5 = data.getInt();
-			int u6 = data.getInt();
+			int verifyTriggers = data.getInt();
+			int verifyConditions = data.getInt();
+			int verifyEffects = data.getInt();
+			int verifyObjects = data.getInt();
+			int verifyAreas = data.getInt();
 			
 			float timeMilliseconds = data.getFloat();//in milliseconds
-			float u8 = data.getFloat();
+			float u1 = data.getFloat();
 			
-			System.out.println(u0+" "+u1+" "+u2+" "+u3+" "+u4+" "+u5+" "+u6+" time="+timeMilliseconds/1000+"s "+u8);
-			
-			asciiZ = new byte[data.getInt()];
-			data.get(asciiZ);
-			String u9 = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
-			System.out.println("[0] "+u9);
+			System.out.println("verifyTriggers="+verifyTriggers+" verifyConditions="+verifyConditions+" verifyEffects="+verifyEffects+" verifyObjects="+verifyObjects
+					+" verifyAreas="+verifyAreas+" time="+timeMilliseconds/1000+"s "+u1);
 			
 			asciiZ = new byte[data.getInt()];
 			data.get(asciiZ);
-			String hints = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
+			String u2 = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
+			System.out.println("[0] "+u2);
+			
+			asciiZ = new byte[data.getInt()];
+			data.get(asciiZ);
+			String hints = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
 			System.out.println("[Hints] "+hints);
 			
 			asciiZ = new byte[data.getInt()];
 			data.get(asciiZ);
-			String history = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
+			String history = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
 			System.out.println("[History] "+history);
 			
 			asciiZ = new byte[data.getInt()];
 			data.get(asciiZ);
-			String movie = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
+			String movie = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
 			System.out.println("[Movie] "+movie);
 			
 			asciiZ = new byte[data.getInt()];
 			data.get(asciiZ);
-			String map = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
+			String map = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
 			System.out.println("[Map] "+map);
 			
 			asciiZ = new byte[data.getInt()];
 			data.get(asciiZ);
-			String instructions = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
+			String instructions = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
 			System.out.println("[Instructions] "+instructions);
 			
 			asciiZ = new byte[data.getInt()];
 			data.get(asciiZ);
-			String soundover = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
+			String soundover = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
 			System.out.println("[Soundover] "+soundover);
 			
-			int uA = data.getInt();
-			int uB = data.getInt();
-			int uC = data.getInt();
-			short uD = data.getShort();
+			int u3 = data.getInt();
+			int u4 = data.getInt();
+			int u5 = data.getInt();
+			short u6 = data.getShort();
 			
-			System.out.println(uA+" "+uB+" "+uC+" "+uD);
+			System.out.println(u3+" "+u4+" "+u5+" "+u6);
 			
 			asciiZ = new byte[data.getInt()];
 			data.get(asciiZ);
-			String localizationFile = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
+			String localizationFile = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
 			System.out.println("[LocalizationFile] "+localizationFile);
 			
 			asciiZ = new byte[data.getInt()];
 			data.get(asciiZ);
-			String uE = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
-			System.out.println("[2] "+uE);
+			String u7 = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
+			System.out.println("[2] "+u7);
 		}
 		
 		if(file.id==FileID.TERRAIN)
@@ -784,28 +510,10 @@ EXISTS:existsId
 			int x = data.getInt();
 			int y = data.getInt();
 			
-			int uProp = data.getInt();
+			int players = data.getInt();
 			
-			int skip;
-			System.out.println(x+"x"+y+": "+uProp);
-			
-			if(uProp==9)
-			{
-				skip = 20;
-			}
-			else if(uProp==8)
-			{
-				skip = 16;
-			}
-			else if(uProp==17)
-			{
-				skip = 36;
-			}
-			else
-			{
-				System.out.println("Unknown value for uProp: "+uProp);
-				return;
-			}
+			int skip = players*2;
+			System.out.println(x+"x"+y+": "+players);
 			
 			int total = 0;
 			int big = 0;
@@ -814,10 +522,11 @@ EXISTS:existsId
 			
 			//Format: height, isVisible[playerId], length of extraDat
 			
-			for(int r = 0;r<480;r++)
+			/*for(int r = 0;r<480;r++)
 			{
 				float f = data.getFloat();
-				//System.out.println("["+r+":"+(bb.position()-4)+"] "+f);
+				short s = data.getShort();
+				//System.out.println("["+r+":"+(data.position()-6)+"] "+f+" "+s);
 				file.data.position(file.data.position()+skip);
 				int sect = data.getInt();
 				
@@ -833,7 +542,7 @@ EXISTS:existsId
 				{
 					bigwith++;
 				}
-			}
+			}*/
 			
 			System.out.println("Entries: "+total+" total, "+big+" big among "+bigwith+" points, "+(total-big)+" small among "+with+" points ");
 		}
@@ -893,7 +602,7 @@ EXISTS:existsId
 				len = data.getInt();
 				asciiZ = new byte[len];
 				data.get(asciiZ);
-				String sender = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
+				String sender = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
 				if(len==0)
 				{
 					break;
@@ -906,7 +615,7 @@ EXISTS:existsId
 				
 				
 				data.get(asciiZ);
-				String message = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
+				String message = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
 				int unk = data.getInt();
 				System.out.println(" - unk=[dec: "+unk+" hex: "+Integer.toHexString(unk)+"] rgb=["+r+", "+g+", "+b+"] <"+sender+"> "+message);
 			}
@@ -914,7 +623,7 @@ EXISTS:existsId
 			System.out.println("end: "+data.getShort());
 		}
 		
-		if(file.id==FileID.OBJECTS)
+		if(/*file.id==FileID.OBJECTS*/false)
 		{
 			int players = data.getInt();
 			int u0 = data.getInt();
@@ -943,7 +652,7 @@ EXISTS:existsId
 				int zero1 = data.getInt();
 				short zero2 = data.getShort();
 				
-				System.out.println(u0p+" "+zero0+" "+zero1+" "+zero2);
+				System.out.println(u0p+" "+zero0+" "+zero1+" "+zero2+" pos="+data.position());
 				
 				float r = data.getFloat();
 				float g = data.getFloat();
@@ -953,7 +662,7 @@ EXISTS:existsId
 				
 				asciiZ = new byte[data.getInt()];
 				data.get(asciiZ);
-				String name = new String(asciiZ, 0, asciiZ.length!=0?asciiZ.length-1:0, StandardCharsets.US_ASCII);
+				String name = new String(asciiZ, 0, asciiZ.length!=0?asciiZ.length-1:0, StandardCharsets.ISO_8859_1);
 				System.out.println("Player name: "+name);
 				int objects = data.getInt();
 				System.out.println("Objects: "+objects);
@@ -975,20 +684,25 @@ EXISTS:existsId
 				
 				for(int i = 0;i<techEntries;i++)
 				{
-					System.out.println(data.getInt()+" "+(data.get()==1?"+":"-")+(data.get()==1?"+":"-")+(data.get()==1?"+":"-"));
+					int techId = data.getInt();
+					boolean u2 = data.get()==1;
+					boolean u3 = data.get()==1;
+					boolean disabled = data.get()==1;
+					
+					System.out.println("techId="+techId+" "+(u2?"+":"-")+(u3?"+":"-")+(disabled?"D":"-"));
 				}
 				
 				data.position(data.position()+72);
 				asciiZ = new byte[data.getInt()];
 				data.get(asciiZ);
-				String u4 = new String(asciiZ, 0, asciiZ.length!=0?asciiZ.length-1:0, StandardCharsets.US_ASCII);
+				String u4 = new String(asciiZ, 0, asciiZ.length!=0?asciiZ.length-1:0, StandardCharsets.ISO_8859_1);
 				System.out.println(u4);
 				
 				data.position(data.position()+25);
 				
 				asciiZ = new byte[data.getInt()];
 				data.get(asciiZ);
-				String civilization = new String(asciiZ, 0, asciiZ.length!=0?asciiZ.length-1:0, StandardCharsets.US_ASCII);
+				String civilization = new String(asciiZ, 0, asciiZ.length!=0?asciiZ.length-1:0, StandardCharsets.ISO_8859_1);
 				System.out.println("["+playerIdx+"] Civilization: "+civilization);
 				
 				System.out.println("PosBefore: "+file.data.position());
@@ -1019,7 +733,14 @@ EXISTS:existsId
 				System.out.println("inactiveAI="+inactiveAI);
 				data.get();
 				
-				data.position(data.position()+123);
+				System.out.println("PosBefore123: "+file.data.position());
+				
+				data.position(data.position()+102);
+				int len10 = data.getInt();
+				System.out.println("len10="+len10);
+				data.position(data.position()+(len10*4));
+				
+				data.position(data.position()+17);
 				
 				int len2 = data.getInt();
 				System.out.println("len2="+len2);
@@ -1034,7 +755,7 @@ EXISTS:existsId
 				
 				asciiZ = new byte[data.getInt()];
 				data.get(asciiZ);
-				String name2 = new String(asciiZ, 0, asciiZ.length!=0?asciiZ.length-1:0, StandardCharsets.US_ASCII);
+				String name2 = new String(asciiZ, 0, asciiZ.length!=0?asciiZ.length-1:0, StandardCharsets.ISO_8859_1);
 				System.out.println("["+playerIdx+"] Name2: "+name2);
 				
 				System.out.println("PosBefore160: "+file.data.position());
@@ -1045,7 +766,7 @@ EXISTS:existsId
 				
 				asciiZ = new byte[data.getInt()];
 				data.get(asciiZ);
-				String name3 = new String(asciiZ, 0, asciiZ.length!=0?asciiZ.length-1:0, StandardCharsets.US_ASCII);
+				String name3 = new String(asciiZ, 0, asciiZ.length!=0?asciiZ.length-1:0, StandardCharsets.ISO_8859_1);
 				System.out.println("["+playerIdx+"] Name3: "+name3);
 				
 				System.out.println("PosBefore88: "+file.data.position());
@@ -1203,7 +924,16 @@ EXISTS:existsId
 			{
 				System.out.println("Extended Object offs: "+file.data.position());
 				System.out.println(total+"  Ext type: <"+type+"> at ["+x+" "+y+"] <u6: "+u6+" resources: "+resourceLevel+">");
-				data.position(data.position()+16);
+				System.out.println(data.getInt());
+				
+				int pendingProductions = data.getInt();
+				System.out.println("pendingProductions: "+pendingProductions);
+				for(int t=0;t<pendingProductions;t++)
+				{
+					System.out.println("["+t+"] productionId="+data.getInt());
+				}
+				
+				System.out.println(data.getInt()+" "+data.getInt());
 				int len = data.getInt();
 				System.out.println("len="+len);
 				data.position(data.position()+len*20);
@@ -1250,7 +980,7 @@ EXISTS:existsId
 					"[38]",
 					"[39]",
 					"[40]",
-					"[41]",
+					"CurrentProduction", //For creating a citizen, this is 1451 instead of 1074???
 					"[42]",
 					"[43]",
 					"[44]",
@@ -1259,7 +989,7 @@ EXISTS:existsId
 					"[47]",
 					"[48]",
 					"[49]",
-					"[50]",
+					"RemainingTime",
 					"[51]",
 					"[52]",
 					"[53]",
@@ -1339,7 +1069,24 @@ EXISTS:existsId
 					}
 				}
 				
-				for(int fl = 47;fl<63;fl++)
+				for(int fl = 47;fl<49;fl++)
+				{
+					float val = data.getFloat();
+					System.out.print(names[fl]+"="+val+" ");
+					
+					if((fl&7)==0&&fl!=0)
+					{
+						System.out.println(" pos="+data.position());
+					}
+				}
+				
+				for(int fl = 49;fl<51;fl++)
+				{
+					int val = data.getInt();
+					System.out.print(names[fl]+"="+val+" ");
+				}
+				
+				for(int fl = 51;fl<63;fl++)
 				{
 					float val = data.getFloat();
 					System.out.print(names[fl]+"="+val+" ");
@@ -1389,8 +1136,13 @@ EXISTS:existsId
 					}
 				}
 				
-				System.out.println("\n"+names[70]+"="+data.getInt());
+				System.out.println("\n"+names[70]+"="+data.getInt()+" pos="+data.position());
 				byte u9 = data.get();
+				if(u9==1)
+				{
+					System.out.println("unkFloat="+data.getFloat());
+				}
+				
 				System.out.println("u9="+u9+" "+names[71]+"="+data.getFloat()+" "+names[72]+"="+data.getFloat()+" "+names[73]+"="+data.getFloat());
 				
 				byte uA = data.get();
@@ -1425,20 +1177,161 @@ EXISTS:existsId
 				for(int j = 0;j<waypoints;j++)
 				{
 					//1->55
-					System.out.println("	[0:B]="+data.get());
+					int taskType = data.get()&0xFF;
+					String[] types = new String[]{
+						"None",
+						"Waypoint",
+						"2",
+						"3",
+						"4",
+						"5",
+						"6",
+						"7",
+						"8",
+						"9",
+						"10",
+						"11",
+						"Flag Position",
+						"13",
+						"Unknown"
+					};
+					
+					System.out.println("	type="+types[Math.min(taskType,14)]+" ("+taskType+")");
 					System.out.println("	[1:I]="+data.getInt());
-					System.out.println("	[2:B]="+data.get());
+					boolean b = data.get()==1;
+					System.out.println("	[2:B]="+b);
 					
 					System.out.println("	id="+data.getInt());
 					
-					System.out.println("	[3:F]="+data.getFloat());//Direction?
-					System.out.println("	[4:F]="+data.getFloat());//Direction?
-					System.out.println("	[5:B]="+data.get());
-					System.out.println("	x="+data.getFloat());
-					System.out.println("	y="+data.getFloat());
-					System.out.println("	[6:I]="+data.getInt());
-					System.out.println("	[7:I]="+data.getInt());
-					System.out.println("	[8:I]="+data.getInt());
+					if(taskType==1)
+					{
+						System.out.println("  Waypoint");
+						
+						System.out.println("	[3:F]="+data.getFloat());//Direction?
+						System.out.println("	[4:F]="+data.getFloat());//Direction?
+						System.out.println("	[5:B]="+data.get());
+						System.out.println("	x="+data.getFloat());
+						System.out.println("	y="+data.getFloat());
+					
+					
+						System.out.println("	[6:I]="+data.getInt());
+						System.out.println("	[7:I]="+data.getInt());
+						System.out.println("	[8:I]="+data.getInt());
+					}
+					else if(taskType==12)
+					{
+						System.out.println("  Rally Point");
+						data.position(data.position()+90);
+						System.out.println("	x="+data.getFloat());
+						System.out.println("	y="+data.getFloat());
+						//TODO: 1 too many bytes gotten
+					}
+					else if(taskType==2)
+					{
+						boolean c = data.get()==1;
+						System.out.println("	c="+c);
+						if(c)
+						{
+							System.out.println("	[2_1:I]="+Integer.toHexString(data.getInt()));
+							System.out.println("	[2_2:S]="+Integer.toHexString(data.getShort()&0xFFFF));
+							System.out.println("	[2_3:B]="+Integer.toHexString(data.get()&0xFF));
+						}
+						else
+						{
+							System.out.println("	[2_1:S]="+data.get());
+						}
+						
+						System.out.println("	[?0:I]="+data.getInt());
+						System.out.println("	[?1:I]="+data.getInt());
+						System.out.println("	[?2:B]="+data.get());
+						System.out.println("	[?3:B]="+data.get());
+						
+						System.out.println("	?x="+data.getFloat());
+						System.out.println("	?y="+data.getFloat());//Direction?
+						
+						System.out.println("	[4:F]="+data.getFloat());//Direction?
+						System.out.println("	[5:B]="+data.get());
+						System.out.println("	x="+data.getFloat());
+						System.out.println("	y="+data.getFloat());
+						
+						
+						System.out.println("	[6:I]="+data.getInt());
+						System.out.println("	[7:I]="+data.getInt());
+						System.out.println("	[8:I]="+data.getInt());
+					}
+					else if(taskType==6)
+					{
+						boolean c = data.get()==1;
+						System.out.println("	c="+c);
+						if(c)
+						{
+							System.out.println("	[2_1:I]="+Integer.toHexString(data.getInt()));
+							System.out.println("	[2_2:S]="+Integer.toHexString(data.getShort()&0xFFFF));
+							System.out.println("	[2_3:B]="+Integer.toHexString(data.get()&0xFF));
+						}
+						else
+						{
+							System.out.println("	[2_1:S]="+data.get());
+						}
+						
+						System.out.println("	[?0:I]="+data.getInt());
+						System.out.println("	[?1:I]="+data.getInt());
+						System.out.println("	[?2:B]="+data.get());
+						System.out.println("	[?3:B]="+data.get());
+						
+						System.out.println("	?x="+data.getFloat());
+						System.out.println("	?y="+data.getFloat());//Direction?
+						
+						System.out.println("	[4:F]="+data.getFloat());//Direction?
+						System.out.println("	[5:B]="+data.get());
+						System.out.println("	x="+data.getFloat());
+						System.out.println("	y="+data.getFloat());
+						
+						
+						System.out.println("	[6:I]="+data.getInt());
+						System.out.println("	[7:I]="+data.getInt());
+						System.out.println("	[8:I]="+data.getInt());
+					}
+					else
+					{
+						if(!b)
+						{
+							boolean c = data.get()==1;
+							System.out.println("	c="+c);
+							if(c)
+							{
+								System.out.println("	[2_1:I]="+Integer.toHexString(data.getInt()));
+								System.out.println("	[2_2:S]="+Integer.toHexString(data.getShort()&0xFFFF));
+								System.out.println("	[2_3:B]="+Integer.toHexString(data.get()&0xFF));
+							}
+							else
+							{
+								System.out.println("	[2_1:S]="+data.get());
+							}
+							
+							System.out.println("	[?0:I]="+data.getInt());
+							System.out.println("	[?1:I]="+data.getInt());
+							System.out.println("	[?2:B]="+data.get());
+							System.out.println("	[?3:B]="+data.get());
+							
+							System.out.println("	?x="+data.getFloat());
+							System.out.println("	?y="+data.getFloat());//Direction?
+						}
+						else
+						{
+							System.out.println("	[3:F]="+data.getFloat());//Direction?
+						}
+						
+						System.out.println("	[4:F]="+data.getFloat());//Direction?
+						System.out.println("	[5:B]="+data.get());
+						System.out.println("	x="+data.getFloat());
+						System.out.println("	y="+data.getFloat());
+						
+						
+						System.out.println("	[6:I]="+data.getInt());
+						System.out.println("	[7:I]="+data.getInt());
+						System.out.println("	[8:I]="+data.getInt());
+					}
 				}
 				
 				System.out.println("WaypointEnd: "+data.position());
@@ -1447,19 +1340,25 @@ EXISTS:existsId
 				
 				if(u==1)
 				{
-					System.out.println("{ 0:I}="+data.getInt());
+					System.out.println("{ 0:I}="+data.getInt(data.position())+" "+Integer.toHexString(data.getInt()));
 					System.out.println("{ 1:I}="+data.getInt());
-					System.out.println("{ 2:B}="+data.get());
+					data.get();
 				}
 				else
 				{
-					data.position(data.position()+22);
+					//data.position(data.position()+8);
+					data.position(data.position()+4);
+					if(data.getInt()!=1)
+					{
+						data.get();
+					}
+					data.position(data.position()+13);
 				}
 				
-				System.out.println("{ 3:I}="+data.getInt());
+				System.out.println("{ 3:F}="+data.getFloat());
 				System.out.println("{ 4:I]="+data.getInt());
 				System.out.println("{ 5:I}="+data.getInt());
-				System.out.println("{ 6:I}="+data.getInt());
+				System.out.println("{ 6:F}="+data.getFloat());
 				
 				int len2 = data.getInt();
 				System.out.println("len2="+len2);
@@ -1472,7 +1371,11 @@ EXISTS:existsId
 				System.out.println("{10:F}="+data.getFloat());
 				System.out.println("{11:F}="+data.getFloat());
 				
-				file.data.position(file.data.position()+98);
+				file.data.position(file.data.position()+5);
+				int len3 = data.getInt();
+				System.out.println("len3="+len3);
+				data.position(data.position()+len3*8);
+				file.data.position(file.data.position()+81);
 				
 				if(waypoints==2)
 				{

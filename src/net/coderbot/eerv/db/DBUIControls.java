@@ -78,7 +78,7 @@ public class DBUIControls
 			{
 				/*if(sub0[0]!=0)
 				{
-					String s2name = new String(sub0, StandardCharsets.US_ASCII);
+					String s2name = new String(sub0, StandardCharsets.ISO_8859_1);
 					int idx0 = s2name.indexOf(0);
 					if(idx0>-1)
 					{
@@ -89,7 +89,7 @@ public class DBUIControls
 				}*/
 				
 				
-				String sname = new String(name, StandardCharsets.US_ASCII);
+				String sname = new String(name, StandardCharsets.ISO_8859_1);
 				int idx0 = sname.indexOf(0);
 				if(idx0>-1)
 				{
@@ -127,7 +127,7 @@ public class DBUIControls
 		
 		public String toString()
 		{
-			String sname = new String(name, StandardCharsets.US_ASCII);
+			String sname = new String(name, StandardCharsets.ISO_8859_1);
 			int idx0 = sname.indexOf(0);
 			if(idx0>-1)
 			{

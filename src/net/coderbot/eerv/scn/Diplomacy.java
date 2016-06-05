@@ -76,7 +76,7 @@ public class Diplomacy
 				break;
 			}
 			data.get(asciiZ);
-			message.sender = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
+			message.sender = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
 			
 			message.r = data.getFloat();
 			message.g = data.getFloat();
@@ -84,7 +84,7 @@ public class Diplomacy
 			asciiZ = new byte[data.getInt()];
 			
 			data.get(asciiZ);
-			message.message = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII);
+			message.message = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
 			message.unk = data.getInt();
 			
 			messages[m] = message;

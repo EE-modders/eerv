@@ -57,7 +57,7 @@ public class RMVEnv
 		
 		ByteBuffer block = ByteBuffer.allocateDirect(4096);
 		CharBuffer chars = CharBuffer.allocate(8192);
-		CharsetDecoder dec = StandardCharsets.US_ASCII.newDecoder();
+		CharsetDecoder dec = StandardCharsets.ISO_8859_1.newDecoder();
 		
 		CharBuffer keyword = CharBuffer.allocate(256);
 		CharBuffer argument = CharBuffer.allocate(256);

@@ -40,7 +40,7 @@ public class DBEvents
 		
 		public String toString()
 		{
-			String sname = new String(name, StandardCharsets.US_ASCII);
+			String sname = new String(name, StandardCharsets.ISO_8859_1);
 			int idx0 = sname.indexOf(0);
 			if(idx0>-1)
 			{

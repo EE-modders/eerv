@@ -5,6 +5,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.file.Path;
 
+import net.coderbot.eerv.compression.Exploder;
 import net.coderbot.util.Decoder;
 import net.coderbot.util.DecoderException;
 

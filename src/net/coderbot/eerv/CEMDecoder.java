@@ -70,7 +70,7 @@ public class CEMDecoder extends Decoder<CEM>
 		{
 			byte[] asciiZ = new byte[data.getInt()];
 			data.get(asciiZ);
-			cem.misc = (asciiZ.length>0)?new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII):"";
+			cem.misc = (asciiZ.length>0)?new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1):"";
 		
 			cem.center = new Vector3();
 			cem.center.x = data.getFloat();
@@ -112,7 +112,7 @@ public class CEMDecoder extends Decoder<CEM>
 				
 				asciiZ = new byte[data.getInt()];
 				data.get(asciiZ);
-				mat.name = (asciiZ.length>0)?new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII):"";
+				mat.name = (asciiZ.length>0)?new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1):"";
 				
 				mat.textureIndex = data.getInt();
 				mat.polygonStart = new int[nSets];
@@ -128,7 +128,7 @@ public class CEMDecoder extends Decoder<CEM>
 				asciiZ = new byte[data.getInt()];
 				
 				data.get(asciiZ);
-				mat.name2 = (asciiZ.length>0)?new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII):"";//11Ch
+				mat.name2 = (asciiZ.length>0)?new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1):"";//11Ch
 			}
 		}
 		
@@ -140,7 +140,7 @@ public class CEMDecoder extends Decoder<CEM>
 				byte[] asciiZ = new byte[data.getInt()];
 		
 				data.get(asciiZ);
-				cem.tagPointNames[i] = (asciiZ.length>0)?new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII):"";
+				cem.tagPointNames[i] = (asciiZ.length>0)?new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1):"";
 			}
 		}
 		

@@ -53,7 +53,7 @@ public class DBColorTable
 			g5 = data.getFloat();
 			b5 = data.getFloat();
 			
-			String sname = new String(name, StandardCharsets.US_ASCII);
+			String sname = new String(name, StandardCharsets.ISO_8859_1);
 			int idx0 = sname.indexOf(0);
 			if(idx0>-1)
 			{

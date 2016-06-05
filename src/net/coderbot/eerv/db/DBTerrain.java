@@ -108,7 +108,7 @@ public class DBTerrain
 			byte[] asciiZ = new byte[data.getInt()];
 			data.get(asciiZ);
 			
-			texture = new String(asciiZ, StandardCharsets.US_ASCII).replace('\\', '/').toLowerCase();
+			texture = new String(asciiZ, StandardCharsets.ISO_8859_1).replace('\\', '/').toLowerCase();
 			name = new byte[100];
 			data.get(name);
 			
@@ -162,7 +162,7 @@ public class DBTerrain
 		
 		public String toString()
 		{
-			String sname = new String(name, StandardCharsets.US_ASCII);
+			String sname = new String(name, StandardCharsets.ISO_8859_1);
 			int idx0 = sname.indexOf(0);
 			if(idx0>-1)
 			{

@@ -69,7 +69,7 @@ public class SSADecoder extends Decoder<SSA>
 			e.size = in.getInt()&0xFFFFFFFFL;
 			
 			//Translate Windows path separator to Unix path separator
-			ssa.files.put(new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.US_ASCII).replace('\\', '/'), e);
+			ssa.files.put(new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1).replace('\\', '/'), e);
 		}
 		
 		int ts = in.getInt();
@@ -80,10 +80,10 @@ public class SSADecoder extends Decoder<SSA>
 		{
 			asciiZ = new byte[in.getInt()];
 			in.get(asciiZ);
-			k = new String(asciiZ, 0, asciiZ.length, StandardCharsets.US_ASCII);
+			k = new String(asciiZ, 0, asciiZ.length, StandardCharsets.ISO_8859_1);
 			asciiZ = new byte[in.getInt()];
 			in.get(asciiZ);
-			v = new String(asciiZ, 0, asciiZ.length, StandardCharsets.US_ASCII);
+			v = new String(asciiZ, 0, asciiZ.length, StandardCharsets.ISO_8859_1);
 			ssa.props.put(k, v);
 		}
 		
