@@ -37,14 +37,14 @@ public class SCN
 	boolean victoryAllowed, lockTeams, lockSpeed, revealMap;
 	boolean cheatCodes, u4, customCivs, u5;
 	
-	int u6;
-	int u7;
-	int u8;
-	int u9;
-	int uA;
-	int uB;
+	String campaignName;
+	String scenarioName;
+	String forcedName;
 	
-	int[] uC;
+	int u6;
+	byte u7;
+	int[] u8;
+	String u9;
 	
 	int uD;
 	int uE;
@@ -114,6 +114,11 @@ public class SCN
 		System.out.println(name+": "+description);
 		System.out.println(date);
 		System.out.println("Players: "+playerList);
+	}
+	
+	public static void test(String in) throws IOException, DecoderException
+	{
+		test(in, "");
 	}
 	
 	public static void test(String in, String out) throws IOException, DecoderException

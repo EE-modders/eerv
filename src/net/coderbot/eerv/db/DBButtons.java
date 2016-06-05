@@ -49,14 +49,14 @@ public class DBButtons
 		
 		public String toString()
 		{
-			String stexture = new String(texture, StandardCharsets.US_ASCII);
+			String stexture = new String(texture, StandardCharsets.ISO_8859_1);
 			int idx0 = stexture.indexOf(0);
 			if(idx0>-1)
 			{
 				stexture = stexture.substring(0, idx0);
 			}
 			
-			String sname = new String(name, StandardCharsets.US_ASCII);
+			String sname = new String(name, StandardCharsets.ISO_8859_1);
 			idx0 = sname.indexOf(0);
 			if(idx0>-1)
 			{

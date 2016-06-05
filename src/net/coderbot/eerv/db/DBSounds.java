@@ -37,7 +37,7 @@ public class DBSounds
 		{
 			byte[] asciiZ = new byte[data.getInt()];
 			data.get(asciiZ);
-			path = new String(asciiZ, 0, asciiZ.length, StandardCharsets.US_ASCII).toLowerCase().replace('\\', '/');
+			path = new String(asciiZ, 0, asciiZ.length, StandardCharsets.ISO_8859_1).toLowerCase().replace('\\', '/');
 			name = new byte[100];
 			data.get(name);
 			gameid = data.getInt();
@@ -52,7 +52,7 @@ public class DBSounds
 		
 		public String toString()
 		{
-			String sname = new String(name, StandardCharsets.US_ASCII);
+			String sname = new String(name, StandardCharsets.ISO_8859_1);
 			int idx0 = sname.indexOf(0);
 			if(idx0>-1)
 			{

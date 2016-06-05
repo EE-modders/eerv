@@ -11,7 +11,6 @@ public class SCNFile
 	
 	boolean hasAttribs;
 	int u0;
-	byte u1, u2, u3;
 	
 	boolean hasExtendedAttribs;
 	float u4, u5, u6;
