@@ -10,6 +10,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
+import net.coderbot.eerv.compression.Exploder;
+import net.coderbot.eerv.compression.ExploderConstants;
 import net.coderbot.eerv.compression.Imploder;
 import net.coderbot.eerv.compression.TCmpStruct;
 import net.coderbot.eerv.scn.SCN;
@@ -21,9 +23,43 @@ public class Main
 	{
 		/*Path path = Paths.get("/home/coderbot/wingames/ee1/Data/Scenarios/een1ve1s_the basics.scn");
 		PKDecoder pk = new PKDecoder(path);
-		ByteBuffer bb = pk.decode();
-		Path out = Paths.get("/home/coderbot/wingames/ee1/Data/Scenarios/een1ve1s_the basics_decompressed.scn");
+		ByteBuffer bb = pk.decode();*/
+		/*Path out = Paths.get("/home/coderbot/wingames/ee1/Data/Scenarios/een1ve1s_the basics_decompressed.scn");
 		Files.write(out, bb.array());*/
+		
+		/*for(byte b: ExploderConstants.DistCode)
+		{
+			System.out.println(b&0xFF);
+		}*/
+		
+		
+		
+		/*int x = 0;
+		
+		for(int i = 0; i < 0x10; i++)
+		{
+			if((1 << ExploderConstants.ExLenBits[i])!=0)
+			{
+				for(int n = 0; n < (1 << ExploderConstants.ExLenBits[i]); n++)
+				{
+					int bits  = ExploderConstants.ExLenBits[i] + ExploderConstants.LenBits[i] + 1;
+					int code = (n << (ExploderConstants.LenBits[i] + 1)) | ((ExploderConstants.LenCode[i] & 0xFFFF00FF) * 2) | 1;
+					
+					System.out.println("["+(x++)+"] "+bits+"\t -> "+Integer.toHexString(code));
+				}
+			}
+		}*/
+		
+		//Imploder.implode(new TCmpStruct(), true, 4096);
+		
+		/*ByteBuffer boom = ByteBuffer.allocateDirect(8);
+		boom.put((byte)0);
+		boom.put((byte)6);
+		boom.put((byte)0x01);
+		boom.put((byte)0xFF);
+		boom.flip();
+		Exploder exploder = new Exploder(boom);
+		exploder.nextBlock();*/
 		
 		//Path path = Paths.get("/home/coderbot/.wine/drive_c/Sierra/Empire Earth/Data/Campaigns/EELearningCampaign.ssa");
 		//Path path = Paths.get("/home/coderbot/.wine/drive_c/Sierra/Empire Earth/Data/Campaigns/EETheBritish.ssa");
@@ -50,6 +86,7 @@ public class Main
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/...- nano 01.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/nano 01/");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/...- nano 02.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/nano 02/");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/ww1 - ww2 01.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/ww1ww2 01/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/ww1 - ww2 02.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/ww1ww2 01/");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/CRASH0.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/crash0/");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/Dufus Ryan Mom Tough Game.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/tough/");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/ElevTR.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/elevtr/");
@@ -200,6 +237,39 @@ public class Main
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Trigger_30S.scn");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Trigger_60S.scn");
 		
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Seed_Rand_987887.scn");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Seed_Set_1234.scn");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Seed_Set_4321.scn");
+		
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Cam_TL.scn");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Cam_TR.scn");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Cam_BL.scn");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Cam_BR.scn");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Cam_TLv2.scn");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Cam_TLv2_Zoom.scn");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Cam_Mid_Zoomed.scn");
+		
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Seed_Rand_472474.scn");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Seed_Set_472474.scn");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/RotatedUnits_ReadyToAttack.scn");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/RotatedUnits_Attacked.scn");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/TowersMorale.scn");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/CapitolVeryDamaged.scn");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/CapitolVeryDamagedAboutToRepair.scn");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/CapitolVeryDamagedRepairing.scn");
+		
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Seed0_TinyTournamentIslands.scn");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Seed0_TinySmallIslands.scn");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Seed0_TinyPlains.scn");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Seed0_TinyMediterrainian.scn");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Seed0_TinyLargeIslands.scn");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Seed0_TinyHighlands.scn");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Seed0_GiganticContinental.scn");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Seed0_HugeContinental.scn");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Seed0_LargeContinental.scn");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Seed0_MediumContinental.scn");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Seed0_SmallContinental.scn");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Seed0_TinyContinental.scn");
 		
 		//Clock_speed1_00:00:XX
 		

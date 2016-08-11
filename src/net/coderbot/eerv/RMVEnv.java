@@ -102,7 +102,7 @@ public class RMVEnv
 						{
 							load(ins.args[0].substring(1, ins.args[0].length()-1)+".rmv");
 						}
-						//System.out.println(ins);
+						System.out.println(ins);
 					}
 					
 					arguments.clear();

@@ -16,6 +16,7 @@ import net.coderbot.eerv.scn.trigger.Effect;
 import net.coderbot.eerv.scn.trigger.Selector;
 import net.coderbot.eerv.scn.trigger.Trigger;
 
+import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
 
 import net.coderbot.util.Decoder;
@@ -192,7 +193,8 @@ public class SCNDecoder extends Decoder<SCN>
 		scn.soundover = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
 		System.out.println("Soundover: "+scn.soundover);
 		
-		scn.uD = data.getInt();
+		//System uptime when created
+		scn.creationUptime = data.getInt();
 		
 		if(data.getInt()!=0||data.getInt()!=231)
 		{
@@ -205,7 +207,7 @@ public class SCNDecoder extends Decoder<SCN>
 		scn.u10 = data.getInt();
 		scn.u11 = data.getInt();
 		scn.u12 = data.getShort();
-		scn.u13 = data.getFloat();
+		scn.u13 = data.getInt();
 		
 		
 		if(data.getInt()!=0||data.getInt()!=231)
@@ -216,7 +218,7 @@ public class SCNDecoder extends Decoder<SCN>
 		
 		scn.u14 = data.getInt();
 		scn.u15 = data.getInt();
-		scn.u16 = data.getInt();
+		scn.seed = data.getInt();
 		
 		if(data.getInt()!=0||data.getInt()!=231)
 		{
@@ -225,10 +227,9 @@ public class SCNDecoder extends Decoder<SCN>
 		}
 		
 		scn.u17 = data.getInt();
-		scn.u18 = data.getInt();
-		System.out.println(scn.uD+" "+scn.uE+" "+scn.uF+" "+scn.u10);
-		System.out.println(scn.u11+" "+scn.u12+" "+scn.u13+" "+scn.u14);
-		System.out.println(scn.u15+" "+scn.u16+" "+scn.u17+" "+scn.u18);
+		System.out.println("creationUptime="+(((float)scn.creationUptime)/1000)+"s "+scn.uE+" "+scn.uF+" "+scn.u10);
+		System.out.println(scn.u11+" "+scn.u12+" "+(scn.u13&0xFFFFFFFFL)+" ("+Integer.toHexString(scn.u13)+") "+scn.u14);
+		System.out.println(scn.u15+" seed="+scn.seed+" "+scn.u17);
 		
 		pk.setInput(data);
 		int pkMagic = 0;
@@ -236,17 +237,60 @@ public class SCNDecoder extends Decoder<SCN>
 		
 		do
 		{
+			SCNFile file = new SCNFile();
+			
+			file.compressedSize = data.getInt();
+			System.out.println("compressedSize="+file.compressedSize);
+			
+			if(file.compressedSize==0x08)
+			{
+				System.out.println(data.getInt()+" "+data.getInt());
+				break;
+			}
+			
+			if(file.compressedSize==0x0C)
+			{
+				file.hasExtendedAttribs = true;
+				file.u4 = data.getFloat();
+				file.u5 = data.getFloat();
+				file.u6 = data.getFloat();
+				
+				if(data.getInt()!=0||data.getInt()!=231)
+				{
+					//data.position(data.position()-8);
+					//throw new DecoderException("scn","Expected [0, E7] but got ["+Integer.toHexString(data.getInt())+", "+Integer.toHexString(data.getInt())+"]");
+				}
+				
+				file.u7 = data.getInt();//nRemainingFiles?
+				
+				if(file.u7==6)
+				{
+					System.out.println("Camera x="+file.u4+" y="+file.u5+" "+file.u6+" type="+file.u7);
+				}
+				else
+				{
+					System.out.println("TinyFile file.u4="+file.u4+" file.u5="+file.u5+" file.u6="+file.u6+" type="+file.u7);
+				}
+				
+				
+				continue;
+			}
+			
 			data.mark();
 			pkMagic = data.getInt();
 			if(pkMagic!=825248592)
 			{
-				break;
+				//break;
 			}
 			data.reset();
 			
-			SCNFile file = new SCNFile();
+			int start = data.position();
 			
 			file.data = pk.decode();
+			
+			int end = data.position();
+			
+			System.out.println("span from "+start+" to "+end+" ("+(end-start)+" bytes)");
 			
 			if(data.remaining()<4)
 			{
@@ -261,25 +305,7 @@ public class SCNDecoder extends Decoder<SCN>
 			}
 			
 			file.id = FileID.get(data.getInt());
-			file.u0 = data.getInt();
 			
-			
-			if(file.u0==0x0C)
-			{
-				file.hasExtendedAttribs = true;
-				file.u4 = data.getFloat();
-				file.u5 = data.getFloat();
-				file.u6 = data.getFloat();
-				
-				if(data.getInt()!=0||data.getInt()!=231)
-				{
-					//data.position(data.position()-8);
-					//throw new DecoderException("scn","Expected [0, E7] but got ["+Integer.toHexString(data.getInt())+", "+Integer.toHexString(data.getInt())+"]");
-				}
-				
-				file.u7 = data.getInt();
-				file.u8 = data.getInt();
-			}
 			
 			file.data.position(0);
 			file.data.order(ByteOrder.LITTLE_ENDIAN);
@@ -293,7 +319,8 @@ public class SCNDecoder extends Decoder<SCN>
 				e.printStackTrace();
 			}
 			
-			Path path = Paths.get("extract/scn", scn.name.toLowerCase().split("\\.")[0],"file"+i);
+			String s = "extract/scn/"+scn.name.toLowerCase().split("\\.")[0]+"/file"+i;
+			Path path = Paths.get(s);
 			System.out.println("Saving file "+i+" to "+path);
 			try
 			{
@@ -308,13 +335,20 @@ public class SCNDecoder extends Decoder<SCN>
 			{
 				Files.deleteIfExists(path);
 				Files.write(path, file.data.array(), StandardOpenOption.WRITE, StandardOpenOption.CREATE);
+				
+				ByteBuffer bb = data.duplicate();
+				bb.position(start);
+				bb.limit(end);
+				FileChannel fc = FileChannel.open(Paths.get(s+".pk"), StandardOpenOption.WRITE, StandardOpenOption.CREATE);
+				fc.truncate(0);
+				fc.write(bb);
 			}
 			catch(IOException e)
 			{
 				e.printStackTrace();
 			}
 			
-			System.out.println("File"+(i++)+": "+file.id+" \t<"+file.data.limit()+"> \t"+file.u0+"  \t"+((file.hasExtendedAttribs)?"xattribs":""));
+			System.out.println("File"+(i++)+": "+file.id+" \t<"+file.data.limit()+"> \t<compressed="+file.compressedSize+">  \t"+((file.hasExtendedAttribs)?"xattribs":""));
 		}
 		while(pkMagic==825248592);
 		
@@ -439,6 +473,8 @@ public class SCNDecoder extends Decoder<SCN>
 				
 				data.position(data.position()+243);
 			}
+			
+			System.out.println("end: "+data.position());
 			
 			int verifyTriggers = data.getInt();
 			int verifyConditions = data.getInt();
@@ -583,14 +619,14 @@ public class SCNDecoder extends Decoder<SCN>
 			short us0 = data.getShort();
 			
 			System.out.println("wondersForVictory:  "+ui0);
-			System.out.println("uf0:  "+uf0);
-			System.out.println("ub0:  "+ub0);
-			System.out.println("uf1:  "+uf1);
+			System.out.println("timeOfDay:  "+uf0);
+			System.out.println("waterLevel:  "+ub0);
+			System.out.println("zoom:  "+uf1);
 			System.out.println("maxUnits:  "+maxUnits2);
-			System.out.println("tickrate:  "+uf2);
+			System.out.println("gameSpeed:  "+uf2);
 			System.out.println("victoryAllowed: "+victoryAllowed+" unitImprovements: "+unitImprovements+" lockTeams: "+lockTeams+" cheatCodes: "+cheatCodes);
-			System.out.println("ui1:  "+ui1);
-			System.out.println("us0:  "+us0);
+			System.out.println("townIdCounter:  "+ui1);
+			System.out.println("herdIdCounter:  "+us0);
 			
 			int count = data.getInt();
 			System.out.println("Messages: "+count);
@@ -623,7 +659,7 @@ public class SCNDecoder extends Decoder<SCN>
 			System.out.println("end: "+data.getShort());
 		}
 		
-		if(/*file.id==FileID.OBJECTS*/false)
+		if(file.id==FileID.OBJECTS)
 		{
 			int players = data.getInt();
 			int u0 = data.getInt();
@@ -696,7 +732,7 @@ public class SCNDecoder extends Decoder<SCN>
 				asciiZ = new byte[data.getInt()];
 				data.get(asciiZ);
 				String u4 = new String(asciiZ, 0, asciiZ.length!=0?asciiZ.length-1:0, StandardCharsets.ISO_8859_1);
-				System.out.println(u4);
+				//System.out.println(u4);
 				
 				data.position(data.position()+25);
 				
@@ -883,6 +919,11 @@ public class SCNDecoder extends Decoder<SCN>
 	public static int readGroup(SCNFile file, ByteBuffer data, int total, int i)
 	{
 		int size = data.getInt();
+		if(size<0)
+		{
+			System.out.flush();
+			throw new IllegalStateException("size "+size+" < 0 for group");
+		}
 		
 		System.out.println("["+i+"] Group: "+(file.data.position()-4)+" size="+size);
 		
@@ -890,8 +931,9 @@ public class SCNDecoder extends Decoder<SCN>
 		{
 			total++;
 			int type = data.getInt();
-			if(type>999)
+			if(type>999 || type<0)
 			{
+				System.out.flush();
 				throw new IllegalStateException("u messed up, a type of "+type+" is probably invalid");
 			}
 			
@@ -907,24 +949,26 @@ public class SCNDecoder extends Decoder<SCN>
 			
 			int x = data.getInt();
 			int y = data.getInt();
+			int id = data.getInt();
 			
-			file.data.position(file.data.position()+11);
+			System.out.print("\t\t\t\t\t\t\t\t\t\t\t");
 			
-			float u6 = data.getFloat();
+			for(int n = 0;n<3;n++)
+			{
+				System.out.print(Integer.toHexString(data.get()&0xFF).toUpperCase()+" ");
+			}
+			System.out.println();
+			
+			int u0 = data.getInt();
+			float health = data.getFloat();
 			int resourceLevel = data.getInt();
 			
-			//Read: 29
+			int z = data.getInt();
+			System.out.println(total+" "+(isExtended?"":"!")+"Ext type: <"+type+"> id: ("+(id>>>24)+"<"+(id&0x00FFFFFF)+">"+") at ["+x+" "+y+"] <health: "+(health*100)+"% resources: "+resourceLevel+" zero: "+z+" u0: "+u0+">");
 			
-			if(!isExtended)
-			{
-				int z = data.getInt();
-				System.out.println(total+" !Ext type: <"+type+"> at ["+x+" "+y+"] <u6: "+u6+" resources: "+resourceLevel+" zero: "+z+">");
-			}
-			else
+			if(isExtended)
 			{
 				System.out.println("Extended Object offs: "+file.data.position());
-				System.out.println(total+"  Ext type: <"+type+"> at ["+x+" "+y+"] <u6: "+u6+" resources: "+resourceLevel+">");
-				System.out.println(data.getInt());
 				
 				int pendingProductions = data.getInt();
 				System.out.println("pendingProductions: "+pendingProductions);
@@ -933,31 +977,58 @@ public class SCNDecoder extends Decoder<SCN>
 					System.out.println("["+t+"] productionId="+data.getInt());
 				}
 				
-				System.out.println(data.getInt()+" "+data.getInt());
+				int len4 = data.getInt();
+				System.out.print("unknown entity list: [");
+				for (int e = 0;e<len4;e++)
+				{
+					int eid = data.getInt();
+					
+					System.out.print((eid>>>24)+"<"+(eid&0x00FFFFFF)+">");
+					if(e+1<len4)
+					{
+						System.out.print(", ");
+					}
+				}
+				System.out.println("]");
+				
+				int len5 = data.getInt();//Array of EntityIds
+				System.out.print("stored entities: [");
+				for (int e = 0;e<len5;e++)
+				{
+					int eid = data.getInt();
+					
+					System.out.print((eid>>>24)+"<"+(eid&0x00FFFFFF)+">");
+					if(e+1<len5)
+					{
+						System.out.print(", ");
+					}
+				}
+				System.out.println("]");
+				
 				int len = data.getInt();
 				System.out.println("len="+len);
 				data.position(data.position()+len*20);
 				
 				String[] names = new String[]{
-					"[ 0]",
-					"[ 1]",
-					"[ 2]",
-					"[ 3]",
-					"[ 4]",
-					"[ 5]",
-					"X",
-					"[ 7]",
-					"[ 8]",
-					"[ 9]",
-					"Y",
-					"[11]",
-					"[12]",
-					"[13]",
-					"[14]",
-					"[15]",
-					"[16]",
-					"[17]",
-					"[18]",
+					"[0]",
+					"[1]",
+					"[2]",
+					"",
+					"",
+					"",
+					"",
+					"",
+					"",
+					"",
+					"",
+					"",
+					"",
+					"",
+					"",
+					"",
+					"",
+					"",
+					"",
 					"[19]",
 					"[20]",
 					"[21]",
@@ -1031,23 +1102,22 @@ public class SCNDecoder extends Decoder<SCN>
 				};
 				
 				System.out.println("-> "+data.position());
-				for(int fl = 0;fl<19;fl++)
-				{
-					float val = data.getFloat();
-					System.out.print(names[fl]+"="+val+" ");
-					
-					if((fl&7)==0&&fl!=0)
-					{
-						System.out.println(" pos="+data.position());
-					}
-				}
+				System.out.print(names[0]+"="+data.getFloat()+" ");
+				System.out.print(names[1]+"="+data.getFloat()+" ");
+				System.out.println(names[2]+"="+data.getFloat()+" ");
+				
+				// Matrix
+				System.out.println("["+(data.getFloat()+0)+" "+(data.getFloat()+0)+" "+(data.getFloat()+0)+" "+(data.getFloat()+0)+"]");
+				System.out.println("["+(data.getFloat()+0)+" "+(data.getFloat()+0)+" "+(data.getFloat()+0)+" "+(data.getFloat()+0)+"]");
+				System.out.println("["+(data.getFloat()+0)+" "+(data.getFloat()+0)+" "+(data.getFloat()+0)+" "+(data.getFloat()+0)+"]");
+				System.out.println("["+(data.getFloat()+0)+" "+(data.getFloat()+0)+" "+(data.getFloat()+0)+" "+(data.getFloat()+0)+"]");
 				
 				byte u8 = data.get();
 				System.out.println("u8="+u8);
 				System.out.print(names[19]+"="+data.getFloat()+" ");
 				System.out.print(names[20]+"="+data.getInt()+" ");
 				
-				for(int fl = 21;fl<41;fl++)
+				for(int fl = 21;fl<35;fl++)
 				{
 					float val = data.getFloat();
 					System.out.print(names[fl]+"="+val+" ");
@@ -1057,6 +1127,26 @@ public class SCNDecoder extends Decoder<SCN>
 						System.out.println(" pos="+data.position());
 					}
 				}
+				
+				System.out.print(names[35]+"="+data.getInt()+" ");
+				int len6 = data.getInt();
+				System.out.println("len6="+len6);
+				for(int l = 0;l<len6;l++)
+				{
+					System.out.println("<"+l+">="+data.getInt());
+				}
+				
+				for(int fl = 37;fl<41;fl++)
+				{
+					float val = data.getFloat();
+					System.out.print(names[fl]+"="+val+" ");
+					
+					if((fl&7)==0&&fl!=0)
+					{
+						System.out.println(" pos="+data.position());
+					}
+				}
+				
 				
 				for(int fl = 41;fl<47;fl++)
 				{
@@ -1080,28 +1170,25 @@ public class SCNDecoder extends Decoder<SCN>
 					}
 				}
 				
-				for(int fl = 49;fl<51;fl++)
-				{
-					int val = data.getInt();
-					System.out.print(names[fl]+"="+val+" ");
-				}
-				
-				for(int fl = 51;fl<63;fl++)
-				{
-					float val = data.getFloat();
-					System.out.print(names[fl]+"="+val+" ");
-					
-					if((fl&7)==0&&fl!=0)
-					{
-						System.out.println(" pos="+data.position());
-					}
-				}
-				
-				for(int fl = 63;fl<68;fl++)
-				{
-					int val = data.getInt();
-					System.out.print(names[fl]+"="+val+" ");
-				}
+				System.out.print(names[49]+"="+data.getInt()+" ");
+				System.out.print(names[50]+"="+data.getInt()+" ");
+				System.out.print(names[51]+"="+data.getFloat()+" ");
+				System.out.print(names[52]+"="+data.getInt()+" ");
+				System.out.print(names[53]+"="+data.getFloat()+" ");
+				System.out.print(names[54]+"="+data.getFloat()+" ");
+				System.out.print(names[55]+"="+data.getInt()+" ");
+				System.out.print(names[56]+"="+data.getFloat()+" ");
+				System.out.println(names[57]+"="+data.getInt()+" ");
+				System.out.print(names[58]+"="+data.getFloat()+" ");
+				System.out.print(names[59]+"="+data.getFloat()+" ");
+				System.out.print(names[60]+"="+data.getInt()+" ");
+				System.out.print(names[61]+"="+data.getFloat()+" ");
+				System.out.print(names[62]+"="+data.getFloat()+" ");
+				System.out.print(names[63]+"="+data.getInt()+" ");
+				System.out.print(names[64]+"="+data.getInt()+" ");
+				System.out.print(names[65]+"="+data.getInt()+" ");
+				System.out.print(names[66]+"="+data.getInt()+" ");
+				System.out.print(names[67]+"="+data.getInt()+" ");
 				
 				System.out.println(" pos="+data.position());
 				
@@ -1125,28 +1212,25 @@ public class SCNDecoder extends Decoder<SCN>
 				
 				System.out.println();
 				
-				for(int fl = 63;fl<70;fl++)
-				{
-					float val = data.getFloat();
-					System.out.print(names[fl]+"="+val+" ");
-					
-					if((fl&7)==0&&fl!=0)
-					{
-						System.out.println(" pos="+data.position());
-					}
-				}
+				System.out.print(names[68]+"="+data.getInt()+" ");
+				System.out.print(names[69]+"="+data.getInt()+" ");
+				System.out.print(names[70]+"="+data.getFloat()+" ");//Zero?
+				System.out.print(names[71]+"="+data.getInt()+" ");//EntityId
+				System.out.print(names[72]+"="+data.getFloat()+" ");//?
+				System.out.print(names[73]+"="+data.getFloat()+" ");//Float
 				
-				System.out.println("\n"+names[70]+"="+data.getInt()+" pos="+data.position());
+				System.out.println("\n"+names[74]+"="+data.getInt()+" pos="+data.position());
+				System.out.println(names[75]+"="+data.getInt());
 				byte u9 = data.get();
 				if(u9==1)
 				{
 					System.out.println("unkFloat="+data.getFloat());
 				}
 				
-				System.out.println("u9="+u9+" "+names[71]+"="+data.getFloat()+" "+names[72]+"="+data.getFloat()+" "+names[73]+"="+data.getFloat());
+				System.out.println("u9="+u9+" "+names[75]+"="+data.getFloat()+" "+names[76]+"="+data.getFloat()+" "+names[77]+"="+data.getFloat());
 				
 				byte uA = data.get();
-				System.out.println("uA="+uA+" "+names[74]+"="+data.getFloat()+" "+names[75]+"="+data.getFloat()+" "+names[76]+"="+data.getFloat());
+				System.out.println("uA="+uA+" "+names[78]+"="+data.getFloat()+" "+names[79]+"="+data.getFloat()+" "+names[80]+"="+data.getFloat());
 				
 				for(int bl = 0;bl<10;bl++)
 				{
@@ -1171,221 +1255,214 @@ public class SCNDecoder extends Decoder<SCN>
 				int u = data.getInt();
 				
 				System.out.println("pos="+data.position()+" ?="+u);
-				int waypoints = data.getInt();
-				System.out.println("waypoints="+waypoints);
 				
-				for(int j = 0;j<waypoints;j++)
+				for(int w = 0;w<u;w++)
 				{
-					//1->55
-					int taskType = data.get()&0xFF;
-					String[] types = new String[]{
-						"None",
-						"Waypoint",
-						"2",
-						"3",
-						"4",
-						"5",
-						"6",
-						"7",
-						"8",
-						"9",
-						"10",
-						"11",
-						"Flag Position",
-						"13",
-						"Unknown"
-					};
-					
-					System.out.println("	type="+types[Math.min(taskType,14)]+" ("+taskType+")");
-					System.out.println("	[1:I]="+data.getInt());
-					boolean b = data.get()==1;
-					System.out.println("	[2:B]="+b);
-					
-					System.out.println("	id="+data.getInt());
-					
-					if(taskType==1)
-					{
-						System.out.println("  Waypoint");
-						
-						System.out.println("	[3:F]="+data.getFloat());//Direction?
-						System.out.println("	[4:F]="+data.getFloat());//Direction?
-						System.out.println("	[5:B]="+data.get());
-						System.out.println("	x="+data.getFloat());
-						System.out.println("	y="+data.getFloat());
-					
-					
-						System.out.println("	[6:I]="+data.getInt());
-						System.out.println("	[7:I]="+data.getInt());
-						System.out.println("	[8:I]="+data.getInt());
-					}
-					else if(taskType==12)
-					{
-						System.out.println("  Rally Point");
-						data.position(data.position()+90);
-						System.out.println("	x="+data.getFloat());
-						System.out.println("	y="+data.getFloat());
-						//TODO: 1 too many bytes gotten
-					}
-					else if(taskType==2)
-					{
-						boolean c = data.get()==1;
-						System.out.println("	c="+c);
-						if(c)
-						{
-							System.out.println("	[2_1:I]="+Integer.toHexString(data.getInt()));
-							System.out.println("	[2_2:S]="+Integer.toHexString(data.getShort()&0xFFFF));
-							System.out.println("	[2_3:B]="+Integer.toHexString(data.get()&0xFF));
-						}
-						else
-						{
-							System.out.println("	[2_1:S]="+data.get());
-						}
-						
-						System.out.println("	[?0:I]="+data.getInt());
-						System.out.println("	[?1:I]="+data.getInt());
-						System.out.println("	[?2:B]="+data.get());
-						System.out.println("	[?3:B]="+data.get());
-						
-						System.out.println("	?x="+data.getFloat());
-						System.out.println("	?y="+data.getFloat());//Direction?
-						
-						System.out.println("	[4:F]="+data.getFloat());//Direction?
-						System.out.println("	[5:B]="+data.get());
-						System.out.println("	x="+data.getFloat());
-						System.out.println("	y="+data.getFloat());
-						
-						
-						System.out.println("	[6:I]="+data.getInt());
-						System.out.println("	[7:I]="+data.getInt());
-						System.out.println("	[8:I]="+data.getInt());
-					}
-					else if(taskType==6)
-					{
-						boolean c = data.get()==1;
-						System.out.println("	c="+c);
-						if(c)
-						{
-							System.out.println("	[2_1:I]="+Integer.toHexString(data.getInt()));
-							System.out.println("	[2_2:S]="+Integer.toHexString(data.getShort()&0xFFFF));
-							System.out.println("	[2_3:B]="+Integer.toHexString(data.get()&0xFF));
-						}
-						else
-						{
-							System.out.println("	[2_1:S]="+data.get());
-						}
-						
-						System.out.println("	[?0:I]="+data.getInt());
-						System.out.println("	[?1:I]="+data.getInt());
-						System.out.println("	[?2:B]="+data.get());
-						System.out.println("	[?3:B]="+data.get());
-						
-						System.out.println("	?x="+data.getFloat());
-						System.out.println("	?y="+data.getFloat());//Direction?
-						
-						System.out.println("	[4:F]="+data.getFloat());//Direction?
-						System.out.println("	[5:B]="+data.get());
-						System.out.println("	x="+data.getFloat());
-						System.out.println("	y="+data.getFloat());
-						
-						
-						System.out.println("	[6:I]="+data.getInt());
-						System.out.println("	[7:I]="+data.getInt());
-						System.out.println("	[8:I]="+data.getInt());
-					}
-					else
-					{
-						if(!b)
-						{
-							boolean c = data.get()==1;
-							System.out.println("	c="+c);
-							if(c)
-							{
-								System.out.println("	[2_1:I]="+Integer.toHexString(data.getInt()));
-								System.out.println("	[2_2:S]="+Integer.toHexString(data.getShort()&0xFFFF));
-								System.out.println("	[2_3:B]="+Integer.toHexString(data.get()&0xFF));
-							}
-							else
-							{
-								System.out.println("	[2_1:S]="+data.get());
-							}
-							
-							System.out.println("	[?0:I]="+data.getInt());
-							System.out.println("	[?1:I]="+data.getInt());
-							System.out.println("	[?2:B]="+data.get());
-							System.out.println("	[?3:B]="+data.get());
-							
-							System.out.println("	?x="+data.getFloat());
-							System.out.println("	?y="+data.getFloat());//Direction?
-						}
-						else
-						{
-							System.out.println("	[3:F]="+data.getFloat());//Direction?
-						}
-						
-						System.out.println("	[4:F]="+data.getFloat());//Direction?
-						System.out.println("	[5:B]="+data.get());
-						System.out.println("	x="+data.getFloat());
-						System.out.println("	y="+data.getFloat());
-						
-						
-						System.out.println("	[6:I]="+data.getInt());
-						System.out.println("	[7:I]="+data.getInt());
-						System.out.println("	[8:I]="+data.getInt());
-					}
-				}
+					int waypoints = data.getInt();
+					System.out.println("waypoints"+w+"="+waypoints);
 				
-				System.out.println("WaypointEnd: "+data.position());
+					for(int j = 0;j<waypoints;j++)
+					{
+						readWaypoint(data);
+					}
 				
-				//0->25
-				
-				if(u==1)
-				{
+					System.out.println("waypoint"+w+"end: "+data.position());
 					System.out.println("{ 0:I}="+data.getInt(data.position())+" "+Integer.toHexString(data.getInt()));
 					System.out.println("{ 1:I}="+data.getInt());
 					data.get();
 				}
-				else
+				
+				/*if(u!=1)
 				{
-					//data.position(data.position()+8);
-					data.position(data.position()+4);
-					if(data.getInt()!=1)
+					int waypoints2 = data.getInt();
+					System.out.println("waypoints2="+waypoints2+" pos="+data.position());
+					for(int j = 0;j<waypoints2;j++)
 					{
-						data.get();
+						readWaypoint(data);
 					}
-					data.position(data.position()+13);
-				}
+					
+					System.out.println("Waypoint2End: "+data.position());
+					
+					data.position(data.position()+9);
+				}*/
 				
 				System.out.println("{ 3:F}="+data.getFloat());
 				System.out.println("{ 4:I]="+data.getInt());
 				System.out.println("{ 5:I}="+data.getInt());
-				System.out.println("{ 6:F}="+data.getFloat());
+				System.out.println("{ 6:I}="+data.getInt());
 				
 				int len2 = data.getInt();
+				if(len2<0)
+				{
+					System.out.flush();
+					throw new IllegalStateException("len2 "+len2+" < 0 for group");
+				}
 				System.out.println("len2="+len2);
 				
 				data.position(data.position()+len2*4);
 				
 				System.out.println("{ 7:F}="+data.getFloat());
-				System.out.println("{ 8:F}="+data.getFloat());
+				System.out.println("{ 8:I}="+data.getInt());
 				System.out.println("{ 9:B}="+data.get());
 				System.out.println("{10:F}="+data.getFloat());
 				System.out.println("{11:F}="+data.getFloat());
 				
 				file.data.position(file.data.position()+5);
 				int len3 = data.getInt();
+				if(len3<0)
+				{
+					System.out.flush();
+					throw new IllegalStateException("len3 "+len3+" < 0 for group");
+				}
+				
 				System.out.println("len3="+len3);
 				data.position(data.position()+len3*8);
 				file.data.position(file.data.position()+81);
-				
-				if(waypoints==2)
-				{
-					//System.exit(0);
-				}
 				
 				System.out.println("End: "+data.position());
 			}
 		}
 
 		return total;
+	}
+	
+	public static void readWaypoint(ByteBuffer data)
+	{
+		//1->55
+		int taskType = data.get()&0xFF;
+		String[] types = new String[]{
+			"None",
+			"Waypoint",
+			"2",
+			"3",
+			"Repair",
+			"5",
+			"6",
+			"7",
+			"8",
+			"9",
+			"10",
+			"11",
+			"Flag Position",
+			"13",
+			"Unknown"
+		};
+		
+		System.out.println("	type="+types[Math.min(taskType,14)]+" ("+taskType+")");
+		System.out.println("	[1:I]="+data.getInt());
+		boolean b = data.get()==1;
+		System.out.println("	[2:B]="+b);
+		
+		System.out.println("	id="+data.getInt());
+		
+		if(taskType==1)
+		{
+			System.out.println("  Waypoint");
+			
+			System.out.println("	[3:F]="+data.getFloat());//Direction?
+			System.out.println("	[4:F]="+data.getFloat());//Direction?
+			System.out.println("	[5:B]="+data.get());
+			System.out.println("	x="+data.getFloat());
+			System.out.println("	y="+data.getFloat());
+		
+		
+			System.out.println("	[6:I]="+data.getInt());
+			System.out.println("	[7:I]="+data.getInt());
+			System.out.println("	[8:I]="+data.getInt());
+		}
+		else if(taskType==12)
+		{
+			System.out.println("  Rally Point");
+			data.position(data.position()+58);
+		}
+		else if(taskType==2)
+		{
+			boolean c = data.get()==1;
+			System.out.println("	c="+c);
+			if(c)
+			{
+				System.out.println("	[2_1:I]="+Integer.toHexString(data.getInt()));
+				System.out.println("	[2_2:S]="+Integer.toHexString(data.getShort()&0xFFFF));
+				System.out.println("	[2_3:B]="+Integer.toHexString(data.get()&0xFF));
+			}
+			else
+			{
+				System.out.println("	[2_1:B]="+data.get());
+			}
+			
+			data.position(data.position()+23);
+		}
+		else if(taskType==6)
+		{
+			boolean c = data.get()==1;
+			System.out.println("	c="+c);
+			System.out.println("	[2_1:S]="+data.get());
+			
+			/*System.out.println("	[?0:I]="+data.getInt());
+			System.out.println("	[?1:I]="+data.getInt());
+			System.out.println("	[?2:B]="+data.get());
+			System.out.println("	[?3:B]="+data.get());
+			
+			System.out.println("	?x="+data.getFloat());
+			System.out.println("	?y="+data.getFloat());//Direction?
+			
+			System.out.println("	[4:F]="+data.getFloat());//Direction?
+			System.out.println("	[5:B]="+data.get());
+			System.out.println("	x="+data.getFloat());
+			System.out.println("	y="+data.getFloat());
+			
+			
+			System.out.println("	[6:I]="+data.getInt());
+			System.out.println("	[7:I]="+data.getInt());
+			System.out.println("	[8:I]="+data.getInt());*/
+			data.position(data.position()+49);
+		}
+		else if(taskType==4)
+		{
+			data.position(data.position()+9);
+			int eid = data.getInt();
+			System.out.println("	Repairing="+(eid>>>24)+"<"+(eid&0x00FFFFFF)+">");
+			data.position(data.position()+7);
+		}
+		else
+		{
+			if(!b)
+			{
+				boolean c = data.get()==1;
+				System.out.println("	c="+c);
+				if(c)
+				{
+					System.out.println("	[2_1:I]="+Integer.toHexString(data.getInt()));
+					System.out.println("	[2_2:S]="+Integer.toHexString(data.getShort()&0xFFFF));
+					System.out.println("	[2_3:B]="+Integer.toHexString(data.get()&0xFF));
+				}
+				else
+				{
+					System.out.println("	[2_1:S]="+data.get());
+				}
+				
+				System.out.println("	[?0:I]="+data.getInt());
+				System.out.println("	[?1:I]="+data.getInt());
+				System.out.println("	[?2:B]="+data.get());
+				System.out.println("	[?3:B]="+data.get());
+				
+				System.out.println("	?x="+data.getFloat());
+				System.out.println("	?y="+data.getFloat());//Direction?
+			}
+			else
+			{
+				System.out.println("	[3:F]="+data.getFloat());//Direction?
+			}
+			
+			System.out.println("	[4:F]="+data.getFloat());//Direction?
+			System.out.println("	[5:B]="+data.get());
+			System.out.println("	x="+data.getFloat());
+			System.out.println("	y="+data.getFloat());
+			
+			
+			System.out.println("	[6:I]="+data.getInt());
+			System.out.println("	[7:I]="+data.getInt());
+			System.out.println("	[8:I]="+data.getInt());
+		}
 	}
 }

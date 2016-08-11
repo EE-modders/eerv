@@ -10,7 +10,7 @@ public class SCNFile
 	FileID id;
 	
 	boolean hasAttribs;
-	int u0;
+	int compressedSize;
 	
 	boolean hasExtendedAttribs;
 	float u4, u5, u6;
