@@ -588,7 +588,7 @@ public class Imploder extends ExploderConstants
 	//-----------------------------------------------------------------------------
 	// Main imploding function
 	
-	public void implode(TCmpStruct pWork, boolean binary, int dsize)
+	public static void implode(TCmpStruct pWork, boolean binary, int dsize)
 	{
 		// Fill the work buffer information
 		// Note: The caller must zero the "work_buff" before passing it to implode
@@ -641,16 +641,25 @@ public class Imploder extends ExploderConstants
 
 		for(int i = 0; i < 0x10; i++)
 		{
-			if((1 << ExLenBits[i])!=0)
-			{
+			/*if((1 << ExLenBits[i])!=0)
+			{*/
 				for(int nCount2 = 0; nCount2 < (1 << ExLenBits[i]); nCount2++)
 				{
 					pWork.nChBits[nCount]  = (byte)(ExLenBits[i] + LenBits[i] + 1);
 					pWork.nChCodes[nCount] = (char)((nCount2 << (LenBits[i] + 1)) | ((LenCode[i] & 0xFFFF00FF) * 2) | 1);
 					nCount++;
 				}
-			}
+			//}
 		}
+		
+		for(int i = 256;i<pWork.nChBits.length;i++)
+		{
+			System.out.println(i+"\t "+pWork.nChBits[i]+"\t "+Integer.toHexString(pWork.nChCodes[i]));
+		}
+		
+		System.out.println("Termination (id#517) "+pWork.nChBits[517+0x100]+"\t "+Integer.toHexString(pWork.nChCodes[517+0x100]));
+		
+		System.exit(0);
 
 		//Perform the compression
 		WriteCmpData(pWork);

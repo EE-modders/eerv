@@ -26,7 +26,7 @@ public class Exploder extends ExploderConstants
 	
 	public Exploder(ByteBuffer in)
 	{
-		if(in.remaining() <= 4)
+		if(in.remaining() < 4)
 			throw new IllegalArgumentException("Data too small");
 		this.in = in;
 		out = ByteBuffer.allocate(0x2204);
@@ -45,6 +45,7 @@ public class Exploder extends ExploderConstants
 	
 	void update(int bits)
 	{
+		//System.out.println("UseBits "+bits);
 		if(bits <= extraBits)
 		{
 			extraBits -= bits;
@@ -70,6 +71,7 @@ public class Exploder extends ExploderConstants
 		if(isRep==1)
 		{
 			int code = LengthCodes[nextByte]&0xFF;
+			//System.out.println("code "+code+" base "+(int)LenBase[code]);
 			
 			update(LenBits[code]&0xFF);
 			int extraBits = ExLenBits[code]&0xFF;
@@ -82,11 +84,15 @@ public class Exploder extends ExploderConstants
 			}
 			catch(BufferUnderflowException e)
 			{
+				//System.out.println("Exception!");
 				if((code + extra) != 0x10E)
 				{
 					throw e;
 				}
 			}
+			
+			//System.out.println("extra "+extra+" extra_bits "+extraBits+" code_bits "+LenBits[code]);
+			//System.out.println("length "+((extraBits!=0?LenBase[code]:code) + extra + 2));
 			
 			return (extraBits!=0?LenBase[code]:code) + 0x100 + extra;
 		}
@@ -135,8 +141,10 @@ public class Exploder extends ExploderConstants
 
 		// Next 2-8 bits in the input buffer is the distance position code
 		int code = DistPosCodes[buff & 0xFF]&0xFF;
+		
+		//System.out.println("code "+code+" code_bits "+DistBits[code]+" idx "+(buff&0xFF)+" "+in);
 		update(DistBits[code]);
-
+		
 		if(length == 2)
 		{
 			// If the repetition is only 2 bytes length,
@@ -168,8 +176,24 @@ public class Exploder extends ExploderConstants
 		}
 		
 		int literal = 0;
+		int lits = 0;
 		while((literal = DecodeLit())<0x305)
 		{
+			/*int length = literal-0xFE;
+			System.out.print(literal>=0x100?"[Pair] Len: "+(literal-0xFE)+"\n":"[Byte] "+literal+"\n");
+			if(literal>=0x100)
+			{
+				int dist = DecodeDist(length);
+				System.out.println(" Dist: "+dist);
+			}
+			lits++;
+			
+			if(lits>1000)
+			{
+				System.out.println("Exit");
+				System.exit(0);
+			}*/
+			
 			if(literal>=0x100)
 			{
 				int length = literal - 0xFE;
