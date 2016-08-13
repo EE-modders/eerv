@@ -728,13 +728,9 @@ public class SCNDecoder extends Decoder<SCN>
 					System.out.println("techId="+techId+" "+(u2?"+":"-")+(u3?"+":"-")+(disabled?"D":"-"));
 				}
 				
-				data.position(data.position()+72);
-				asciiZ = new byte[data.getInt()];
-				data.get(asciiZ);
-				String u4 = new String(asciiZ, 0, asciiZ.length!=0?asciiZ.length-1:0, StandardCharsets.ISO_8859_1);
-				//System.out.println(u4);
+				data.position(data.position()+84);
 				
-				data.position(data.position()+25);
+				System.out.println("food: "+data.getInt()+" wood: "+data.getInt()+" stone: "+data.getInt()+" gold: "+data.getInt()+" iron: "+data.getInt()+" ??: "+data.getInt());
 				
 				asciiZ = new byte[data.getInt()];
 				data.get(asciiZ);
@@ -1370,14 +1366,21 @@ public class SCNDecoder extends Decoder<SCN>
 			System.out.println("	[7:I]="+data.getInt());
 			System.out.println("	[8:I]="+data.getInt());
 		}
-		else if(taskType==12)
-		{
-			System.out.println("  Rally Point");
-			data.position(data.position()+58);
-		}
 		else if(taskType==2)
 		{
 			data.position(data.position()+25);
+		}
+		else if(taskType==4)
+		{
+			System.out.println("	[0:B]="+data.get());
+			System.out.println("	[1:I]="+data.getInt());
+			System.out.println("	[2:I]="+data.getInt());
+			int eid = data.getInt();
+			System.out.println("	Repairing="+(eid>>>24)+"<"+(eid&0x00FFFFFF)+">");
+			System.out.println("	[3:B]="+data.get());
+			System.out.println("	[4:B]="+data.get());
+			System.out.println("	[5:I]="+data.getInt());
+			System.out.println("	[6:B]="+data.get());
 		}
 		else if(taskType==6)
 		{
@@ -1394,57 +1397,17 @@ public class SCNDecoder extends Decoder<SCN>
 			System.out.println("	[6:F]="+data.getFloat());
 			data.position(data.position()+4);
 		}
-		else if(taskType==4)
+		else if(taskType==10)
 		{
-			System.out.println("	[0:B]="+data.get());
-			System.out.println("	[1:I]="+data.getInt());
-			System.out.println("	[2:I]="+data.getInt());
-			int eid = data.getInt();
-			System.out.println("	Repairing="+(eid>>>24)+"<"+(eid&0x00FFFFFF)+">");
-			System.out.println("	[3:B]="+data.get());
-			System.out.println("	[4:B]="+data.get());
-			System.out.println("	[5:I]="+data.getInt());
-			System.out.println("	[6:B]="+data.get());
+			data.position(data.position()+27);
+		}
+		else if(taskType==12)
+		{
+			data.position(data.position()+58);
 		}
 		else
 		{
-			if(!b)
-			{
-				boolean c = data.get()==1;
-				System.out.println("	c="+c);
-				if(c)
-				{
-					System.out.println("	[2_1:I]="+Integer.toHexString(data.getInt()));
-					System.out.println("	[2_2:S]="+Integer.toHexString(data.getShort()&0xFFFF));
-					System.out.println("	[2_3:B]="+Integer.toHexString(data.get()&0xFF));
-				}
-				else
-				{
-					System.out.println("	[2_1:S]="+data.get());
-				}
-				
-				System.out.println("	[?0:I]="+data.getInt());
-				System.out.println("	[?1:I]="+data.getInt());
-				System.out.println("	[?2:B]="+data.get());
-				System.out.println("	[?3:B]="+data.get());
-				
-				System.out.println("	?x="+data.getFloat());
-				System.out.println("	?y="+data.getFloat());//Direction?
-			}
-			else
-			{
-				System.out.println("	[3:F]="+data.getFloat());//Direction?
-			}
-			
-			System.out.println("	[4:F]="+data.getFloat());//Direction?
-			System.out.println("	[5:B]="+data.get());
-			System.out.println("	x="+data.getFloat());
-			System.out.println("	y="+data.getFloat());
-			
-			
-			System.out.println("	[6:I]="+data.getInt());
-			System.out.println("	[7:I]="+data.getInt());
-			System.out.println("	[8:I]="+data.getInt());
+			throw new IllegalStateException("unknown task type");
 		}
 	}
 }
