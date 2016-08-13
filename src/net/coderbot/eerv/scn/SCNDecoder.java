@@ -1206,7 +1206,7 @@ public class SCNDecoder extends Decoder<SCN>
 					else
 					{
 						System.out.print('?');
-						throw new IllegalStateException("not boolean: "+b);
+						//throw new IllegalStateException("not boolean: "+b);
 					}
 				}
 				
@@ -1245,8 +1245,8 @@ public class SCNDecoder extends Decoder<SCN>
 					}
 					else
 					{
-						System.out.print('?');
-						throw new IllegalStateException("not boolean: "+b);
+						System.out.print('#');
+						//throw new IllegalStateException("not boolean: "+b);
 					}
 				}
 				
@@ -1377,52 +1377,34 @@ public class SCNDecoder extends Decoder<SCN>
 		}
 		else if(taskType==2)
 		{
-			boolean c = data.get()==1;
-			System.out.println("	c="+c);
-			if(c)
-			{
-				System.out.println("	[2_1:I]="+Integer.toHexString(data.getInt()));
-				System.out.println("	[2_2:S]="+Integer.toHexString(data.getShort()&0xFFFF));
-				System.out.println("	[2_3:B]="+Integer.toHexString(data.get()&0xFF));
-			}
-			else
-			{
-				System.out.println("	[2_1:B]="+data.get());
-			}
-			
-			data.position(data.position()+23);
+			data.position(data.position()+25);
 		}
 		else if(taskType==6)
 		{
-			boolean c = data.get()==1;
-			System.out.println("	c="+c);
-			System.out.println("	[2_1:S]="+data.get());
-			
-			/*System.out.println("	[?0:I]="+data.getInt());
-			System.out.println("	[?1:I]="+data.getInt());
-			System.out.println("	[?2:B]="+data.get());
-			System.out.println("	[?3:B]="+data.get());
-			
-			System.out.println("	?x="+data.getFloat());
-			System.out.println("	?y="+data.getFloat());//Direction?
-			
-			System.out.println("	[4:F]="+data.getFloat());//Direction?
-			System.out.println("	[5:B]="+data.get());
-			System.out.println("	x="+data.getFloat());
-			System.out.println("	y="+data.getFloat());
-			
-			
-			System.out.println("	[6:I]="+data.getInt());
-			System.out.println("	[7:I]="+data.getInt());
-			System.out.println("	[8:I]="+data.getInt());*/
-			data.position(data.position()+49);
+			//data.position(data.position()+51);
+			data.position(data.position()+13);
+			int eid = data.getInt();
+			System.out.println("	[1:EId]="+(eid>>>24)+"<"+(eid&0x00FFFFFF)+">");
+			boolean hasValidEId = data.get()==1;
+			System.out.println("	[hasValidEId:B]="+hasValidEId);
+			System.out.println("	[3:F]="+data.getFloat());
+			System.out.println("	[4:F]="+data.getFloat());
+			data.position(data.position()+5);
+			System.out.println("	[5:F]="+data.getFloat());
+			System.out.println("	[6:F]="+data.getFloat());
+			data.position(data.position()+4);
 		}
 		else if(taskType==4)
 		{
-			data.position(data.position()+9);
+			System.out.println("	[0:B]="+data.get());
+			System.out.println("	[1:I]="+data.getInt());
+			System.out.println("	[2:I]="+data.getInt());
 			int eid = data.getInt();
 			System.out.println("	Repairing="+(eid>>>24)+"<"+(eid&0x00FFFFFF)+">");
-			data.position(data.position()+7);
+			System.out.println("	[3:B]="+data.get());
+			System.out.println("	[4:B]="+data.get());
+			System.out.println("	[5:I]="+data.getInt());
+			System.out.println("	[6:B]="+data.get());
 		}
 		else
 		{
