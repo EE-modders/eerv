@@ -257,6 +257,7 @@ public class Main
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/CapitolVeryDamaged.scn");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/CapitolVeryDamagedAboutToRepair.scn");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/CapitolVeryDamagedRepairing.scn");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Resources_Set_MinStone_MaxDigital.scn");
 		
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Seed0_TinyTournamentIslands.scn");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Seed0_TinySmallIslands.scn");
