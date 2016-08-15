@@ -449,7 +449,7 @@ public class SCNDecoder extends Decoder<SCN>
 			}
 			
 			int queued = data.getInt();
-			System.out.println(queued+" queued effects");
+			System.out.println("queuedEffects="+queued);
 			for(int i = 0;i<queued;i++)
 			{
 				int effectId = data.getInt();
@@ -459,19 +459,13 @@ public class SCNDecoder extends Decoder<SCN>
 				System.out.println("["+i+"] effectId="+effectId+" executeAt="+executeAt+"ms u0="+u0);
 			}
 			
-			System.out.println("pos: "+data.position());
-			
 			int len = data.getInt();
-			System.out.println("len: "+len);
+			System.out.println("loggedEffects="+len);
 			for(int i = 0;i<len;i++)
 			{
-				asciiZ = new byte[data.getInt()];
-				data.get(asciiZ);
-				String name = new String(asciiZ, 0, asciiZ.length>0?asciiZ.length-1:0, StandardCharsets.ISO_8859_1);
-				
-				System.out.println("["+i+"] "+name);
-				
-				data.position(data.position()+243);
+				Effect effect = new Effect();
+				effect.read(data);
+				System.out.println(effect);
 			}
 			
 			System.out.println("end: "+data.position());
@@ -773,7 +767,7 @@ public class SCNDecoder extends Decoder<SCN>
 				data.position(data.position()+(len10*4));
 				
 				data.position(data.position()+17);
-				
+				//
 				int len2 = data.getInt();
 				System.out.println("len2="+len2);
 				data.position(data.position()+(len2*4));
@@ -947,31 +941,33 @@ public class SCNDecoder extends Decoder<SCN>
 			int y = data.getInt();
 			int id = data.getInt();
 			
-			System.out.print("\t\t\t\t\t\t\t\t\t\t\t");
-			
-			for(int n = 0;n<3;n++)
-			{
-				System.out.print(Integer.toHexString(data.get()&0xFF).toUpperCase()+" ");
-			}
-			System.out.println();
+			byte u1 = data.get();
+			byte u2 = data.get();
+			byte u3 = data.get();
 			
 			int u0 = data.getInt();
 			float health = data.getFloat();
 			int resourceLevel = data.getInt();
 			
 			int z = data.getInt();
-			System.out.println(total+" "+(isExtended?"":"!")+"Ext type: <"+type+"> id: ("+(id>>>24)+"<"+(id&0x00FFFFFF)+">"+") at ["+x+" "+y+"] <health: "+(health*100)+"% resources: "+resourceLevel+" zero: "+z+" u0: "+u0+">");
+			System.out.println(total+" "+(isExtended?"Complex":"Simple ")+" type: <"+type+"> id: ("+(id>>>24)+"<"+(id&0x00FFFFFF)+">"+") at ["+x+" "+y+"] <health: "+(health*100)+"% resources: "+resourceLevel+" zero: "+z+" u0: "+u0+" flags: "+(u1==1?"+":"-")+(u2==1?"+":"-")+(u3==1?"+":"-")+">");
 			
 			if(isExtended)
 			{
 				System.out.println("Extended Object offs: "+file.data.position());
 				
-				int pendingProductions = data.getInt();
-				System.out.println("pendingProductions: "+pendingProductions);
-				for(int t=0;t<pendingProductions;t++)
+				int productions = data.getInt();
+				// Productions appear to be an entry in dbtechtree.
+				System.out.print("pending productions: [");
+				for (int e = 0;e<productions;e++)
 				{
-					System.out.println("["+t+"] productionId="+data.getInt());
+					System.out.print(data.getInt());
+					if(e+1<productions)
+					{
+						System.out.print(", ");
+					}
 				}
+				System.out.println("]");
 				
 				int len4 = data.getInt();
 				System.out.print("unknown entity list: [");
@@ -1003,104 +999,15 @@ public class SCNDecoder extends Decoder<SCN>
 				
 				int len = data.getInt();
 				System.out.println("len="+len);
-				data.position(data.position()+len*20);
-				
-				String[] names = new String[]{
-					"[0]",
-					"[1]",
-					"[2]",
-					"",
-					"",
-					"",
-					"",
-					"",
-					"",
-					"",
-					"",
-					"",
-					"",
-					"",
-					"",
-					"",
-					"",
-					"",
-					"",
-					"[19]",
-					"[20]",
-					"[21]",
-					"[22]",
-					"[23]",
-					"[24]",
-					"[25]",
-					"[26]",
-					"[27]",
-					"[28]",
-					"[29]",
-					"[30]",
-					"[31]",
-					"[32]",
-					"[33]",
-					"[34]",
-					"[35]",
-					"[36]",
-					"[37]",
-					"[38]",
-					"[39]",
-					"[40]",
-					"CurrentProduction", //For creating a citizen, this is 1451 instead of 1074???
-					"[42]",
-					"[43]",
-					"[44]",
-					"[45]",
-					"[46]",
-					"[47]",
-					"[48]",
-					"[49]",
-					"RemainingTime",
-					"[51]",
-					"[52]",
-					"[53]",
-					"[54]",
-					"[55]",
-					"[56]",
-					"[57]",
-					"[58]",
-					"[59]",
-					"[60]",
-					"[61]",
-					"[62]",
-					"[63]",
-					"[64]",
-					"[65]",
-					"[66]",
-					"[67]",
-					"[68]",
-					"[69]",
-					"[70]",
-					"[71]",
-					"[72]",
-					"[73]",
-					"[74]",
-					"[75]",
-					"[76]",
-					"[77]",
-					"[78]",
-					"[79]",
-					"[80]",
-					"[81]",
-					"[82]",
-					"[83]",
-					"[84]",
-					"[85]",
-					"[86]",
-					"[87]",
-					"[88]",
-				};
+				for(int w = 0;w<len;w++)
+				{
+					System.out.println("["+w+"] x="+data.getFloat()+" \ty="+data.getFloat()+" \tz="+data.getFloat()+" \t?="+data.getFloat()+" \tprev?="+data.getFloat());
+				}
 				
 				System.out.println("-> "+data.position());
-				System.out.print(names[0]+"="+data.getFloat()+" ");
-				System.out.print(names[1]+"="+data.getFloat()+" ");
-				System.out.println(names[2]+"="+data.getFloat()+" ");
+				System.out.print("[0]="+data.getFloat()+" ");
+				System.out.print("[1]="+data.getFloat()+" ");
+				System.out.println("[2]="+data.getFloat()+" ");
 				
 				// Matrix
 				System.out.println("["+(data.getFloat()+0)+" "+(data.getFloat()+0)+" "+(data.getFloat()+0)+" "+(data.getFloat()+0)+"]");
@@ -1110,21 +1017,29 @@ public class SCNDecoder extends Decoder<SCN>
 				
 				byte u8 = data.get();
 				System.out.println("u8="+u8);
-				System.out.print(names[19]+"="+data.getFloat()+" ");
-				System.out.print(names[20]+"="+data.getInt()+" ");
+				System.out.print("[19]="+data.getFloat()+" ");
+				System.out.print("[20]="+data.getInt()+" ");
+				System.out.print("[21]="+data.getFloat()+" ");
+				System.out.print("[22]="+data.getFloat()+" ");
+				System.out.print("[23]="+data.getFloat()+" ");
+				System.out.print("[24]="+data.getFloat()+" ");
+				System.out.print("[25]="+data.getFloat()+" ");
+				System.out.println("[26]="+data.getFloat()+" ");
+				System.out.print("[27]="+data.getFloat()+" ");
+				System.out.print("[28]="+data.getFloat()+" ");
+				System.out.print("[29]="+data.getFloat()+" ");
+				System.out.println("[30]="+data.getFloat()+" ");
 				
-				for(int fl = 21;fl<35;fl++)
-				{
-					float val = data.getFloat();
-					System.out.print(names[fl]+"="+val+" ");
-					
-					if((fl&7)==0&&fl!=0)
-					{
-						System.out.println(" pos="+data.position());
-					}
-				}
+				int eid31 = data.getInt();
+				System.out.print("[31]="+(eid31>>>24)+"<"+(eid31&0x00FFFFFF)+">"+" ");
+				int eid32 = data.getInt();
+				System.out.print("[32]="+(eid32>>>24)+"<"+(eid32&0x00FFFFFF)+">"+" ");
+				int eid33 = data.getInt();
+				System.out.print("[33]="+(eid33>>>24)+"<"+(eid33&0x00FFFFFF)+">"+" ");
+				int eid34 = data.getInt();
+				System.out.print("[34]="+(eid34>>>24)+"<"+(eid34&0x00FFFFFF)+">"+" ");
+				System.out.println("[35]="+data.getInt()+" ");
 				
-				System.out.print(names[35]+"="+data.getInt()+" ");
 				int len6 = data.getInt();
 				System.out.println("len6="+len6);
 				for(int l = 0;l<len6;l++)
@@ -1132,59 +1047,38 @@ public class SCNDecoder extends Decoder<SCN>
 					System.out.println("<"+l+">="+data.getInt());
 				}
 				
-				for(int fl = 37;fl<41;fl++)
-				{
-					float val = data.getFloat();
-					System.out.print(names[fl]+"="+val+" ");
-					
-					if((fl&7)==0&&fl!=0)
-					{
-						System.out.println(" pos="+data.position());
-					}
-				}
 				
-				
-				for(int fl = 41;fl<47;fl++)
-				{
-					int val = data.getInt();
-					System.out.print(names[fl]+"="+val+" ");
-					
-					if((fl&7)==0&&fl!=0)
-					{
-						System.out.println(" pos="+data.position());
-					}
-				}
-				
-				for(int fl = 47;fl<49;fl++)
-				{
-					float val = data.getFloat();
-					System.out.print(names[fl]+"="+val+" ");
-					
-					if((fl&7)==0&&fl!=0)
-					{
-						System.out.println(" pos="+data.position());
-					}
-				}
-				
-				System.out.print(names[49]+"="+data.getInt()+" ");
-				System.out.print(names[50]+"="+data.getInt()+" ");
-				System.out.print(names[51]+"="+data.getFloat()+" ");
-				System.out.print(names[52]+"="+data.getInt()+" ");
-				System.out.print(names[53]+"="+data.getFloat()+" ");
-				System.out.print(names[54]+"="+data.getFloat()+" ");
-				System.out.print(names[55]+"="+data.getInt()+" ");
-				System.out.print(names[56]+"="+data.getFloat()+" ");
-				System.out.println(names[57]+"="+data.getInt()+" ");
-				System.out.print(names[58]+"="+data.getFloat()+" ");
-				System.out.print(names[59]+"="+data.getFloat()+" ");
-				System.out.print(names[60]+"="+data.getInt()+" ");
-				System.out.print(names[61]+"="+data.getFloat()+" ");
-				System.out.print(names[62]+"="+data.getFloat()+" ");
-				System.out.print(names[63]+"="+data.getInt()+" ");
-				System.out.print(names[64]+"="+data.getInt()+" ");
-				System.out.print(names[65]+"="+data.getInt()+" ");
-				System.out.print(names[66]+"="+data.getInt()+" ");
-				System.out.print(names[67]+"="+data.getInt()+" ");
+				System.out.print("[37]="+data.getFloat()+" ");
+				System.out.print("[38]="+data.getFloat()+" ");
+				System.out.print("[39]="+data.getFloat()+" ");
+				System.out.println("[40]="+data.getFloat()+" ");
+				System.out.print("current_production="+data.getInt()+" ");
+				System.out.print("[42]="+data.getInt()+" ");
+				System.out.print("[43]="+data.getInt()+" ");
+				System.out.print("[44]="+data.getInt()+" ");
+				System.out.print("[45]="+data.getInt()+" ");
+				System.out.print("[46]="+data.getInt()+" ");
+				System.out.print("[47]="+data.getFloat()+" ");
+				System.out.print("[48]="+data.getFloat()+" ");
+				System.out.print("[49]="+data.getInt()+" ");
+				System.out.print("production_time_remaining="+data.getInt()+" ");
+				System.out.print("[51]="+data.getFloat()+" ");
+				System.out.print("[52]="+data.getInt()+" ");
+				System.out.print("[53]="+data.getInt()+" ");
+				System.out.print("[54]="+data.getInt()+" ");
+				System.out.print("[55]="+data.getInt()+" ");
+				System.out.print("[56]="+data.getInt()+" ");
+				System.out.println("[57]="+data.getInt()+" ");
+				System.out.print("[58]="+data.getFloat()+" ");
+				System.out.print("[59]="+data.getFloat()+" ");
+				System.out.print("[60]="+data.getInt()+" ");
+				System.out.print("[61]="+data.getFloat()+" ");
+				System.out.print("[62]="+data.getFloat()+" ");
+				System.out.print("[63]="+data.getInt()+" ");
+				System.out.print("[64]="+data.getInt()+" ");
+				System.out.print("[65]="+data.getInt()+" ");
+				System.out.print("[66]="+data.getInt()+" ");
+				System.out.print("[67]="+data.getInt()+" ");
 				
 				System.out.println(" pos="+data.position());
 				
@@ -1208,25 +1102,26 @@ public class SCNDecoder extends Decoder<SCN>
 				
 				System.out.println();
 				
-				System.out.print(names[68]+"="+data.getInt()+" ");
-				System.out.print(names[69]+"="+data.getInt()+" ");
-				System.out.print(names[70]+"="+data.getFloat()+" ");//Zero?
-				System.out.print(names[71]+"="+data.getInt()+" ");//EntityId
-				System.out.print(names[72]+"="+data.getFloat()+" ");//?
-				System.out.print(names[73]+"="+data.getFloat()+" ");//Float
+				System.out.print("[68]="+data.getInt()+" ");
+				System.out.print("[69]="+data.getInt()+" ");
+				System.out.print("[70]="+data.getFloat()+" ");//Zero?
+				int eid71 = data.getInt();
+				System.out.print("[71]="+(eid71>>>24)+"<"+(eid71&0x00FFFFFF)+">"+" ");
+				System.out.print("[72]="+data.getFloat()+" ");//?
+				System.out.print("population="+(data.getFloat()*100)+"% ");//Float
 				
-				System.out.println("\n"+names[74]+"="+data.getInt()+" pos="+data.position());
-				System.out.println(names[75]+"="+data.getInt());
+				System.out.println("\n"+"[74]="+data.getInt()+" pos="+data.position());
+				System.out.println("[75]="+data.getInt());
 				byte u9 = data.get();
-				if(u9==1)
+				/*if(u9==1)
 				{
 					System.out.println("unkFloat="+data.getFloat());
-				}
+				}*/
 				
-				System.out.println("u9="+u9+" "+names[75]+"="+data.getFloat()+" "+names[76]+"="+data.getFloat()+" "+names[77]+"="+data.getFloat());
+				System.out.println("u9="+u9+" "+"[75]="+data.getFloat()+" "+"[76]="+data.getFloat()+" "+"[77]="+data.getFloat());
 				
 				byte uA = data.get();
-				System.out.println("uA="+uA+" "+names[78]+"="+data.getFloat()+" "+names[79]+"="+data.getFloat()+" "+names[80]+"="+data.getFloat());
+				System.out.println("uA="+uA+" "+"[78]="+data.getFloat()+" "+"[79]="+data.getFloat()+" "+"[80]="+data.getFloat());
 				
 				for(int bl = 0;bl<10;bl++)
 				{
@@ -1250,7 +1145,7 @@ public class SCNDecoder extends Decoder<SCN>
 				
 				int u = data.getInt();
 				
-				System.out.println("pos="+data.position()+" ?="+u);
+				System.out.println("pos="+data.position()+" waypointSets="+u);
 				
 				for(int w = 0;w<u;w++)
 				{
