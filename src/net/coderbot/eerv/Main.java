@@ -86,7 +86,7 @@ public class Main
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/...- nano 01.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/nano 01/");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/...- nano 02.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/nano 02/");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/ww1 - ww2 01.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/ww1ww2 01/");
-		SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/ww1 - ww2 02.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/ww1ww2 01/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/ww1 - ww2 02.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/ww1ww2 01/");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/CRASH0.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/crash0/");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/Dufus Ryan Mom Tough Game.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/tough/");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/ElevTR.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/elevtr/");
@@ -151,7 +151,7 @@ public class Main
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Effects_0Qued.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Effects_2Qued2.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/Dufus Alexander.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
-		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/Dufus - Pericles.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/Dufus - Pericles.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
 		
 		//SCN.test("extract/-- Eternal Darkness 3 -- Breakthrough -- v1.43.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Objects_Specification.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
@@ -258,6 +258,7 @@ public class Main
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/CapitolVeryDamagedAboutToRepair.scn");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/CapitolVeryDamagedRepairing.scn");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Resources_Set_MinStone_MaxDigital.scn");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/SetAttr_PopCap.scn");
 		
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Seed0_TinyTournamentIslands.scn");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Seed0_TinySmallIslands.scn");
