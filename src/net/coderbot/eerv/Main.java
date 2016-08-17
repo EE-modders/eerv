@@ -135,7 +135,7 @@ public class Main
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Conditions_ChatMessageContains.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Conditions_GameAttribute.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Conditions_Tech.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
-		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Effects.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Effects.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Effects_Object.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Effects_Player.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Effects_Game.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
@@ -151,7 +151,7 @@ public class Main
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Effects_0Qued.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Effects_2Qued2.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/Dufus Alexander.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
-		SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/Dufus - Pericles.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/Dufus - Pericles.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
 		
 		//SCN.test("extract/-- Eternal Darkness 3 -- Breakthrough -- v1.43.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Objects_Specification.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/trigger/");
