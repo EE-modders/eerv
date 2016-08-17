@@ -675,10 +675,11 @@ public class SCNDecoder extends Decoder<SCN>
 					data.get(asciiZ);
 					
 					String name = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
-					System.out.println("entityType: "+entityType+" name: "+name);
+					/*System.out.println("entityType: "+entityType+" name: "+name);
 					System.out.println(data.getInt()+" "+data.getInt()+" "+data.getInt()+" "+data.getInt()+" "+data.getInt()+" "+data.getInt()+" "+data.getInt()+" "+data.getInt());
 					System.out.println(data.getInt()+" "+data.getInt()+" "+data.getInt()+" "+data.getInt()+" "+data.getInt()+" "+data.getInt()+" "+data.getInt()+" "+data.getInt());
-					System.out.println(data.getInt());
+					System.out.println(data.getInt());*/
+					data.position(data.position()+68);
 				}
 				
 				int zero0 = data.getInt();
@@ -725,7 +726,12 @@ public class SCNDecoder extends Decoder<SCN>
 					System.out.println("techId="+techId+" "+(u2?"+":"-")+(u3?"+":"-")+(disabled?"D":"-"));
 				}
 				
-				data.position(data.position()+84);
+				System.out.println(data.getInt()+" "+data.getInt()+" "+data.getInt()+" "+data.getInt());
+				System.out.println(data.getInt()+" "+data.getInt()+" "+data.getInt()+" "+data.getInt());
+				System.out.println(data.getInt()+" "+data.getInt()+" "+data.getInt()+" "+data.getInt());
+				System.out.println(data.getInt()+" "+data.getInt()+" "+data.getInt()+" "+data.getInt());
+				System.out.println(data.getInt()+" "+data.getInt()+" "+data.getInt()+" "+data.getInt());
+				System.out.println(data.getInt());
 				
 				System.out.println("food: "+data.getInt()+" wood: "+data.getInt()+" stone: "+data.getInt()+" gold: "+data.getInt()+" iron: "+data.getInt()+" ??: "+data.getInt());
 				
@@ -1004,7 +1010,11 @@ public class SCNDecoder extends Decoder<SCN>
 				System.out.println("len="+len);
 				for(int w = 0;w<len;w++)
 				{
-					System.out.println("["+w+"] x="+data.getFloat()+" \ty="+data.getFloat()+" \tz="+data.getFloat()+" \t?="+data.getFloat()+" \tprev?="+data.getFloat());
+					float wx = data.getFloat(), wy = data.getFloat(), wz = data.getFloat();
+					float dist = data.getFloat();//Total distance traveled
+					float prevDist = data.getFloat();//Previous Total distance traveled
+					
+					System.out.println("["+w+"] x="+wx+" \ty="+wy+" \tz="+wz+" \tdist="+dist+" \tprevDist="+prevDist);
 				}
 				
 				System.out.println("-> "+data.position());
