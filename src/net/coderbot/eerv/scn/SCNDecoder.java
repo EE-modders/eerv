@@ -670,12 +670,15 @@ public class SCNDecoder extends Decoder<SCN>
 				
 				for(int e = 0;e<entries;e++)
 				{
-					data.position(data.position()+77);
-					/*int sequence = data.getInt();
-					System.out.println(sequence+" "+data.getInt()+" "+data.get());
+					int entityType = data.getInt();
+					asciiZ = new byte[data.getInt()];
+					data.get(asciiZ);
+					
+					String name = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
+					System.out.println("entityType: "+entityType+" name: "+name);
 					System.out.println(data.getInt()+" "+data.getInt()+" "+data.getInt()+" "+data.getInt()+" "+data.getInt()+" "+data.getInt()+" "+data.getInt()+" "+data.getInt());
 					System.out.println(data.getInt()+" "+data.getInt()+" "+data.getInt()+" "+data.getInt()+" "+data.getInt()+" "+data.getInt()+" "+data.getInt()+" "+data.getInt());
-					System.out.println(data.getInt());*/
+					System.out.println(data.getInt());
 				}
 				
 				int zero0 = data.getInt();
