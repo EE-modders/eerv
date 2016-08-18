@@ -172,6 +172,8 @@ public class SCNDecoder extends Decoder<SCN>
 		scn.creationUptime = data.getInt();
 		System.out.println("creationUptime="+(((float)scn.creationUptime)/1000)+"s");
 		
+		// Start of File Data
+		
 		pk.setInput(data);
 		int pkMagic = 0;
 		int i = 0;
@@ -218,7 +220,7 @@ public class SCNDecoder extends Decoder<SCN>
 					e.printStackTrace();
 				}
 				
-				String s = "extract/scn/"+scn.name.toLowerCase().split("\\.")[0]+"/file"+i;
+				String s = "extract/scn/"+scn.name.toLowerCase().split("\\.")[0]+"/file"+i+"_"+LumpID.get(type).toString().toLowerCase();
 				Path path = Paths.get(s);
 				System.out.println("Saving file "+i+" to "+path);
 				try
