@@ -55,20 +55,7 @@ public class SCN
 	String instructions;
 	String soundover;
 	
-	SCNFile[] files;
-	
-	static class File
-	{
-		int id;
-		int atr1;
-		byte atr2;
-		byte atr3;
-		byte atr4;
-		
-		byte[] xattribs;
-	}
-	
-	static enum FileID
+	static enum LumpID
 	{
 		ID1_TINY(1),
 		SEED(2),
@@ -85,14 +72,14 @@ public class SCN
 		UNKNOWN(0);
 		
 		int nid;
-		FileID(int nid)
+		LumpID(int nid)
 		{
 			this.nid = nid;
 		}
 		
-		public static FileID get(int nid)
+		public static LumpID get(int nid)
 		{
-			FileID[] values = values();
+			LumpID[] values = values();
 			for(int i = 0;i<values.length;i++)
 			{
 				if(values[i].nid==nid)

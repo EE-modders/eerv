@@ -60,21 +60,23 @@ public class SCNDecoder extends Decoder<SCN>
 	public static final int VERSION_MAJOR_AOC = 0x00;//version 0_250
 	public static final int VERSION_MINOR_AOC = 0xFA;//version 0_250
 	
+	private String getString()
+	{
+		byte[] asciiZ = new byte[data.getInt()];
+		data.get(asciiZ);
+		return new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
+	}
+	
 	@Override
 	public SCN decode() throws DecoderException
 	{
 		SCN scn = new SCN();
-		byte[] asciiZ;
+		
 		int size = data.getInt();
 		System.out.println("File says it's size is "+size+" actual is "+data.capacity());
 		
-		asciiZ = new byte[data.getInt()];
-		data.get(asciiZ);
-		scn.name = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
-		
-		asciiZ = new byte[data.getInt()];
-		data.get(asciiZ);
-		scn.description = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
+		scn.name = getString();
+		scn.description = getString();
 		
 		if(data.getInt()!=0||data.getInt()!=231)
 		{
@@ -82,15 +84,8 @@ public class SCNDecoder extends Decoder<SCN>
 			//throw new DecoderException("scn","Expected [0, E7] but got ["+Integer.toHexString(data.getInt())+", "+Integer.toHexString(data.getInt())+"]");
 		}
 		
-		asciiZ = new byte[data.getInt()];
-		data.get(asciiZ);
-		scn.playerList = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
-		
-		asciiZ = new byte[data.getInt()];
-		data.get(asciiZ);
-		scn.date = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
-		
-		System.out.println("Date: "+scn.date);
+		scn.playerList = getString();
+		scn.date = getString();
 		
 		byte split = data.get();
 		if(split!=0)
@@ -130,14 +125,10 @@ public class SCNDecoder extends Decoder<SCN>
 		scn.customCivs = data.get()==1;
 		scn.u5 = data.get()==1;
 		
-		asciiZ = new byte[data.getInt()];
-		data.get(asciiZ);
-		scn.campaignName = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
+		scn.campaignName = getString();
 		System.out.println("CampaignName: "+scn.campaignName);
 		
-		asciiZ = new byte[data.getInt()];
-		data.get(asciiZ);
-		scn.scenarioName = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
+		scn.scenarioName = getString();
 		System.out.println("ScenarioName: "+scn.scenarioName);
 		
 		
@@ -146,9 +137,7 @@ public class SCNDecoder extends Decoder<SCN>
 		
 		System.out.println(scn.u6+" "+scn.u7);
 		
-		asciiZ = new byte[data.getInt()];
-		data.get(asciiZ);
-		scn.forcedName = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
+		scn.forcedName = getString();
 		System.out.println("ForcedName: "+scn.forcedName);
 		
 		System.out.println("UnknownInt: "+data.getInt());
@@ -159,50 +148,29 @@ public class SCNDecoder extends Decoder<SCN>
 			System.out.println("lump["+i+"] type: \t"+type+" \t"+SCN.LumpID.get(type));
 		}
 		
-		asciiZ = new byte[data.getInt()];
-		data.get(asciiZ);
-		scn.u9 = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
+		scn.u9 = getString();
 		System.out.println("UnknownString: "+scn.u9);
 		
-		asciiZ = new byte[data.getInt()];
-		data.get(asciiZ);
-		scn.hints = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
+		scn.hints = getString();
 		System.out.println("Hints: "+scn.hints);
 		
-		asciiZ = new byte[data.getInt()];
-		data.get(asciiZ);
-		scn.history = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
+		scn.history = getString();
 		System.out.println("History: "+scn.history);
 		
-		asciiZ = new byte[data.getInt()];
-		data.get(asciiZ);
-		scn.movie = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
+		scn.movie = getString();
 		System.out.println("Movie: "+scn.movie);
 		
-		asciiZ = new byte[data.getInt()];
-		data.get(asciiZ);
-		scn.map = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
+		scn.map = getString();
 		System.out.println("Map: "+scn.map);
 		
-		asciiZ = new byte[data.getInt()];
-		data.get(asciiZ);
-		scn.instructions = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
+		scn.instructions = getString();
 		System.out.println("Instructions: "+scn.instructions);
 		
-		asciiZ = new byte[data.getInt()];
-		data.get(asciiZ);
-		scn.soundover = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
+		scn.soundover = getString();
 		System.out.println("Soundover: "+scn.soundover);
 		
-		//System uptime when created
 		scn.creationUptime = data.getInt();
 		System.out.println("creationUptime="+(((float)scn.creationUptime)/1000)+"s");
-		
-		if(data.getInt()!=0||data.getInt()!=231)
-		{
-			//data.position(data.position()-8);
-			//throw new DecoderException("scn","Expected [0, E7] but got ["+Integer.toHexString(data.getInt())+", "+Integer.toHexString(data.getInt())+"]");
-		}
 		
 		pk.setInput(data);
 		int pkMagic = 0;
@@ -210,7 +178,7 @@ public class SCNDecoder extends Decoder<SCN>
 		
 		do
 		{
-			pkMagic = 825248592;
+			data.getInt();data.getInt();//TODO: Version check
 			int type = data.getInt();
 			int lumpsize = data.getInt();
 			
@@ -238,14 +206,12 @@ public class SCNDecoder extends Decoder<SCN>
 				
 				int end = data.position();
 				
-				System.out.println(lump);
-				
 				lump.position(0);
 				lump.order(ByteOrder.LITTLE_ENDIAN);
 				
 				try
 				{
-					//handleFile(file);
+					//handleFile(lump, LumpID.get(type));
 				}
 				catch(Exception e)
 				{
@@ -291,145 +257,20 @@ public class SCNDecoder extends Decoder<SCN>
 				{
 					e.printStackTrace();
 				}
-			}
-			
-			if(data.remaining()>=8)
-			{
-				data.getInt();data.getInt();
 				
+				i++;
 			}
-			
-			
-			if(!data.hasRemaining())
-			{
-				break;
-			}
-			
-			/*SCNFile file = new SCNFile();
-			
-			file.compressedSize = data.getInt();
-			System.out.println("compressedSize="+file.compressedSize);
-			
-			if(file.compressedSize==0x08)
-			{
-				System.out.println(data.getInt()+" "+data.getInt());
-				break;
-			}
-			
-			if(file.compressedSize==0x0C)
-			{
-				file.hasExtendedAttribs = true;
-				file.u4 = data.getFloat();
-				file.u5 = data.getFloat();
-				file.u6 = data.getFloat();
-				
-				if(data.getInt()!=0||data.getInt()!=231)
-				{
-					//data.position(data.position()-8);
-					//throw new DecoderException("scn","Expected [0, E7] but got ["+Integer.toHexString(data.getInt())+", "+Integer.toHexString(data.getInt())+"]");
-				}
-				
-				file.u7 = data.getInt();//nRemainingFiles?
-				
-				if(file.u7==6)
-				{
-					System.out.println("Camera x="+file.u4+" y="+file.u5+" "+file.u6+" type="+file.u7);
-				}
-				else
-				{
-					System.out.println("TinyFile file.u4="+file.u4+" file.u5="+file.u5+" file.u6="+file.u6+" type="+file.u7);
-				}
-				
-				
-				continue;
-			}
-			
-			data.mark();
-			pkMagic = data.getInt();
-			if(pkMagic!=825248592)
-			{
-				//break;
-			}
-			data.reset();
-			
-			int start = data.position();
-			
-			file.data = pk.decode();
-			
-			int end = data.position();
-			
-			System.out.println("span from "+start+" to "+end+" ("+(end-start)+" bytes)");
-			
-			if(data.remaining()<4)
-			{
-				break;
-			}
-			file.hasAttribs = true;
-			
-			if(data.getInt()!=0||data.getInt()!=231)
-			{
-				//data.position(data.position()-8);
-				//throw new DecoderException("scn","Expected [0, E7] but got ["+Integer.toHexString(data.getInt())+", "+Integer.toHexString(data.getInt())+"]");
-			}
-			
-			file.id = FileID.get(data.getInt());
-			
-			
-			file.data.position(0);
-			file.data.order(ByteOrder.LITTLE_ENDIAN);
-			
-			try
-			{
-				//handleFile(file);
-			}
-			catch(Exception e)
-			{
-				e.printStackTrace();
-			}
-			
-			String s = "extract/scn/"+scn.name.toLowerCase().split("\\.")[0]+"/file"+i;
-			Path path = Paths.get(s);
-			System.out.println("Saving file "+i+" to "+path);
-			try
-			{
-				Files.createDirectories(Paths.get("extract/scn", scn.name.toLowerCase().split("\\.")[0]));
-			}
-			catch(IOException e)
-			{
-				//e.printStackTrace();
-			}
-			
-			try
-			{
-				Files.deleteIfExists(path);
-				Files.write(path, file.data.array(), StandardOpenOption.WRITE, StandardOpenOption.CREATE);
-				
-				ByteBuffer bb = data.duplicate();
-				bb.position(start);
-				bb.limit(end);
-				FileChannel fc = FileChannel.open(Paths.get(s+".pk"), StandardOpenOption.WRITE, StandardOpenOption.CREATE);
-				fc.truncate(0);
-				fc.write(bb);
-			}
-			catch(IOException e)
-			{
-				e.printStackTrace();
-			}
-			
-			System.out.println("File"+(i++)+": "+file.id+" \t<"+file.data.limit()+"> \t<compressed="+file.compressedSize+">  \t"+((file.hasExtendedAttribs)?"xattribs":""));*/
 		}
 		while(data.hasRemaining());
 		
 		return scn;
 	}
-
 	
-	static void handleFile(SCNFile file)
+	static void handleFile(ByteBuffer data, LumpID id)
 	{
 		byte[] asciiZ;
-		ByteBuffer data = file.data;
 		
-		if(file.id==LumpID.TRIGGERS)
+		if(id==LumpID.TRIGGERS)
 		{
 			int triggers = data.getInt();
 			for(int i = 0;i<triggers;i++)
@@ -603,7 +444,7 @@ public class SCNDecoder extends Decoder<SCN>
 			System.out.println("[2] "+u7);
 		}
 		
-		if(file.id==LumpID.TERRAIN)
+		if(id==LumpID.TERRAIN)
 		{
 			int x = data.getInt();
 			int y = data.getInt();
@@ -625,7 +466,7 @@ public class SCNDecoder extends Decoder<SCN>
 				float f = data.getFloat();
 				short s = data.getShort();
 				//System.out.println("["+r+":"+(data.position()-6)+"] "+f+" "+s);
-				file.data.position(file.data.position()+skip);
+				file.data.position(data.position()+skip);
 				int sect = data.getInt();
 				
 				if(sect!=0)
@@ -645,7 +486,7 @@ public class SCNDecoder extends Decoder<SCN>
 			System.out.println("Entries: "+total+" total, "+big+" big among "+bigwith+" points, "+(total-big)+" small among "+with+" points ");
 		}
 		
-		if(file.id==LumpID.DIPLOMACY)
+		if(id==LumpID.DIPLOMACY)
 		{
 			//TODO: gameAttributes
 			int nPairs = data.getInt();
@@ -721,7 +562,7 @@ public class SCNDecoder extends Decoder<SCN>
 			System.out.println("end: "+data.getShort());
 		}
 		
-		if(file.id==LumpID.OBJECTS)
+		if(id==LumpID.OBJECTS)
 		{
 			int players = data.getInt();
 			int u0 = data.getInt();
@@ -773,11 +614,11 @@ public class SCNDecoder extends Decoder<SCN>
 				
 				for(int total = 0;groups<128;)
 				{
-					total = readGroup(file, data, total, groups);
+					total = readGroup(data, total, groups);
 					groups++;
 				}
 				
-				System.out.println("GroupEnd: "+file.data.position()+" groups: "+groups);
+				System.out.println("GroupEnd: "+data.position()+" groups: "+groups);
 				
 				System.out.println("Between (format=ISII) "+data.getInt()+" "+data.getShort()+" "+data.getInt()+" "+data.getInt());
 				
@@ -808,7 +649,7 @@ public class SCNDecoder extends Decoder<SCN>
 				String civilization = new String(asciiZ, 0, asciiZ.length!=0?asciiZ.length-1:0, StandardCharsets.ISO_8859_1);
 				System.out.println("["+playerIdx+"] Civilization: "+civilization);
 				
-				System.out.println("PosBefore: "+file.data.position());
+				System.out.println("PosBefore: "+data.position());
 				
 				data.position(data.position()+217);
 				
@@ -823,7 +664,7 @@ public class SCNDecoder extends Decoder<SCN>
 				data.position(data.position()+13);
 				data.position(data.position()+len7*8);
 				
-				System.out.println("PosBefore280: "+file.data.position());
+				System.out.println("PosBefore280: "+data.position());
 				
 				data.position(data.position()+280);
 				int notWorld = data.getInt();
@@ -836,7 +677,7 @@ public class SCNDecoder extends Decoder<SCN>
 				System.out.println("inactiveAI="+inactiveAI);
 				data.get();
 				
-				System.out.println("PosBefore123: "+file.data.position());
+				System.out.println("PosBefore123: "+data.position());
 				
 				data.position(data.position()+102);
 				int len10 = data.getInt();
@@ -854,25 +695,25 @@ public class SCNDecoder extends Decoder<SCN>
 				int u7 = data.getShort();
 				System.out.println(u5+" "+u6+" "+u7);
 				
-				System.out.println("PosBeforeStr: "+file.data.position());
+				System.out.println("PosBeforeStr: "+data.position());
 				
 				asciiZ = new byte[data.getInt()];
 				data.get(asciiZ);
 				String name2 = new String(asciiZ, 0, asciiZ.length!=0?asciiZ.length-1:0, StandardCharsets.ISO_8859_1);
 				System.out.println("["+playerIdx+"] Name2: "+name2);
 				
-				System.out.println("PosBefore160: "+file.data.position());
+				System.out.println("PosBefore160: "+data.position());
 				
 				data.position(data.position()+160);
 				
-				System.out.println("PosBeforeStr: "+file.data.position());
+				System.out.println("PosBeforeStr: "+data.position());
 				
 				asciiZ = new byte[data.getInt()];
 				data.get(asciiZ);
 				String name3 = new String(asciiZ, 0, asciiZ.length!=0?asciiZ.length-1:0, StandardCharsets.ISO_8859_1);
 				System.out.println("["+playerIdx+"] Name3: "+name3);
 				
-				System.out.println("PosBefore88: "+file.data.position());
+				System.out.println("PosBefore88: "+data.position());
 				
 				data.position(data.position()+8);
 				int len4 = data.getInt();
@@ -894,7 +735,7 @@ public class SCNDecoder extends Decoder<SCN>
 				
 				data.position(data.position()+20);
 				
-				System.out.println("BeforeAIData: "+file.data.position());
+				System.out.println("BeforeAIData: "+data.position());
 				
 				if(isAI==1)
 				{
@@ -944,7 +785,7 @@ public class SCNDecoder extends Decoder<SCN>
 					data.position(data.position()+133);
 				}
 				
-				System.out.println("End: "+file.data.position());
+				System.out.println("End: "+data.position());
 				playerIdx++;
 			}
 			
@@ -953,7 +794,7 @@ public class SCNDecoder extends Decoder<SCN>
 			//
 		}
 		
-		if(file.id==LumpID.ID12_TINY)
+		if(id==LumpID.ID12_TINY)
 		{
 			int ui0 = data.getInt();
 			int ui1 = data.getInt();
@@ -983,7 +824,7 @@ public class SCNDecoder extends Decoder<SCN>
 		
 	}
 	
-	public static int readGroup(SCNFile file, ByteBuffer data, int total, int i)
+	public static int readGroup(ByteBuffer data, int total, int i)
 	{
 		int size = data.getInt();
 		if(size<0)
@@ -992,7 +833,7 @@ public class SCNDecoder extends Decoder<SCN>
 			throw new IllegalStateException("size "+size+" < 0 for group");
 		}
 		
-		System.out.println("["+i+"] Group: "+(file.data.position()-4)+" size="+size);
+		System.out.println("["+i+"] Group: "+(data.position()-4)+" size="+size);
 		
 		for(int f = 0;f<size;f++)
 		{
@@ -1031,7 +872,7 @@ public class SCNDecoder extends Decoder<SCN>
 			
 			if(isExtended)
 			{
-				System.out.println("Extended Object offs: "+file.data.position());
+				System.out.println("Extended Object offs: "+data.position());
 				
 				int productions = data.getInt();
 				// Productions appear to be an entry in dbtechtree.
@@ -1279,7 +1120,7 @@ public class SCNDecoder extends Decoder<SCN>
 				System.out.println("{10:F}="+data.getFloat());
 				System.out.println("{11:F}="+data.getFloat());
 				
-				file.data.position(file.data.position()+5);
+				data.position(data.position()+5);
 				int len3 = data.getInt();
 				if(len3<0)
 				{
@@ -1289,7 +1130,7 @@ public class SCNDecoder extends Decoder<SCN>
 				
 				System.out.println("len3="+len3);
 				data.position(data.position()+len3*8);
-				file.data.position(file.data.position()+81);
+				data.position(data.position()+81);
 				
 				System.out.println("End: "+data.position());
 			}
