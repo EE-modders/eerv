@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
 import net.coderbot.eerv.PKDecoder;
-import net.coderbot.eerv.scn.SCN.FileID;
+import net.coderbot.eerv.scn.SCN.LumpID;
 import net.coderbot.eerv.scn.trigger.Area;
 import net.coderbot.eerv.scn.trigger.Condition;
 import net.coderbot.eerv.scn.trigger.Effect;
@@ -151,11 +151,12 @@ public class SCNDecoder extends Decoder<SCN>
 		scn.forcedName = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
 		System.out.println("ForcedName: "+scn.forcedName);
 		
-		scn.u8 = new int[13];
-		for(int i = 0;i<13;i++)
+		System.out.println("UnknownInt: "+data.getInt());
+		int entries = data.getInt();
+		for(int i = 0;i<entries;i++)
 		{
-			scn.u8[i] = data.getInt();
-			System.out.println(scn.u8[i]);
+			int type = data.getInt();
+			System.out.println("lump["+i+"] type: \t"+type+" \t"+SCN.LumpID.get(type));
 		}
 		
 		asciiZ = new byte[data.getInt()];
@@ -213,7 +214,7 @@ public class SCNDecoder extends Decoder<SCN>
 			int type = data.getInt();
 			int lumpsize = data.getInt();
 			
-			System.out.println("size: "+lumpsize+" \ttype: "+type+" ("+SCN.FileID.get(type)+")");
+			System.out.println("size: "+lumpsize+" \ttype: "+type+" ("+SCN.LumpID.get(type)+")");
 			
 			{
 				int start = data.position();
@@ -428,7 +429,7 @@ public class SCNDecoder extends Decoder<SCN>
 		byte[] asciiZ;
 		ByteBuffer data = file.data;
 		
-		if(file.id==FileID.TRIGGERS)
+		if(file.id==LumpID.TRIGGERS)
 		{
 			int triggers = data.getInt();
 			for(int i = 0;i<triggers;i++)
@@ -602,7 +603,7 @@ public class SCNDecoder extends Decoder<SCN>
 			System.out.println("[2] "+u7);
 		}
 		
-		if(file.id==FileID.TERRAIN)
+		if(file.id==LumpID.TERRAIN)
 		{
 			int x = data.getInt();
 			int y = data.getInt();
@@ -644,7 +645,7 @@ public class SCNDecoder extends Decoder<SCN>
 			System.out.println("Entries: "+total+" total, "+big+" big among "+bigwith+" points, "+(total-big)+" small among "+with+" points ");
 		}
 		
-		if(file.id==FileID.DIPLOMACY)
+		if(file.id==LumpID.DIPLOMACY)
 		{
 			//TODO: gameAttributes
 			int nPairs = data.getInt();
@@ -720,7 +721,7 @@ public class SCNDecoder extends Decoder<SCN>
 			System.out.println("end: "+data.getShort());
 		}
 		
-		if(file.id==FileID.OBJECTS)
+		if(file.id==LumpID.OBJECTS)
 		{
 			int players = data.getInt();
 			int u0 = data.getInt();
@@ -952,7 +953,7 @@ public class SCNDecoder extends Decoder<SCN>
 			//
 		}
 		
-		if(file.id==FileID.ID12_TINY)
+		if(file.id==LumpID.ID12_TINY)
 		{
 			int ui0 = data.getInt();
 			int ui1 = data.getInt();
