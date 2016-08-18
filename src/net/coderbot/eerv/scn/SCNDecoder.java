@@ -195,41 +195,13 @@ public class SCNDecoder extends Decoder<SCN>
 		
 		//System uptime when created
 		scn.creationUptime = data.getInt();
+		System.out.println("creationUptime="+(((float)scn.creationUptime)/1000)+"s");
 		
 		if(data.getInt()!=0||data.getInt()!=231)
 		{
 			//data.position(data.position()-8);
 			//throw new DecoderException("scn","Expected [0, E7] but got ["+Integer.toHexString(data.getInt())+", "+Integer.toHexString(data.getInt())+"]");
 		}
-		
-		scn.uE = data.getInt();
-		scn.uF = data.getInt();
-		scn.u10 = data.getInt();
-		scn.u11 = data.getInt();
-		scn.u12 = data.getShort();
-		scn.u13 = data.getInt();
-		
-		
-		if(data.getInt()!=0||data.getInt()!=231)
-		{
-			//data.position(data.position()-8);
-			//throw new DecoderException("scn","Expected [0, E7] but got ["+Integer.toHexString(data.getInt())+", "+Integer.toHexString(data.getInt())+"]");
-		}
-		
-		scn.u14 = data.getInt();
-		scn.u15 = data.getInt();
-		scn.seed = data.getInt();
-		
-		if(data.getInt()!=0||data.getInt()!=231)
-		{
-			//data.position(data.position()-8);
-			//throw new DecoderException("scn","Expected [0, E7] but got ["+Integer.toHexString(data.getInt())+", "+Integer.toHexString(data.getInt())+"]");
-		}
-		
-		scn.u17 = data.getInt();
-		System.out.println("creationUptime="+(((float)scn.creationUptime)/1000)+"s "+scn.uE+" "+scn.uF+" "+scn.u10);
-		System.out.println(scn.u11+" "+scn.u12+" "+(scn.u13&0xFFFFFFFFL)+" ("+Integer.toHexString(scn.u13)+") "+scn.u14);
-		System.out.println(scn.u15+" seed="+scn.seed+" "+scn.u17);
 		
 		pk.setInput(data);
 		int pkMagic = 0;
@@ -237,7 +209,102 @@ public class SCNDecoder extends Decoder<SCN>
 		
 		do
 		{
-			SCNFile file = new SCNFile();
+			pkMagic = 825248592;
+			int type = data.getInt();
+			int lumpsize = data.getInt();
+			
+			System.out.println("size: "+lumpsize+" \ttype: "+type+" ("+SCN.FileID.get(type)+")");
+			
+			{
+				int start = data.position();
+				ByteBuffer lump;
+				
+				data.mark();
+				pkMagic = data.getInt();
+				data.reset();
+				
+				if(lumpsize<=12||pkMagic!=825248592)
+				{
+					data.limit(data.position()+lumpsize);
+					lump = data.slice();
+					data.position(data.limit());
+					data.limit(data.capacity());
+				}
+				else
+				{
+					lump = pk.decode();
+				}
+				
+				int end = data.position();
+				
+				System.out.println(lump);
+				
+				lump.position(0);
+				lump.order(ByteOrder.LITTLE_ENDIAN);
+				
+				try
+				{
+					//handleFile(file);
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+				
+				String s = "extract/scn/"+scn.name.toLowerCase().split("\\.")[0]+"/file"+i;
+				Path path = Paths.get(s);
+				System.out.println("Saving file "+i+" to "+path);
+				try
+				{
+					Files.createDirectories(Paths.get("extract/scn", scn.name.toLowerCase().split("\\.")[0]));
+				}
+				catch(IOException e)
+				{
+					//e.printStackTrace();
+				}
+				
+				try
+				{
+					byte[] lumparray;
+					if(!lump.hasArray())
+					{
+						lumparray = new byte[lump.remaining()];
+						lump.get(lumparray);
+					}
+					else
+					{
+						lumparray = lump.array();
+					}
+					
+					Files.deleteIfExists(path);
+					Files.write(path, lumparray, StandardOpenOption.WRITE, StandardOpenOption.CREATE);
+					
+					ByteBuffer bb = data.duplicate();
+					bb.position(start);
+					bb.limit(end);
+					FileChannel fc = FileChannel.open(Paths.get(s+".pk"), StandardOpenOption.WRITE, StandardOpenOption.CREATE);
+					fc.truncate(0);
+					fc.write(bb);
+				}
+				catch(IOException e)
+				{
+					e.printStackTrace();
+				}
+			}
+			
+			if(data.remaining()>=8)
+			{
+				data.getInt();data.getInt();
+				
+			}
+			
+			
+			if(!data.hasRemaining())
+			{
+				break;
+			}
+			
+			/*SCNFile file = new SCNFile();
 			
 			file.compressedSize = data.getInt();
 			System.out.println("compressedSize="+file.compressedSize);
@@ -312,7 +379,7 @@ public class SCNDecoder extends Decoder<SCN>
 			
 			try
 			{
-				handleFile(file);
+				//handleFile(file);
 			}
 			catch(Exception e)
 			{
@@ -348,9 +415,9 @@ public class SCNDecoder extends Decoder<SCN>
 				e.printStackTrace();
 			}
 			
-			System.out.println("File"+(i++)+": "+file.id+" \t<"+file.data.limit()+"> \t<compressed="+file.compressedSize+">  \t"+((file.hasExtendedAttribs)?"xattribs":""));
+			System.out.println("File"+(i++)+": "+file.id+" \t<"+file.data.limit()+"> \t<compressed="+file.compressedSize+">  \t"+((file.hasExtendedAttribs)?"xattribs":""));*/
 		}
-		while(pkMagic==825248592);
+		while(data.hasRemaining());
 		
 		return scn;
 	}
@@ -885,7 +952,7 @@ public class SCNDecoder extends Decoder<SCN>
 			//
 		}
 		
-		if(file.id==FileID.FILE3_TINY)
+		if(file.id==FileID.ID12_TINY)
 		{
 			int ui0 = data.getInt();
 			int ui1 = data.getInt();
@@ -1006,9 +1073,9 @@ public class SCNDecoder extends Decoder<SCN>
 				}
 				System.out.println("]");
 				
-				int len = data.getInt();
-				System.out.println("len="+len);
-				for(int w = 0;w<len;w++)
+				int waypoints = data.getInt();
+				System.out.println("waypoints: "+waypoints);
+				for(int w = 0;w<waypoints;w++)
 				{
 					float wx = data.getFloat(), wy = data.getFloat(), wz = data.getFloat();
 					float dist = data.getFloat();//Total distance traveled
@@ -1162,10 +1229,10 @@ public class SCNDecoder extends Decoder<SCN>
 				
 				for(int w = 0;w<u;w++)
 				{
-					int waypoints = data.getInt();
-					System.out.println("waypoints"+w+"="+waypoints);
+					int goals = data.getInt();
+					System.out.println("waypoints"+w+"="+goals);
 				
-					for(int j = 0;j<waypoints;j++)
+					for(int j = 0;j<goals;j++)
 					{
 						readWaypoint(data);
 					}

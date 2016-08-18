@@ -75,7 +75,7 @@ public class Main
 		implode.implode(st, true, 4096);*/
 		
 		//SCN.test(null,"/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/learning_thebasics");
-		//SCN.test("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/scn/testcase0.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/testcase0");
+		SCN.test("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/scn/testcase0.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/testcase0");
 		//SCN.test("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/scn/testcase0_bottom.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/testcase0_bottom");
 		//SCN.test("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/scn/testcase4_trigger.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/testcase4_trigger");
 		//SCN.test("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/scn/testcase5_condition_AllComputerStone_0.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/testcase5_condition_AllComputerStone_0");
@@ -86,7 +86,7 @@ public class Main
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/...- nano 01.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/nano 01/");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/...- nano 02.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/nano 02/");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/ww1 - ww2 01.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/ww1ww2 01/");
-		SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/ww1 - ww2 02.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/ww1ww2 01/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/ww1 - ww2 02.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/ww1ww2 01/");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/CRASH0.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/crash0/");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/Dufus Ryan Mom Tough Game.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/tough/");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/ElevTR.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/elevtr/");
