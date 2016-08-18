@@ -47,17 +47,6 @@ public class SCN
 	String u9;
 	
 	int creationUptime;
-	int uE;
-	int uF;
-	int u10;
-	int u11;
-	short u12;
-	int u13;
-	int u14;
-	int u15;
-	int seed;
-	int u17;
-	int u18;
 	
 	String hints;
 	String history;
@@ -81,8 +70,17 @@ public class SCN
 	
 	static enum FileID
 	{
-		TERRAIN(0x03), TRIGGERS(0x0A), FILE2_MED(0x0C), FILE3_TINY(0x05), CAMERA_POSITION(0x06), OBJECTS(0x07), DIPLOMACY(0x08), 
-		FILE6_TINY(0x0B),
+		ID1_TINY(1),
+		SEED(2),
+		CAMERA_POSITION(3),
+		TERRAIN(4),
+		OBJECTS(5),
+		TRIGGERS(6),
+		DIPLOMACY(7),
+		ID8_TINY(8),
+		ID10_MED(10),
+		ID11_TINY(11),
+		ID12_TINY(12),
 		
 		UNKNOWN(0);
 		

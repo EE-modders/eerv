@@ -49,6 +49,6 @@ public class Player
 	public String toString()
 	{
 		return (u0?"?":"-")+(u1?"?":"-")+(sharedLos?"S":"-")+(human?"H":"-")+(inactive?"I":"-")+(defeated?"D":"-")+" "+unknown+" \tcolor: "+color+" \tid: "+id+" \tteam: "+team+" \tstartingCitizens: "+startingCitizens
-				+" \tname: "+name;
+				+" \tname: "+name+" \tunknown: "+unknown;
 	}
 }
