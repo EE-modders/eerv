@@ -234,11 +234,6 @@ public class Exploder extends ExploderConstants
 		out.limit(remaining);
 		
 		end = true;
-		if(in.position()>0)
-		{
-			//We grabbed an extra byte.
-			in.position(in.position()-1);
-		}
 		
 		return out;
 	}
