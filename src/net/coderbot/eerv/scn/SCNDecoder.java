@@ -106,6 +106,7 @@ public class SCNDecoder extends Decoder<SCN>
 		
 		scn.gameSpeed = data.getInt();
 		scn.u3 = data.getInt();
+		System.out.println("u3: "+scn.u3);
 		scn.gameVariant = data.getInt();
 		scn.mapSize = data.getInt();
 		scn.startEpoch = data.getInt();
@@ -135,7 +136,8 @@ public class SCNDecoder extends Decoder<SCN>
 		scn.u6 = data.getInt();
 		scn.u7 = data.get();
 		
-		System.out.println(scn.u6+" "+scn.u7);
+		System.out.println("UnknownInt: "+scn.u6);
+		System.out.println("UnknownByte: "+scn.u7);
 		
 		scn.forcedName = getString();
 		System.out.println("ForcedName: "+scn.forcedName);
@@ -194,17 +196,17 @@ public class SCNDecoder extends Decoder<SCN>
 				pkMagic = data.getInt();
 				data.reset();
 				
+				data.limit(data.position()+lumpsize);
 				if(lumpsize<=12||pkMagic!=825248592)
 				{
-					data.limit(data.position()+lumpsize);
 					lump = data.slice();
-					data.position(data.limit());
-					data.limit(data.capacity());
 				}
 				else
 				{
 					lump = pk.decode();
 				}
+				data.position(data.limit());
+				data.limit(data.capacity());
 				
 				int end = data.position();
 				
