@@ -2,7 +2,11 @@ syntax: glob
 .settings/org.eclipse.jdt.core.prefs
 .classpath
 .project
+
+.hgignore~
 syntax: regexp
 bin\/.+
+extract\/scn\/.+
 hs_err.+
+
 syntax: glob
