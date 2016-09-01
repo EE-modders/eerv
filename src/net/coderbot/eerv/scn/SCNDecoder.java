@@ -904,6 +904,14 @@ public class SCNDecoder extends Decoder<SCN>
 				{
 					data.position(data.position()+97);
 				}
+				else if(tag==40)//0x28
+				{
+					data.position(data.position()+101);
+				}
+				else if(tag==101)//0x65
+				{
+					data.position(data.position()+69);
+				}
 				else
 				{
 					System.out.println(" (UNKNOWN)");
