@@ -19,10 +19,10 @@ public class SCNTerrain
 			{
 				big++;
 				System.out.println("1: "+bb.getInt()+" "+bb.getInt());
-				System.out.println(" # "+bb.getFloat()+" "+bb.getFloat()+" "+bb.getFloat()+" "+bb.getFloat());
-				System.out.println(" # "+bb.getFloat()+" "+bb.getFloat()+" "+bb.getFloat()+" "+bb.getFloat());
-				System.out.println(" # "+bb.getFloat()+" "+bb.getFloat()+" "+bb.getFloat()+" "+bb.getFloat());
-				System.out.println(" # "+bb.getFloat()+" "+bb.getFloat()+" "+bb.getFloat()+" "+bb.getFloat());
+				System.out.println(" # ["+bb.getFloat()+" "+bb.getFloat()+" "+bb.getFloat()+" "+bb.getFloat()+"]");
+				System.out.println(" # ["+bb.getFloat()+" "+bb.getFloat()+" "+bb.getFloat()+" "+bb.getFloat()+"]");
+				System.out.println(" # ["+bb.getFloat()+" "+bb.getFloat()+" "+bb.getFloat()+" "+bb.getFloat()+"]");
+				System.out.println(" # ["+bb.getFloat()+" "+bb.getFloat()+" "+bb.getFloat()+" "+bb.getFloat()+"]");
 				int a = bb.getInt();
 				int c = bb.getInt();
 				System.out.println(" # 0x"+Integer.toHexString(a)+" "+a+" 0x"+Integer.toHexString(c)+" "+c);

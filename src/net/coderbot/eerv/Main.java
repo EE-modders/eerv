@@ -84,12 +84,12 @@ public class Main
 		//SCN.test("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/scn/testcase5_object.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/testcase5_object");
 		//SCN.test("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/scn/testcase6_rect_topleft.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/testcase6_rect_topleft");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/...- nano 01.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/nano 01/");
-		SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/...- nano 02.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/nano 02/");
-		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/ww1 - ww2 01.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/ww1ww2 01/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/...- nano 02.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/nano 02/");
+		SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/ww1 - ww2 01.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/ww1ww2 01/");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/ww1 - ww2 02.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/ww1ww2 01/");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/CRASH0.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/crash0/");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Saved Games/Dufus Ryan Mom Tough Game.ees","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/tough/");
-		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/ElevTR.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/elevtr/");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/ElevBL.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/elevtr/");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/FlagFilled-Save.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/flagfilled-save/");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/AmbientsBL.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/ambientsbl/");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/GameSettings.scn","/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/testcase/anl/gamesettings/");
@@ -259,6 +259,7 @@ public class Main
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/CapitolVeryDamagedRepairing.scn");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Resources_Set_MinStone_MaxDigital.scn");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/SetAttr_PopCap.scn");
+		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/AIFlags_CitizenPercent.scn");
 		
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Seed0_TinyTournamentIslands.scn");
 		//SCN.test("/home/coderbot/wingames/ee1/Data/Scenarios/Seed0_TinySmallIslands.scn");
@@ -450,53 +451,6 @@ public class Main
 		for(int i = 0;i<entries.length;i++)
 		{
 			//Log.log("EERV","["+i+"]:  \t"+entries[i]);
-		}*/
-		
-		/*int entries = db.getInt();
-		int size = db.remaining();
-		
-		int esize = size/entries;
-		int isize = esize/4;
-		
-		Log.log("EERV","Estimated entry size: "+(size/entries)+" bytes, "+isize+" ints");
-		
-		int[] wo = new int[isize];
-		int last = 0;
-		boolean chg = false;
-		
-		for(int w = 0;w<isize;w++)
-		{
-			for(int i = 0;i<entries;i++)
-			{
-				db.position((esize*i)+(w*4));
-				wo[i] = db.getInt();
-			}
-			
-			chg = false;
-			last = 0;
-			
-			for(int i = 0;i<entries;i++)
-			{
-				int word = wo[i];
-				if(i==0)
-				{
-					Log.log("EERV","["+w+"/"+i+"]I "+word+" 0x"+Integer.toHexString(word).toUpperCase());
-					last = word;
-				}
-				else if(last!=word)
-				{
-					Log.log("EERV","["+w+"/"+i+"]  "+word+" 0x"+Integer.toHexString(word).toUpperCase());
-					last = word;
-					chg = true;
-				}
-				else
-				{
-					
-				}
-			}
-			
-			//Log.log("EERV","["+w+"/ ] changes: "+chg);
-			System.out.println();
 		}*/
 		
 	}
