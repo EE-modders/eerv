@@ -73,7 +73,6 @@ public class SCNDecoder extends Decoder<SCN>
 		SCN scn = new SCN();
 		
 		int size = data.getInt();
-		System.out.println("File says it's size is "+size+" actual is "+data.capacity());
 		
 		scn.name = getString();
 		scn.description = getString();
@@ -100,6 +99,9 @@ public class SCNDecoder extends Decoder<SCN>
 			System.out.println(scn.players[i]);
 		}
 		
+		// Settings Begin
+		int sstart = data.position();
+		
 		scn.u0 = data.get()==1;
 		scn.u1 = data.get()==1;
 		scn.u2 = data.get()==1;
@@ -114,6 +116,7 @@ public class SCNDecoder extends Decoder<SCN>
 		scn.resources = data.getInt();
 		scn.maxUnits = data.getInt();
 		scn.wondersForVictory = data.getInt();
+		System.out.println("WondersForVictory: "+scn.wondersForVictory);
 		scn.aiDifficulty = data.getInt();
 		
 		scn.victoryAllowed = data.get()==1;
@@ -125,6 +128,36 @@ public class SCNDecoder extends Decoder<SCN>
 		scn.u4 = data.get()==1;
 		scn.customCivs = data.get()==1;
 		scn.u5 = data.get()==1;
+		
+		int send = data.position();
+		
+		ByteBuffer settings = data.duplicate();
+		settings.position(sstart).limit(send);
+		settings = settings.slice();
+		try
+		{
+			byte[] lumparray;
+			if(!settings.hasArray())
+			{
+				lumparray = new byte[settings.remaining()];
+				settings.get(lumparray);
+			}
+			else
+			{
+				lumparray = settings.array();
+			}
+			
+			String s = "extract/scn/"+scn.name.toLowerCase().split("\\.")[0]+"/settings";
+			Path path = Paths.get(s);
+			Files.deleteIfExists(path);
+			Files.write(path, lumparray, StandardOpenOption.WRITE, StandardOpenOption.CREATE);
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		// Settings End
 		
 		scn.campaignName = getString();
 		System.out.println("CampaignName: "+scn.campaignName);
@@ -197,7 +230,7 @@ public class SCNDecoder extends Decoder<SCN>
 				data.reset();
 				
 				data.limit(data.position()+lumpsize);
-				if(lumpsize<=12||pkMagic!=825248592)
+				if(lumpsize<=16)
 				{
 					lump = data.slice();
 				}
@@ -215,7 +248,7 @@ public class SCNDecoder extends Decoder<SCN>
 				
 				try
 				{
-					//handleFile(lump, LumpID.get(type));
+					handleFile(lump, LumpID.get(type));
 				}
 				catch(Exception e)
 				{
@@ -448,7 +481,7 @@ public class SCNDecoder extends Decoder<SCN>
 			System.out.println("[2] "+u7);
 		}
 		
-		if(id==LumpID.TERRAIN)
+		if(false/*id==LumpID.TERRAIN*/)
 		{
 			int x = data.getInt();
 			int y = data.getInt();
@@ -456,7 +489,7 @@ public class SCNDecoder extends Decoder<SCN>
 			int players = data.getInt();
 			
 			int skip = players*2;
-			System.out.println(x+"x"+y+": "+players);
+			System.out.println(x+"x"+y+": "+players+" esize: "+(10+skip));
 			
 			int total = 0;
 			int big = 0;
@@ -465,12 +498,15 @@ public class SCNDecoder extends Decoder<SCN>
 			
 			//Format: height, isVisible[playerId], length of extraDat
 			
-			/*for(int r = 0;r<480;r++)
+			int pX = 1;
+			int pXi = 0;
+			System.out.println("-------------------");
+			for(int r = 0;r<480;r++)
 			{
 				float f = data.getFloat();
 				short s = data.getShort();
-				//System.out.println("["+r+":"+(data.position()-6)+"] "+f+" "+s);
-				file.data.position(data.position()+skip);
+				System.out.println("["+r+":"+(data.position()-6)+"] "+f+" "+s);
+				data.position(data.position()+skip);
 				int sect = data.getInt();
 				
 				if(sect!=0)
@@ -479,13 +515,22 @@ public class SCNDecoder extends Decoder<SCN>
 				}
 				
 				total+=sect;
-				int ba = SCNTerrain.handleEntries(file.data, sect);
+				System.out.println("SECT: "+sect);
+				int ba = SCNTerrain.handleEntries(data, sect);
 				big+=ba;
 				if(ba>0)
 				{
 					bigwith++;
 				}
-			}*/
+				
+				pXi++;
+				if(pXi==pX)
+				{
+					pX+=2;
+					pXi=0;
+					System.out.println("-------------------");
+				}
+			}
 			
 			System.out.println("Entries: "+total+" total, "+big+" big among "+bigwith+" points, "+(total-big)+" small among "+with+" points ");
 		}
@@ -566,7 +611,7 @@ public class SCNDecoder extends Decoder<SCN>
 			System.out.println("end: "+data.getShort());
 		}
 		
-		if(id==LumpID.OBJECTS)
+		if(id==LumpID.OBJECTS&&false)
 		{
 			int players = data.getInt();
 			int u0 = data.getInt();
@@ -824,6 +869,51 @@ public class SCNDecoder extends Decoder<SCN>
 			System.out.println(uf3+" "+uf4+" "+uf5);
 			System.out.println(uf6+" "+uf7+" "+uf8);
 			System.out.println(ui4);
+		}
+		
+		if(id==LumpID.ID10_MED)
+		{
+			int unk = data.getInt();
+			int entries = data.getInt();
+			for(int i = 0;i<entries;i++)
+			{
+				int tag = data.getInt();
+				System.out.print("tag: "+tag);
+				
+				if(tag==41)//0x29
+				{
+					data.position(data.position()+119);
+				}
+				else if(tag==13)//0x0D
+				{
+					data.position(data.position()+45);
+				}
+				else if(tag==62)//0x3E
+				{
+					data.position(data.position()+46);
+				}
+				else if(tag==46)//0x2E
+				{
+					data.position(data.position()+73);
+				}
+				else if(tag==4)//0x04
+				{
+					data.position(data.position()+109);
+				}
+				else if(tag==44)//0x2C
+				{
+					data.position(data.position()+97);
+				}
+				else
+				{
+					System.out.println(" (UNKNOWN)");
+					throw new RuntimeException("unknown tag at "+(data.position()-4));
+				}
+				
+				System.out.println();
+			}
+			
+			System.out.println("end: "+data.position());
 		}
 		
 	}
