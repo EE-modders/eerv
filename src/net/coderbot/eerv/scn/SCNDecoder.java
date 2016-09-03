@@ -878,47 +878,80 @@ public class SCNDecoder extends Decoder<SCN>
 			for(int i = 0;i<entries;i++)
 			{
 				int tag = data.getInt();
-				System.out.print("tag: "+tag);
+				System.out.print((data.position()-4)+" tag: "+tag+" ");
+				
+				{
+					System.out.print(data.getInt()+" "+data.getInt()+" "+data.getInt()+" \t");
+					int eid = data.getInt();
+					System.out.print((eid>>>24)+"<"+(eid&0x00FFFFFF)+"> "+data.getInt()+" \t"+data.get());
+				}
 				
 				if(tag==41)//0x29
 				{
-					data.position(data.position()+119);
+					
+					System.out.println(" \t| "+data.getFloat()+" "+data.getInt()+" "+data.getInt()+" "+data.getFloat()+" "+data.getInt()+" "+data.getFloat()+
+							" "+data.getInt()+" "+data.getFloat());
+					data.position(data.position()+66);
 				}
 				else if(tag==13)//0x0D
 				{
-					data.position(data.position()+45);
+					System.out.println(" \t| "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getInt()+" "+data.getFloat());//24
 				}
 				else if(tag==62)//0x3E
 				{
-					data.position(data.position()+46);
+					data.position(data.position()+25);
+					System.out.println();
 				}
 				else if(tag==46)//0x2E
 				{
-					data.position(data.position()+73);
+					data.position(data.position()+52);
+					System.out.println();
 				}
 				else if(tag==4)//0x04
 				{
-					data.position(data.position()+109);
+					data.position(data.position()+88);
+					System.out.println();
 				}
 				else if(tag==44)//0x2C
 				{
-					data.position(data.position()+97);
+					data.position(data.position()+76);
+					System.out.println();
 				}
 				else if(tag==40)//0x28
 				{
-					data.position(data.position()+101);
+					data.position(data.position()+80);
+					System.out.println();
 				}
-				else if(tag==101)//0x65
+				else if(tag==101||tag==225||tag==187||tag==224||tag==133)//0x65||0xE1||0xBB||0xE0||0x85
 				{
-					data.position(data.position()+69);
+					data.position(data.position()+48);
+					System.out.println();
+				}
+				else if(tag==92)//0x5C
+				{
+					data.position(data.position()+44);
+					System.out.println();
+				}
+				else if(tag==83||tag==81)//0x53||0x51
+				{
+					data.position(data.position()+40);
+					System.out.println();
+				}
+				else if(tag==222)//0xDE
+				{
+					data.position(data.position()+104);
+					System.out.println();
+				}
+				else if(tag==134)//0x86
+				{
+					data.position(data.position()+92);
+					System.out.println();
 				}
 				else
 				{
 					System.out.println(" (UNKNOWN)");
 					throw new RuntimeException("unknown tag at "+(data.position()-4));
 				}
-				
-				System.out.println();
 			}
 			
 			System.out.println("end: "+data.position());
