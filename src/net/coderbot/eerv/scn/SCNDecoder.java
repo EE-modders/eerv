@@ -877,142 +877,74 @@ public class SCNDecoder extends Decoder<SCN>
 			int entries = data.getInt();
 			for(int i = 0;i<entries;i++)
 			{
-				int tag = data.getInt();
-				System.out.print((data.position()-4)+" tag="+tag+"\t ");
+				int type = data.getInt();
+				System.out.print((data.position()-4)+" type="+type+"\t gfx="+data.getInt()+" "+data.getInt()+" "+data.getInt()+" \t");
+				int eid = data.getInt();
+				System.out.print("src="+(eid==-1?"#<NaE>":(eid>>>24)+"<"+(eid&0x00FFFFFF)+">")+"\t"+data.getInt()+" \t"+data.get());
 				
-				if(tag==41)//0x29
+				
+				if(type==41)//0x29
 				{
-					System.out.print(data.getInt()+" "+data.getInt()+" "+data.getInt()+" \t");
-					int eid = data.getInt();
-					System.out.print((eid>>>24)+"<"+(eid&0x00FFFFFF)+">\t"+data.getInt()+" \t"+data.get());
-					System.out.println(" \t| "+data.getFloat()+" "+data.getInt()+" "+data.getInt()+" x="+data.getFloat()+" "+data.getInt()+" "+data.getFloat()+
-							" # "+data.getInt()+" y="+data.getFloat()+" "+data.getInt()+" "+data.getInt()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getInt()+
-							" # "+data.getInt()+" "+data.getInt()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+
-							" "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getInt()+" "+data.getShort());
-				}
-				else if(tag==13)//0x0D
-				{
-					System.out.print(data.getInt()+" "+data.getInt()+" "+data.getInt()+" \t");
-					int eid = data.getInt();
-					System.out.print((eid>>>24)+"<"+(eid&0x00FFFFFF)+">\t"+data.getInt()+" \t"+data.get());
-					System.out.println(" \t| ["+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+"] "+data.getFloat()+" "+data.getInt()+" "+data.getFloat());//24
-				}
-				else if(tag==40)//0x28
-				{
-					System.out.print(data.getInt()+" "+data.getInt()+" "+data.getInt()+" \t");
-					int eid = data.getInt();
-					System.out.print((eid>>>24)+"<"+(eid&0x00FFFFFF)+">\t"+data.getInt()+" \t"+data.get());
 					
-					{
-						System.out.println(" \t| "+data.getFloat()+" "+data.getInt()+" "+data.getInt()+" x="+data.getFloat()+" "+data.getInt()+" "+data.getFloat()+
-								" # "+data.getInt()+" y="+data.getFloat()+" "+data.getInt()+" "+data.getInt()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getInt()+
-								" # "+data.getInt()+" "+data.getInt()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getInt());
-					}//80
-				}
-				else if(tag==44)//0x2C
-				{
-					System.out.print(data.getInt()+" "+data.getInt()+" "+data.getInt()+" \t");
-					int eid = data.getInt();
-					System.out.print((eid>>>24)+"<"+(eid&0x00FFFFFF)+">\t"+data.getInt()+" \t"+data.get());
-					{
-						System.out.println(" \t| "+data.getFloat()+" "+data.getInt()+" "+data.getInt()+" "+data.getFloat()+" "+data.getInt()+" "+data.getFloat()+
-								" # "+data.getInt()+" "+data.getFloat()+" "+data.getInt()+" "+data.getInt()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getInt()+
-								" # "+data.getInt()+" "+data.getInt()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat());
-					}//76
-				}
-				else if(tag==58)//0x3A
-				{
-					System.out.print(data.getInt()+" "+data.getInt()+" "+data.getInt()+" \t");
-					int eid = data.getInt();
-					System.out.print((eid>>>24)+"<"+(eid&0x00FFFFFF)+">\t"+data.getInt()+" \t"+data.get());
-					{
-						data.position(data.position()+92);
-						System.out.println();
-					}//92
-				}
-				else if(tag==57)//0x39
-				{
-					System.out.print(data.getInt()+" "+data.getInt()+" "+data.getInt()+" \t");
-					int eid = data.getInt();
-					System.out.print((eid>>>24)+"<"+(eid&0x00FFFFFF)+">\t"+data.getInt()+" \t"+data.get());
-					{
-						data.position(data.position()+104);
-						System.out.println();
-					}//104
-				}
-				else if(tag==46)//0x2E
-				{
-					System.out.print(data.getInt()+" "+data.getInt()+" "+data.getInt()+" \t");
-					int eid = data.getInt();
-					System.out.print((eid>>>24)+"<"+(eid&0x00FFFFFF)+">\t"+data.getInt()+" \t"+data.get());
-					data.position(data.position()+52);
 					System.out.println();
+					
+					System.out.println("["+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+"]");
+					System.out.println("["+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+"]");
+					System.out.println("["+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+"]");
+					System.out.println("["+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+"]");
+					
+					System.out.println(" \t| "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+
+							" "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getInt()+" "+data.getShort());//98
 				}
-				else if(tag==62)//0x3E
+				else if(type==13)//0x0D
 				{
-					System.out.print(data.getInt()+" "+data.getInt()+" "+data.getInt()+" \t");
-					int eid = data.getInt();
-					System.out.print((eid>>>24)+"<"+(eid&0x00FFFFFF)+">\t"+data.getInt()+" \t"+data.get());
-					System.out.println(" \t\t\t\t\t| "+data.getInt()+" "+data.getInt()+" "+data.getInt()+" "+data.getInt()+" "+data.getInt()+" "+data.getInt()+" "+data.get());//24
+					System.out.println(" \t| ["+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+"] size="+data.getFloat()+" "+data.getInt()+" "+data.getFloat());//24
 				}
-				
-				
-				else if(tag==4)//0x04
+				else if(type==40)//0x28
 				{
-					System.out.print(data.getInt()+" "+data.getInt()+" \t");
-					int eid = data.getInt();
-					System.out.print((eid==-1?"!<NAE> ":(eid>>>24)+"<"+(eid&0x00FFFFFF)+">\t")+data.getInt()+" \t"+data.get());
+					System.out.println();
+					
+					System.out.println("["+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+"]");
+					System.out.println("["+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+"]");
+					System.out.println("["+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+"]");
+					System.out.println("["+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+"]");
+					
+					System.out.println(" \t| "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat());
+				}
+				else if(type==44)//0x2C
+				{
+					System.out.println();
+					
+					System.out.println("["+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+"]");
+					System.out.println("["+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+"]");
+					System.out.println("["+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+"]");
+					System.out.println("["+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+"]");
+					
+					System.out.println(" \t| "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat());
+				}
+				else if(type==58)//0x3A
+				{
 					data.position(data.position()+92);
 					System.out.println();
 				}
-				else if(tag==101||tag==225||tag==187||tag==224||tag==133)//0x65||0xE1||0xBB||0xE0||0x85
+				else if(type==57)//0x39
 				{
-					System.out.print(data.getInt()+" "+data.getInt()+" \t");
-					int eid = data.getInt();
-					System.out.print((eid==-1?"!<NAE> ":(eid>>>24)+"<"+(eid&0x00FFFFFF)+">\t")+data.getInt()+" \t"+data.get());
-					data.position(data.position()+52);
+					data.position(data.position()+104);
 					System.out.println();
 				}
-				else if(tag==92)//0x5C
+				else if(type==46)//0x2E
 				{
-					System.out.print(data.getInt()+" "+data.getInt()+" \t");
-					int eid = data.getInt();
-					System.out.print((eid==-1?"!<NAE> ":(eid>>>24)+"<"+(eid&0x00FFFFFF)+">\t")+data.getInt()+" \t"+data.get());
-					data.position(data.position()+48);
-					System.out.println();
+					System.out.println(" \t| ["+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+"] size="+data.getFloat()+" "+data.getInt()+" "+data.getFloat()+
+							" "+data.getFloat()+" "+data.getInt()+" "+data.getInt()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat());//48
 				}
-				else if(tag==83||tag==81)//0x53||0x51
+				else if(type==62)//0x3E
 				{
-					System.out.print(data.getInt()+" "+data.getInt()+" \t");
-					int eid = data.getInt();
-					System.out.print((eid==-1?"!<NAE> ":(eid>>>24)+"<"+(eid&0x00FFFFFF)+">\t")+data.getInt()+" \t"+data.get());
-					data.position(data.position()+44);
-					System.out.println();
+					System.out.println(" \t\t\t\t\t| "+data.getInt()+" "+data.getInt()+" "+data.getInt()+" "+data.getInt()+" "+data.getInt()+" "+data.getInt()+" "+data.get());//24
 				}
-				else if(tag==114||tag==116)//0x72|0x74
+				else if(type==11)//0x0B
 				{
-					System.out.print(data.getInt()+" "+data.getInt()+" \t");
-					int eid = data.getInt();
-					System.out.print((eid==-1?"!<NAE> ":(eid>>>24)+"<"+(eid&0x00FFFFFF)+">\t")+data.getInt()+" \t"+data.get());
-					System.out.println(data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getInt()+" "+data.getInt()+
-							" # "+data.getInt()+" "+" "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+
-							" # "+data.getInt()+" ");
-				}
-				else if(tag==222)//0xDE
-				{
-					System.out.print(data.getInt()+" "+data.getInt()+" \t");
-					int eid = data.getInt();
-					System.out.print((eid==-1?"!<NAE> ":(eid>>>24)+"<"+(eid&0x00FFFFFF)+">\t")+data.getInt()+" \t"+data.get());
-					data.position(data.position()+108);
-					System.out.println();
-				}
-				else if(tag==134)//0x86
-				{
-					System.out.print(data.getInt()+" "+data.getInt()+" \t");
-					int eid = data.getInt();
-					System.out.print((eid==-1?"!<NAE> ":(eid>>>24)+"<"+(eid&0x00FFFFFF)+">\t")+data.getInt()+" \t"+data.get());
-					data.position(data.position()+96);
-					System.out.println();
+					System.out.println(" \t| ["+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+"] size="+data.getFloat()+" "+data.getInt()+" "+data.getFloat()+
+							" "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat()+" "+data.getFloat());//44
 				}
 				else
 				{
