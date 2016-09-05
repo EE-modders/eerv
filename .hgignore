@@ -4,6 +4,7 @@ syntax: glob
 .project
 
 .hgignore~
+extract/data/db/all/Empire.Earth.-.DB.Editor(1).jar
 syntax: regexp
 bin\/.+
 extract\/scn\/.+

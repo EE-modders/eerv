@@ -65,7 +65,7 @@ public class SCN
 		TRIGGERS(6),
 		DIPLOMACY(7),
 		ID8_TINY(8),
-		ID10_MED(10),
+		GFX_EFFECTS(10),
 		ID11_TINY(11),
 		ID12_TINY(12),
 		
