@@ -22,19 +22,19 @@ public class DBPremadeCivs
 	
 	public static class PremadeCivEntry
 	{
+		int gameid;
+		int index;
 		byte[] name;
-		int zero0;
-		int zero1;
 		int unknown;
 		int language;
 		int rangeLanguage;
 		
 		PremadeCivEntry(ByteBuffer data)
 		{
+			gameid = data.getInt();
+			index = data.getInt();
 			name = new byte[100];
 			data.get(name);
-			zero0 = data.getInt();
-			zero1 = data.getInt();
 			unknown = data.getInt();
 			language = data.getInt();
 			rangeLanguage = data.getInt();
@@ -49,7 +49,7 @@ public class DBPremadeCivs
 				sname = sname.substring(0, idx0);
 			}
 			
-			return "{"+unknown+" \t"+language+" \t"+rangeLanguage+"}";
+			return "{"+unknown+" \tlang: "+language+" \trangeLang: "+rangeLanguage+" "+sname+"}";
 		}
 	}
 }

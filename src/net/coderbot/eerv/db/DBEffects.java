@@ -38,8 +38,8 @@ public class DBEffects
 		int sound;
 		int button;
 		int areaEffect;
-		int zero1;
 		
+		int zero1;
 		int zero2;
 		
 		EffectEntry(ByteBuffer data)
@@ -76,29 +76,29 @@ public class DBEffects
 				attribute = Attribute.values()[attributeCode+1];
 			}
 			
-			if(mode!=Mode.NONE)
-			{
-				System.out.println(index+" \t"+gameid+" \t"+mode+" \t"+attribute);
-			}
-			
 			sound = data.getInt();
 			button = data.getInt();
 			areaEffect = data.getInt();
 			zero1 = data.getInt();
 			zero2 = data.getInt();
 		}
+		
+		public String toString()
+		{
+			return "<"+gameid+"> "+mode+" \t"+attribute+" by "+alter+" set "+set;
+		}
 	}
 	
 	public static enum Attribute
 	{
 		NONE, U0, CITIZENS_DOG_STATS, U2, RANGE, LOS, U5, HEALTH, U7, U8, SPEED, U10, U11, U12, U13, U14, U15, U16, U17, U18, U19, U20, U21, U22,
-		POP_LIMIT, U24, U25, WOOD_GATHER, STONE_GATHER, GOLD_GATHER, IRON_GATHER, HUNT_GATHER, FORAGE_GATHER, FARM_GATHER, U34, U35, CONVERT_PRIEST,
-		CONVERT_BUILDING, COMMERCIAL_TAXES, U39, REPAIR_SPEED, POWER_RECOVER_RATE, PATH_FINDING, HEALTH_RECOVER_RATE, POWER_AMOUNT, U45;
+		POP_LIMIT, U24, U25, WOOD_GATHER, STONE_GATHER, GOLD_GATHER, IRON_GATHER, HUNT_GATHER, FORAGE_GATHER, FARM_GATHER, /*Used five unbound times in effect*/U34, U35, CONVERT_PRIEST,
+		CONVERT_BUILDING, COMMERCIAL_TAXES, /*Used once in unbound effect*/U39, REPAIR_SPEED, POWER_RECOVER_RATE, PATH_FINDING, HEALTH_RECOVER_RATE, POWER_AMOUNT, U45;
 	}
 	
 	public static enum Mode
 	{
-		NONE, U0, SET_BUTTON, ALTER, U3, U4, U5, SET_GRAPHIC, U7, ENABLE_TECH, DISABLE_TECH, START_GAME, U11, BACKGROUND, U13, U14,
+		NONE, U0, SET_BUTTON, ALTER, U3, /*Used once in unbound effect*/U4, U5, SET_GRAPHIC, U7, ENABLE_TECH, DISABLE_TECH, START_GAME, U11, BACKGROUND, U13, U14,
 		SET_ACTION_SOUND_1, U16, SET_DEATH_SOUND, SET_SELECTION_SOUND_1, REPLACE_ALL, SET_ACTION_SOUND_2, SET_SELECTION_SOUND_2, REPLACE_OBJECT;
 	}
 }

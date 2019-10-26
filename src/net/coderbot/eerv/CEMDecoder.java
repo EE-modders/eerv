@@ -86,9 +86,12 @@ public class CEMDecoder extends Decoder<CEM>
 			
 			for(int i = 0;i<nSets;i++)
 			{
-				cem.indices0[i] = new int[data.getInt()];
-				cem.indices1[i] = new int[cem.indices0[i].length];
-				cem.indices2[i] = new int[cem.indices0[i].length];
+				int faces = data.getInt();
+				System.out.println(faces);
+				
+				cem.indices0[i] = new int[faces];
+				cem.indices1[i] = new int[faces];
+				cem.indices2[i] = new int[faces];
 				
 				for(int s = 0;s<cem.indices0[i].length;s++)
 				{

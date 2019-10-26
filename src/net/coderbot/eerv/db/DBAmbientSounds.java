@@ -26,7 +26,7 @@ public class DBAmbientSounds
 		
 		int index;
 		int gameid;
-		int wtf0;
+		int soundIndex;
 		float wtf1;
 		float wtf2;
 		float wtf3;
@@ -45,7 +45,7 @@ public class DBAmbientSounds
 			
 			index = data.getInt();
 			gameid = data.getInt();
-			wtf0 = data.getInt();
+			soundIndex = data.getInt();
 			wtf1 = data.getFloat();
 			wtf2 = data.getFloat();
 			wtf3 = data.getFloat();
@@ -67,7 +67,7 @@ public class DBAmbientSounds
 				sname = sname.substring(0, idx0);
 			}
 			
-			return "AmbientSoundEntry {gameid: "+gameid+", \twtf0: "+wtf0+", \twtf1: "+wtf1+", \twtf2: "+wtf2+", \twtf3: "+wtf3+", \twtf4: "+wtf4+", \twtf5: "+wtf5+", \twtf6: "+wtf6+" \t"+sname+"}";
+			return "AmbientSoundEntry {gameid: "+gameid+", \tsoundIndex: "+soundIndex+", \twtf1: "+wtf1+", \twtf2: "+wtf2+", \twtf3: "+wtf3+", \twtf4: "+wtf4+", \twtf5: "+wtf5+", \twtf6: "+wtf6+" \t"+sname+"}";
 		}
 	}
 }
