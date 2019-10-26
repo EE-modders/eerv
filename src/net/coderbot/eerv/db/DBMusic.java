@@ -25,10 +25,8 @@ public class DBMusic
 		int gameid;
 		int index;
 		byte[] name;
-		
-		int mida;
-		int midb;
-		float u0;//chance?
+		byte[] name2;
+		float chance;
 		float u1;
 		float time;
 		
@@ -38,11 +36,9 @@ public class DBMusic
 			index = data.getInt();
 			name = new byte[100];
 			data.get(name);
-			data.position(data.position()+37);
-			mida = data.getInt();
-			midb = data.getInt();
-			data.position(data.position()+11);
-			u0 = data.getFloat();
+			name2 = new byte[56];
+			data.get(name2);
+			chance = data.getFloat();
 			u1 = data.getFloat();
 			time = data.getFloat();
 			data.position(data.position()+20);
@@ -57,7 +53,7 @@ public class DBMusic
 				sname = sname.substring(0, idx0);
 			}
 			
-			return midb+" \t"+u0+" \t"+u1+" \t"+time+" \t"+sname+" \t"+mida;
+			return "chance="+chance+" \t"+u1+" \ttime="+time+" \t"+sname;
 		}
 	}
 }

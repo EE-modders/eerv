@@ -129,6 +129,8 @@ public class SCNDecoder extends Decoder<SCN>
 		scn.customCivs = data.get()==1;
 		scn.u5 = data.get()==1;
 		
+		System.out.println("u3: "+scn.u3);
+		
 		asciiZ = new byte[data.getInt()];
 		data.get(asciiZ);
 		scn.campaignName = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
@@ -192,6 +194,8 @@ public class SCNDecoder extends Decoder<SCN>
 		scn.soundover = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
 		System.out.println("Soundover: "+scn.soundover);
 		
+		
+		System.out.println("pos: "+data.position());
 		scn.uD = data.getInt();
 		
 		if(data.getInt()!=0||data.getInt()!=231)
@@ -240,6 +244,8 @@ public class SCNDecoder extends Decoder<SCN>
 			pkMagic = data.getInt();
 			if(pkMagic!=825248592)
 			{
+				//break;
+				System.out.println("PKMagic: "+pkMagic);
 				break;
 			}
 			data.reset();
@@ -314,7 +320,7 @@ public class SCNDecoder extends Decoder<SCN>
 				e.printStackTrace();
 			}
 			
-			System.out.println("File"+(i++)+": "+file.id+" \t<"+file.data.limit()+"> \t"+file.u0+"  \t"+((file.hasExtendedAttribs)?"xattribs":""));
+			System.out.println("File"+(i++)+": "+file.id+" \t<"+file.data.limit()+"> \t["+file.id.nid+"]"+file.u0+"  \t"+((file.hasExtendedAttribs)?"xattribs":""));
 		}
 		while(pkMagic==825248592);
 		
@@ -522,7 +528,7 @@ public class SCNDecoder extends Decoder<SCN>
 			
 			//Format: height, isVisible[playerId], length of extraDat
 			
-			/*for(int r = 0;r<480;r++)
+			for(int r = 0;r<480;r++)
 			{
 				float f = data.getFloat();
 				short s = data.getShort();
@@ -542,7 +548,7 @@ public class SCNDecoder extends Decoder<SCN>
 				{
 					bigwith++;
 				}
-			}*/
+			}
 			
 			System.out.println("Entries: "+total+" total, "+big+" big among "+bigwith+" points, "+(total-big)+" small among "+with+" points ");
 		}

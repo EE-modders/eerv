@@ -30,6 +30,10 @@ public class DBUIControls
 		byte[] sub3;
 		byte[] sub4;
 		
+		float u0;
+		float u1;
+		float u2;
+		
 		ControlEntry(ByteBuffer data)
 		{
 			name = new byte[100];
@@ -71,58 +75,11 @@ public class DBUIControls
 			//17: 0, 14, 22, 4B, 64, 6E, C8, E9, F0, FF
 			//18: 0, 14, 35, 3B, 55, 64, 7D, C8, DA, E2, F0, FF
 			
-			data.position(data.position()+96);
+			u0 = data.getFloat();
+			u1 = data.getFloat();
+			u2 = data.getFloat();
 			
-			int i = data.getInt();
-			if(name[0]!=0)
-			{
-				/*if(sub0[0]!=0)
-				{
-					String s2name = new String(sub0, StandardCharsets.ISO_8859_1);
-					int idx0 = s2name.indexOf(0);
-					if(idx0>-1)
-					{
-						s2name = s2name.substring(0, idx0);
-					}
-					
-					Log.log("LOOK","                                                                                           "+s2name);
-				}*/
-				
-				
-				String sname = new String(name, StandardCharsets.ISO_8859_1);
-				int idx0 = sname.indexOf(0);
-				if(idx0>-1)
-				{
-					sname = sname.substring(0, idx0);
-				}
-				
-				//[3E|3F]
-				
-				/*if((i&0xFF000000)==0x3F000000)
-				{
-					Log.log("-ERV",Integer.toHexString(i)+" \t"+sname);
-				}
-				else if((i&0xFF000000)==0x3E000000)
-				{
-					Log.log("+ERV",Integer.toHexString(i)+" \t"+sname);
-				}
-				else
-				{
-					Log.log("EERV","    \t\t"+sname);
-				}*/
-				
-				
-				if(i!=0)
-				{
-					System.out.println("i: "+Integer.toHexString(i)+" \t"+sname);
-				}
-				else
-				{
-					//Log.log("EERV","i: 0 \t\t"+sname);
-				}
-			}
-			
-			data.position(data.position()+160);
+			data.position(data.position()+248);
 		}
 		
 		public String toString()
@@ -134,7 +91,7 @@ public class DBUIControls
 				sname = sname.substring(0, idx0);
 			}
 			
-			return "ControlEntry {name: "+sname+"}";
+			return "ControlEntry {name: "+sname+", u0: "+u0+" "+u1+" "+u2+"}";
 		}
 	}
 }

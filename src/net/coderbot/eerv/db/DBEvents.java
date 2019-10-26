@@ -47,7 +47,22 @@ public class DBEvents
 				sname = sname.substring(0, idx0);
 			}
 			
-			return "{effects: "+effects.length+", name: "+sname+"}";
+			StringBuilder efs = new StringBuilder("[");
+			for(int i = 0;i<effects.length;i++)
+			{
+				efs.append(effects[i]);
+				if(i+1<effects.length)
+				{
+					efs.append(", ");
+				}
+			}
+			
+			return "{effects: "+efs.toString()+"], name: "+sname+"}";
+		}
+		
+		public int[] getEffects()
+		{
+			return effects;
 		}
 	}
 }

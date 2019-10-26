@@ -41,9 +41,9 @@ public class SSADecoder extends Decoder<SSA>
 		SSA ssa = new SSA(in);
 		
 		int mag = in.getInt();
-		if(mag!=1936941426)
+		if(mag!=0x73736172)
 		{
-			throw new DecoderException("ssa","Bad magic "+mag);
+			throw new DecoderException("ssa","Bad magic value 0x"+Integer.toHexString(mag)+", expected 0x73736172");
 		}
 		
 		int verh = in.getInt();
@@ -80,10 +80,10 @@ public class SSADecoder extends Decoder<SSA>
 		{
 			asciiZ = new byte[in.getInt()];
 			in.get(asciiZ);
-			k = new String(asciiZ, 0, asciiZ.length, StandardCharsets.ISO_8859_1);
+			k = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
 			asciiZ = new byte[in.getInt()];
 			in.get(asciiZ);
-			v = new String(asciiZ, 0, asciiZ.length, StandardCharsets.ISO_8859_1);
+			v = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
 			ssa.props.put(k, v);
 		}
 		

@@ -3,22 +3,58 @@ package net.coderbot.eerv;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
+import java.nio.channels.FileChannel.MapMode;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
+import net.coderbot.eerv.compression.ExploderConstants;
 import net.coderbot.eerv.compression.Imploder;
 import net.coderbot.eerv.compression.TCmpStruct;
+import net.coderbot.eerv.db.DBAmbientSounds;
+import net.coderbot.eerv.db.DBAmbientSounds.AmbientSoundEntry;
+import net.coderbot.eerv.db.DBEffects;
+import net.coderbot.eerv.db.DBEffects.EffectEntry;
+import net.coderbot.eerv.db.DBGfxEffects;
+import net.coderbot.eerv.db.DBGfxEffects.GfxEntry;
+import net.coderbot.eerv.db.DBMusic;
+import net.coderbot.eerv.db.DBMusic.MusicEntry;
+import net.coderbot.eerv.db.DBPremadeCivs;
+import net.coderbot.eerv.db.DBPremadeCivs.PremadeCivEntry;
+import net.coderbot.eerv.db.DBSounds;
+import net.coderbot.eerv.db.DBSounds.SoundEntry;
+import net.coderbot.eerv.db.DBUIControls;
+import net.coderbot.eerv.db.DBUIControls.ControlEntry;
 import net.coderbot.eerv.scn.SCN;
 import net.coderbot.util.DecoderException;
 
 public class Main 
 {
+	public static void GenDecodeTabs(byte[] positions, byte[] start_indexes, byte[] codes)
+	{
+	    for(int i = 0; i < codes.length; i++)
+	    {
+	        int length = 1 << codes[i];   // Get the length in bytes
+	        
+	        for(int index = start_indexes[i]&0xFF; index < 0x100; index += length)
+	        {
+	            positions[index] = (byte) i;
+	        }
+	    }
+	}
+	
 	public static void main(String[] args) throws DecoderException, IOException
 	{
+		for(byte b: ExploderConstants.LengthCodes)
+		{
+			System.out.println(b&0xFF);
+		}
+		
 		/*Path path = Paths.get("/home/coderbot/wingames/ee1/Data/Scenarios/een1ve1s_the basics.scn");
 		PKDecoder pk = new PKDecoder(path);
 		ByteBuffer bb = pk.decode();
@@ -27,12 +63,38 @@ public class Main
 		
 		//Path path = Paths.get("/home/coderbot/.wine/drive_c/Sierra/Empire Earth/Data/Campaigns/EELearningCampaign.ssa");
 		//Path path = Paths.get("/home/coderbot/.wine/drive_c/Sierra/Empire Earth/Data/Campaigns/EETheBritish.ssa");
-		//Path ssapath = Paths.get("/home/coderbot/.wine/drive_c/Sierra/Empire Earth/Data/data.ssa");
+		/*Path ssapath = Paths.get("/home/coderbot/.wine/drive_c/Sierra/Empire Earth/Data/Campaigns/EETheGermans.ssa");
 		
-		/*SSADecoder dec = new SSADecoder(ssapath);
+		SSADecoder dec = new SSADecoder(ssapath);
 		SSA ssa = dec.decode();
 		dec.close();
-		PKDecoder pk = new PKDecoder((ByteBuffer)null);*/
+		PKDecoder pk = new PKDecoder((ByteBuffer)null);
+		
+		System.out.println(ssa.getProperties());
+		
+		for(String path: ssa.getFiles())
+		{
+			if(path.endsWith("mp3"))
+			{
+				continue;
+			}
+			
+			System.out.println(path);
+		}
+		
+		ByteBuffer list = ssa.map("campaigns/een1ve1s_scenariolist.txt");
+		pk.setInput(list);
+		ByteBuffer decomp = pk.decode();
+		decomp.order(ByteOrder.LITTLE_ENDIAN);
+		
+		int i = 0;
+		while(decomp.hasRemaining())
+		{
+			byte[] asciiZ = new byte[decomp.getInt()];
+			decomp.get(asciiZ);
+			String name = new String(asciiZ, 0, asciiZ.length-1, StandardCharsets.ISO_8859_1);
+			System.out.println("["+(i++)+"] "+name);
+		}*/
 		
 		/*TCmpStruct st = new TCmpStruct();
 		Imploder implode = new Imploder();
@@ -272,7 +334,7 @@ public class Main
 		}*/
 		/*String name = "bld_capital_10";
 		
-		Path p = Paths.get("extract/data/obj/"+name+".lod0.obj");
+		Path p = Paths.get("extract/data/obj/"+name+".lod9.obj");
 		if(Files.exists(p))
 		{
 			Files.delete(p);
@@ -298,11 +360,12 @@ public class Main
 			ps.println("# Tag Point Name ["+i+"]: "+cem.tagPointNames[i]);
 		}
 		ps.println("# Frames: "+cem.frames.length);
-		ps.println("# Embedded Models: "+cem.subModels);
+		ps.println("# Embedded Modelks: "+cem.subModels);
 		ps.println("# Materials: "+cem.materials.length);
 		for(int i = 0;i<cem.materials.length;i++)
 		{
-			ps.println("# Material "+i+": "+cem.materials[i].name);
+			ps.println("# Material "+i+": "+cem.materials[i].name+"/"+cem.materials[i].name2);
+			ps.println("# Material "+i+" texture: "+cem.materials[i].textureIndex);
 			ps.println("# Material "+i+": "+cem.materials[i].vertexStart+"->"+(cem.materials[i].vertexStart+cem.materials[i].vertexLength));
 			for(int j = 0;j<cem.indices0.length;j++)
 			{
@@ -317,6 +380,18 @@ public class Main
 		for(int i = 0;i<current.vertices;i++)
 		{
 			ps.format("v %.9f %.9f %.9f\n", current.pos[a++], current.pos[a++], current.pos[a++]);
+		}
+		
+		a = 0;
+		for(int i = 0;i<current.vertices;i++)
+		{
+			ps.format("v %.9f %.9f %.9f\n", current.pos[a++], current.pos[a++], current.pos[a++]+0.01);
+		}
+		
+		a = 0;
+		for(int i = 0;i<current.vertices;i++)
+		{
+			ps.format("v %.9f %.9f %.9f\n", current.pos[a++]+0.01, current.pos[a++], current.pos[a++]);
 		}
 		
 		ps.println();
@@ -337,11 +412,18 @@ public class Main
 			//ps.format("vt %.9f %.9f\n", current.uv[a++], current.uv[a++]);
 		}
 		
-		ps.println();
+		//Point
+		
+		/*for(int i = 0;i<current.vertices;i++)
+		{
+			ps.println("f "+(i+1)+" "+(i+current.vertices+1)+" "+(i+1+current.vertices*2));
+		}*/
+		
+		/*ps.println();
 		ps.println("# Section 'Polygon Indices'");
 		
 		a = 0;
-		for(int i = 0;i<1;i++)
+		for(int i = 9;i<10;i++)
 		{
 			int[] set = cem.indices0[i];
 			int[] set1 = cem.indices1[i];
@@ -352,7 +434,7 @@ public class Main
 				//ps.println("f "+(set[s]+1)+"/"+(set[s]+1)+"/"+(set[s]+1)+" "+(set1[s]+1)+"/"+(set1[s]+1)+"/"+(set1[s]+1)+" "+(set2[s]+1)+"/"+(set2[s]+1)+"/"+(set2[s]+1));
 				ps.println("f "+(set[s]+1)+" "+(set1[s]+1)+" "+(set2[s]+1));
 			}
-		}*/
+		}
 		
 		/*String name = "world";
 		
@@ -370,14 +452,14 @@ public class Main
 			System.out.println("["+i+"]:    \t"+entries[i]);
 		}*/
 		
-		/*FileChannel dbf = FileChannel.open(Paths.get("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/data/db/dbterraintype.dat"));
+		/*FileChannel dbf = FileChannel.open(Paths.get("/home/coderbot/eclipse/workspace/EmpireEarthReverse/extract/data/db/prog/dbgfxeffects.dat"));
 		ByteBuffer db = dbf.map(MapMode.READ_ONLY, 0, dbf.size());
 		db.order(ByteOrder.LITTLE_ENDIAN);
 		
-		TerrainTypeEntry[] entries = DBTerrainType.load(db);
-		for(int i = 0;i<entries.length;i++)
+		GfxEntry[] entries = DBGfxEffects.load(db);
+		for(int x = 0;x<entries.length;x++)
 		{
-			//Log.log("EERV","["+i+"]:  \t"+entries[i]);
+			//System.out.println("["+x+"]:  \t"+entries[x]);
 		}*/
 		
 		/*int entries = db.getInt();
