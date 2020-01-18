@@ -17,7 +17,7 @@ import net.coderbot.eerv.compression.TCmpStruct;
 import net.coderbot.eerv.scn.SCN;
 import net.coderbot.util.DecoderException;
 
-public class Main 
+public class Main
 {
 	public static void main(String[] args) throws DecoderException, IOException
 	{
